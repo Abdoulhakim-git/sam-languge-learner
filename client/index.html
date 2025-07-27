@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta name="theme-color" content="#1e40af" />
+    <title>SamLang Niger - Learn English with Teacher Sam | Local Voice, Global Language</title>
+    <meta name="description" content="SamLang Niger - Free English learning app with Teacher Sam. Interactive lessons for children 7-17. Alphabet, speaking practice, vocabulary. Download free, works offline. Local Voice, Global Language." />
+    <meta name="keywords" content="SamLang Niger, samlang niger, Teacher Sam, teacher sam, English learning Niger, english learning niger, Learn English kids, learn english kids, Children English lessons, children english lessons, Interactive English, interactive english, English teacher app, english teacher app, Niger education, niger education, Local Voice Global Language, local voice global language, Free English app, free english app, Kids learning Niger, kids learning niger" />
+    <meta name="author" content="SamLang Niger" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="language" content="English" />
+    <meta name="google-site-verification" content="samlang-niger-english-learning-verification" />
+    <meta name="msvalidate.01" content="samlang-niger-bing-verification" />
+    <meta name="yandex-verification" content="samlang-niger-yandex-verification" />
+    
+    <!-- Geographic and Educational Meta Tags -->
+    <meta name="geo.region" content="NE" />
+    <meta name="geo.country" content="Niger" />
+    <meta name="audience" content="children, students, teachers, parents" />
+    <meta name="category" content="education" />
+    <meta name="coverage" content="Worldwide" />
+    <meta name="rating" content="General" />
+    
+    <!-- Search Keywords for App Discovery -->
+    <meta name="application-name" content="SamLang Niger" />
+    <meta name="apple-mobile-web-app-title" content="SamLang Niger" />
+    <meta name="search-terms" content="SamLang Niger, samlang niger, Teacher Sam, teacher sam, English app Niger, english app niger, Learn English, learn english, Kids English, kids english, Children learning, children learning, Free education Niger, free education niger, Local Voice Global Language, local voice global language" />
+    <meta name="target-audience" content="children 7-17, parents, teachers, homeschool, niger students" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    
+    <!-- App Installation Prompts -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="SamLang Niger" />
+    
+    <!-- iOS PWA Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Teacher Sam" />
+    <link rel="apple-touch-icon" href="/robot-sam-192.png" />
+    
+    <!-- Open Graph Tags for Social Sharing -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="SamLang Niger" />
+    <meta property="og:title" content="SamLang Niger - Learn English with Teacher Sam | Local Voice, Global Language" />
+    <meta property="og:description" content="SamLang Niger - Free English learning app with Teacher Sam. Interactive lessons for children 7-17. Local Voice, Global Language. Works offline, no ads." />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:url" content="https://teacher-sam-english.replit.app/" />
+    <meta property="og:image" content="https://teacher-sam-english.replit.app/teacher-sam-preview.png" />
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="SamLang Niger - Learn English with Teacher Sam" />
+    <meta name="twitter:description" content="SamLang Niger - Free English learning app with Teacher Sam. Local Voice, Global Language. Interactive lessons for children." />
+    
+    <!-- Structured Data for Search Engines -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "EducationalApplication",
+      "name": "SamLang Niger",
+      "alternateName": "Learn English with Teacher Sam",
+      "description": "SamLang Niger - Free English learning app with Teacher Sam. Interactive lessons for children from Niger and worldwide. Local Voice, Global Language.",
+      "applicationCategory": "Education",
+      "operatingSystem": "All",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "educationalUse": "instruction",
+      "educationalRole": "student",
+      "typicalAgeRange": "7-17",
+      "inLanguage": "en",
+      "learningResourceType": "interactive",
+      "educationalLevel": "beginner",
+      "audience": {
+        "@type": "EducationalAudience",
+        "educationalRole": "student"
+      },
+      "creator": {
+        "@type": "Organization",
+        "name": "SamLang Niger"
+      },
+      "brand": "SamLang Niger",
+      "sameAs": [
+        "https://teacher-sam-english.replit.app/",
+        "https://samlang-niger.replit.app/"
+      ],
+      "featureList": [
+        "10 comprehensive English learning modules",
+        "Interactive audio narration with Teacher Sam",
+        "Niger cultural themes and local context",
+        "Offline functionality",
+        "Progressive Web App",
+        "Voice recording practice",
+        "Achievement system",
+        "Educational games"
+      ]
+    }
+    </script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Inter:wght@400;500;600;700&family=Comic+Neue:wght@400;700&display=swap" rel="stylesheet">
+    
+
+    
+    <!-- Universal Version Detection - Ensures ALL users get latest version -->
+    <script>
+      // Immediate universal version check for all users including first-time downloads
+      (function() {
+        const CURRENT_VERSION = '3.0.3-DEPLOYMENT-READY';
+        const userStoredVersion = localStorage.getItem('samlang_version');
+        const isFirstTimeUser = !userStoredVersion;
+        const needsUpdate = !userStoredVersion || userStoredVersion !== CURRENT_VERSION;
+        
+        console.log('🔍 Universal version check:', {
+          stored: userStoredVersion,
+          current: CURRENT_VERSION,
+          firstTime: isFirstTimeUser,
+          needsUpdate: needsUpdate
+        });
+        
+        if (needsUpdate) {
+          console.log('⚡ Ensuring user gets latest version v' + CURRENT_VERSION);
+          localStorage.setItem('samlang_version', CURRENT_VERSION);
+          
+          if (isFirstTimeUser) {
+            console.log('👋 Welcome! Setting up SamLang Niger for first use');
+            localStorage.setItem('samlang_firstAccess', Date.now().toString());
+          }
+          
+          // Clear any old caches to ensure fresh content
+          if ('caches' in window) {
+            caches.keys().then(function(cacheNames) {
+              return Promise.all(
+                cacheNames.map(function(cacheName) {
+                  if (cacheName.includes('samlang') && !cacheName.includes('3.0.2')) {
+                    console.log('🗑️ Clearing old cache:', cacheName);
+                    return caches.delete(cacheName);
+                  }
+                })
+              );
+            });
+          }
+        }
+      })();
+    </script>
+    
+    <!-- Stable Update System - Non-intrusive update checking -->
+    <script src="/stable-update-system.js" defer></script>
+    
+    <!-- Ultra-Aggressive Force Update Distribution - Ensures 100% user coverage -->
+    <script src="/ultra-force-update.js" defer></script>
+    
+    <!-- Force Offline Deployment - Ensures all users get offline features -->
+    <script src="/force-offline-deployment.js" defer></script>
+    
+    <!-- Offline Detection Script -->
+    <script>
+      window.addEventListener('load', () => {
+        function updateOfflineStatus() {
+          const statusElement = document.querySelector('.offline-status');
+          if (statusElement) {
+            statusElement.remove();
+          }
+          
+          if (!navigator.onLine) {
+            const offlineIndicator = document.createElement('div');
+            offlineIndicator.className = 'offline-status';
+            offlineIndicator.style.cssText = `
+              position: fixed;
+              top: 0;
+              left: 0;
+              right: 0;
+              background: #ef4444;
+              color: white;
+              text-align: center;
+              padding: 8px;
+              font-size: 14px;
+              z-index: 10000;
+              font-family: system-ui, sans-serif;
+            `;
+            offlineIndicator.innerHTML = '🔌 Offline Mode - All learning content cached and available';
+            document.body.appendChild(offlineIndicator);
+          }
+        }
+        
+        // Check initial status
+        updateOfflineStatus();
+        
+        // Listen for online/offline events
+        window.addEventListener('online', updateOfflineStatus);
+        window.addEventListener('offline', updateOfflineStatus);
+      });
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Update System - Optimized to prevent screen wake notifications -->
+    <script>
+      // Prevent update notifications on screen wake
+      console.log('SamLang Niger: App loading without update interference');
+      
+      // Track when app is actually being used vs just screen turning on
+      let userInteractionDetected = false;
+      let lastUserActivity = Date.now();
+      
+      // Detect real user interaction
+      ['click', 'touchstart', 'keydown', 'scroll'].forEach(event => {
+        document.addEventListener(event, () => {
+          userInteractionDetected = true;
+          lastUserActivity = Date.now();
+        }, { passive: true });
+      });
+      
+      // Override visibility change to prevent screen wake notifications
+      const originalVisibilityHandler = document.onvisibilitychange;
+      document.addEventListener('visibilitychange', (e) => {
+        const timeSinceActivity = Date.now() - lastUserActivity;
+        
+        // Only allow update checks if user was recently active (not just screen wake)
+        if (!document.hidden && timeSinceActivity > 30000) {
+          console.log('🔄 Screen wake detected - no update check');
+          e.stopPropagation();
+          return;
+        }
+        
+        // Allow normal processing for active users
+        if (originalVisibilityHandler) {
+          originalVisibilityHandler.call(document, e);
+        }
+      });
+    </script>
+    
+    <!-- Service Worker Registration handled in main.tsx -->
+    <script>
+      console.log('SamLang Niger: ServiceWorker registration managed by React app');
+      
+      // Handle app installation prompt
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        
+        // Show install button or banner
+        const installBanner = document.createElement('div');
+        installBanner.innerHTML = `
+          <div style="position: fixed; top: 0; left: 0; right: 0; background: #1e40af; color: white; text-align: center; padding: 10px; z-index: 9999;">
+            <span>📱 Install SamLang Niger app for better experience!</span>
+            <button onclick="installApp()" style="margin-left: 10px; background: white; color: #1e40af; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Install</button>
+            <button onclick="this.parentElement.remove()" style="margin-left: 5px; background: transparent; color: white; border: 1px solid white; padding: 5px 10px; border-radius: 5px; cursor: pointer;">Later</button>
+          </div>
+        `;
+        document.body.appendChild(installBanner);
+      });
+      
+      window.installApp = async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          console.log('SamLang Niger install outcome:', outcome);
+          deferredPrompt = null;
+        }
+      };
+    </script>
+    <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
+    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
+  </body>
+</html>

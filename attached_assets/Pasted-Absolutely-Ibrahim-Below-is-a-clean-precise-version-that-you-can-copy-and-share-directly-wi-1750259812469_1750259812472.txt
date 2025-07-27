@@ -1,0 +1,64 @@
+Absolutely, Ibrahim! Below is a **clean, precise version** that you can **copy and share directly with the AI App Builder**. It gives clear instructions on the **real background images** to use in the app — reflecting **Nigerien culture and the Sahelian environment**, with practical details for design and implementation.
+
+---
+
+## ✅ INSTRUCTIONS FOR BACKGROUND IMAGES (REAL PHOTOS – NIGER CULTURE & SAHEL)
+
+Please use **real photographic background images** that reflect the **culture of Niger** and the **Sahel environment**, adapted for a joyful and educational experience for children.
+
+---
+
+### 🎯 GENERAL STYLE REQUIREMENTS:
+
+* Use **real images** (not illustrations) with **high resolution** (min 1920×1080 px).
+* Apply a **light blur or soft opacity overlay** to avoid disturbing text visibility.
+* Keep the **central part of the image clean** (for subtitles, texts, or objects).
+* Use warm tones: **sand, sky blue, orange, green**, and **earthy colors**.
+* Avoid Western/urban classroom images. Prefer **local, relatable scenes**.
+
+---
+
+### 🖼️ SUGGESTED BACKGROUND IMAGES PER SCREEN / MODULE:
+
+| Screen / Module                            | Suggested Background Image                                                                                                 |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| **Home Page**                              | Village in Niger with traditional **mud-brick (banco) houses**, women walking with calabashes, or Hausa patterns on walls. |
+| **Module 1 – Alphabet**                    | Real photo of an **outdoor classroom**: children learning under a tree or simple open-roof school with benches and slates. |
+| **Module 2 – Greetings**                   | Children in **traditional school uniforms** greeting each other in front of a local school building or under trees.        |
+| **Module 3 – Family**                      | Family sitting in a **typical Sahelian compound** with children, grandmother, and parents – dressed in local fabrics.      |
+| **Module 4 – Classroom Objects**           | Inside a Nigerien classroom: chalkboard, wooden benches, and open windows with sunlight.                                   |
+| **Module 5 – Daily Routines / Verbs**      | Early morning **school scene**: child with backpack walking, mother preparing food, or kids brushing teeth outside.        |
+| **Module 6 – Food & Animals**              | **Local market** with food (millet, rice, mangoes) and **common animals** (goats, chickens, donkeys) around.               |
+| **Module 7 – Actions Now / Can/Can’t**     | Children playing football, jumping rope, or **fetching water** with buckets near wells or water points.                    |
+| **Module 8 – Prepositions & Descriptions** | A **simple room** with mats, table, and bag — useful for showing “on,” “under,” “next to,” etc.                            |
+| **Module 9 – Time & Questions**            | Image of a **school clock**, or kids looking at the sky at sunset, with one holding a watch or pointing to time.           |
+| **Module 10 – Hobbies / Stories**          | Children sitting near a **fire or tree at sunset**, listening to storytelling or playing traditional games (like oware).   |
+| **End of Module / Congratulations Screen** | **Sunset over Sahel** with silhouette of a child jumping or a peaceful landscape with Acacia trees.                        |
+
+---
+
+### 🔒 USAGE GUIDELINES:
+
+* Images must be **royalty-free**, licensed, or original content.
+* Do **not add text or logos** directly on images — app will display text on top.
+* Apply **soft fade, light vignette, or semi-transparent white overlay** behind text zones if needed.
+* Make sure images are **culturally respectful**, natural, and positive.
+
+---
+
+### 📁 FORMAT & DELIVERY:
+
+* Format: **.JPG** or **.PNG**
+* Minimum resolution: **1920x1080 pixels**
+* Orientation: **Landscape**
+* Name the files clearly by module: `home_background.jpg`, `module1_alphabet.jpg`, etc.
+
+---
+
+### ✅ SUMMARY TO IMPLEMENT:
+
+> Apply real Niger/Sahel background images for each module, using photos of villages, classrooms, markets, families, and nature. Use soft visual treatment (blur, overlay) to support readability of on-screen text and subtitles. Deliver images in high resolution, named by module.
+
+---
+
+Let me know if you'd like help **collecting royalty-free real photos** or if the app builder needs image references from specific sources (e.g., Wikimedia, Unsplash, Pexels).

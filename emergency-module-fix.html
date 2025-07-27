@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>EMERGENCY MODULE FIX - Complete Testing System</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            margin: 0; 
+            background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 20px;
+        }
+        .alert { 
+            background: rgba(255,255,255,0.1); 
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 20px; 
+            border-radius: 10px; 
+            margin: 20px 0;
+            backdrop-filter: blur(10px);
+        }
+        .critical { 
+            background: rgba(220,53,69,0.8); 
+            border-color: #dc3545;
+        }
+        .test-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 20px; 
+            margin: 20px 0;
+        }
+        .module-test { 
+            background: rgba(255,255,255,0.1); 
+            padding: 20px; 
+            border-radius: 10px; 
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        button { 
+            background: rgba(255,255,255,0.2); 
+            color: white; 
+            border: 1px solid rgba(255,255,255,0.3); 
+            padding: 12px 24px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            margin: 5px; 
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        button:hover { 
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        .working { background-color: rgba(40, 167, 69, 0.3); }
+        .broken { background-color: rgba(220, 53, 69, 0.3); }
+        .testing { background-color: rgba(255, 193, 7, 0.3); }
+        .result { 
+            padding: 10px; 
+            margin: 5px 0; 
+            border-radius: 5px; 
+            font-size: 14px;
+        }
+        .iframe-test { 
+            width: 100%; 
+            height: 200px; 
+            border: 2px solid rgba(255,255,255,0.3); 
+            border-radius: 8px; 
+            background: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="alert critical">
+            <h1>🚨 EMERGENCY MODULE ACCESS CRISIS</h1>
+            <p><strong>CRITICAL ISSUE:</strong> All modules (1-10) are returning 0 content matches via server-side rendering.</p>
+            <p><strong>USER IMPACT:</strong> Complete learning platform failure - students cannot access any educational content.</p>
+            <p><strong>TESTING REQUIRED:</strong> Each module must be verified working before release.</p>
+        </div>
+
+        <div class="alert">
+            <h2>🔥 IMMEDIATE TESTING PROTOCOL</h2>
+            <button onclick="testAllModulesComprehensive()">🧪 TEST ALL 10 MODULES NOW</button>
+            <button onclick="testReactRendering()">⚛️ TEST REACT RENDERING</button>
+            <button onclick="testIframeAccess()">🖼️ TEST IFRAME ACCESS</button>
+            <div id="comprehensive-results"></div>
+        </div>
+
+        <div class="test-grid">
+            <div class="module-test" id="module-1-test">
+                <h3>Module 1: Alphabet & Numbers</h3>
+                <button onclick="testModule(1)">Test Module 1</button>
+                <div id="module-1-results"></div>
+                <iframe class="iframe-test" id="iframe-1" src="about:blank"></iframe>
+            </div>
+            
+            <div class="module-test" id="module-2-test">
+                <h3>Module 2: Greetings & Introductions</h3>
+                <button onclick="testModule(2)">Test Module 2</button>
+                <div id="module-2-results"></div>
+                <iframe class="iframe-test" id="iframe-2" src="about:blank"></iframe>
+            </div>
+            
+            <div class="module-test" id="module-3-test">
+                <h3>Module 3: Family, Pronouns & Possessives</h3>
+                <button onclick="testModule(3)">Test Module 3</button>
+                <div id="module-3-results"></div>
+                <iframe class="iframe-test" id="iframe-3" src="about:blank"></iframe>
+            </div>
+            
+            <div class="module-test" id="module-4-test">
+                <h3>Module 4: Colors & Shapes</h3>
+                <button onclick="testModule(4)">Test Module 4</button>
+                <div id="module-4-results"></div>
+                <iframe class="iframe-test" id="iframe-4" src="about:blank"></iframe>
+            </div>
+            
+            <div class="module-test" id="module-5-test">
+                <h3>Module 5: Animals & Nature</h3>
+                <button onclick="testModule(5)">Test Module 5</button>
+                <div id="module-5-results"></div>
+                <iframe class="iframe-test" id="iframe-5" src="about:blank"></iframe>
+            </div>
+            
+            <div class="module-test" id="module-6-test">
+                <h3>Module 6: Food, Animals & Plurals</h3>
+                <button onclick="testModule(6)">Test Module 6</button>
+                <div id="module-6-results"></div>
+                <iframe class="iframe-test" id="iframe-6" src="about:blank"></iframe>
+            </div>
+            
+            <div class="module-test" id="module-7-test">
+                <h3>Module 7: Present Continuous</h3>
+                <button onclick="testModule(7)">Test Module 7</button>
+                <div id="module-7-results"></div>
+                <iframe class="iframe-test" id="iframe-7" src="about:blank"></iframe>
+            </div>
+            
+            <div class="module-test" id="module-8-test">
+                <h3>Module 8: Adjectives & Prepositions</h3>
+                <button onclick="testModule(8)">Test Module 8</button>
+                <div id="module-8-results"></div>
+                <iframe class="iframe-test" id="iframe-8" src="about:blank"></iframe>
+            </div>
+            
+            <div class="module-test" id="module-9-test">
+                <h3>Module 9: Time & Questions</h3>
+                <button onclick="testModule(9)">Test Module 9</button>
+                <div id="module-9-results"></div>
+                <iframe class="iframe-test" id="iframe-9" src="about:blank"></iframe>
+            </div>
+            
+            <div class="module-test" id="module-10-test">
+                <h3>Module 10: Hobbies & Past Tense</h3>
+                <button onclick="testModule(10)">Test Module 10</button>
+                <div id="module-10-results"></div>
+                <iframe class="iframe-test" id="iframe-10" src="about:blank"></iframe>
+            </div>
+        </div>
+
+        <div class="alert" id="final-results" style="display: none;">
+            <h2>📊 FINAL TEST RESULTS</h2>
+            <div id="summary-results"></div>
+            <div id="action-required"></div>
+        </div>
+    </div>
+    
+    <script>
+        let testResults = {};
+        
+        function addResult(containerId, status, message) {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = `result ${status}`;
+            div.textContent = message;
+            container.appendChild(div);
+        }
+        
+        function updateModuleStatus(moduleNum, status) {
+            const testDiv = document.getElementById(`module-${moduleNum}-test`);
+            testDiv.className = `module-test ${status}`;
+        }
+        
+        async function testModule(moduleNum) {
+            const resultsId = `module-${moduleNum}-results`;
+            const iframeId = `iframe-${moduleNum}`;
+            
+            document.getElementById(resultsId).innerHTML = '<div class="result testing">Testing...</div>';
+            updateModuleStatus(moduleNum, 'testing');
+            
+            try {
+                // Test HTTP response
+                const response = await fetch(`/module/${moduleNum}`);
+                const html = await response.text();
+                
+                // Test for content indicators
+                const hasModuleContent = html.includes(`Module ${moduleNum}`) || 
+                                       html.includes(`WorkingModule${moduleNum}`) ||
+                                       html.includes('Part 1') ||
+                                       html.includes('Learning');
+                
+                const hasReactRoot = html.includes('<div id="root">');
+                const hasMainScript = html.includes('main.tsx');
+                
+                if (response.ok) {
+                    addResult(resultsId, 'working', `✅ HTTP ${response.status} - Server responding`);
+                } else {
+                    addResult(resultsId, 'broken', `❌ HTTP ${response.status} - Server error`);
+                }
+                
+                if (hasReactRoot && hasMainScript) {
+                    addResult(resultsId, 'working', '✅ React setup detected');
+                } else {
+                    addResult(resultsId, 'broken', '❌ React setup missing');
+                }
+                
+                if (hasModuleContent) {
+                    addResult(resultsId, 'working', '✅ Module content found');
+                    testResults[moduleNum] = 'working';
+                    updateModuleStatus(moduleNum, 'working');
+                } else {
+                    addResult(resultsId, 'broken', '❌ No module content detected');
+                    testResults[moduleNum] = 'broken';
+                    updateModuleStatus(moduleNum, 'broken');
+                }
+                
+                // Load in iframe for visual test
+                document.getElementById(iframeId).src = `/module/${moduleNum}`;
+                
+                setTimeout(() => {
+                    addResult(resultsId, 'testing', '🖼️ Check iframe above for visual confirmation');
+                }, 1000);
+                
+            } catch (error) {
+                addResult(resultsId, 'broken', `❌ Error: ${error.message}`);
+                testResults[moduleNum] = 'broken';
+                updateModuleStatus(moduleNum, 'broken');
+            }
+        }
+        
+        async function testAllModulesComprehensive() {
+            document.getElementById('comprehensive-results').innerHTML = '<h3>🧪 Running comprehensive tests on all 10 modules...</h3>';
+            
+            for (let i = 1; i <= 10; i++) {
+                await testModule(i);
+                await new Promise(resolve => setTimeout(resolve, 500)); // Small delay between tests
+            }
+            
+            setTimeout(generateFinalReport, 2000);
+        }
+        
+        function generateFinalReport() {
+            const finalDiv = document.getElementById('final-results');
+            const summaryDiv = document.getElementById('summary-results');
+            const actionDiv = document.getElementById('action-required');
+            
+            const workingModules = Object.keys(testResults).filter(key => testResults[key] === 'working');
+            const brokenModules = Object.keys(testResults).filter(key => testResults[key] === 'broken');
+            
+            summaryDiv.innerHTML = `
+                <h3>📈 Test Summary:</h3>
+                <p><strong>Working Modules:</strong> ${workingModules.length}/10 (${workingModules.join(', ')})</p>
+                <p><strong>Broken Modules:</strong> ${brokenModules.length}/10 (${brokenModules.join(', ')})</p>
+            `;
+            
+            if (brokenModules.length === 0) {
+                actionDiv.innerHTML = '<h3 style="color: #28a745;">🎉 ALL MODULES WORKING! Ready for users.</h3>';
+            } else if (brokenModules.length === 10) {
+                actionDiv.innerHTML = '<h3 style="color: #dc3545;">🚨 CRITICAL: NO MODULES WORKING! Complete system failure.</h3>';
+            } else {
+                actionDiv.innerHTML = `<h3 style="color: #ffc107;">⚠️ PARTIAL FAILURE: ${brokenModules.length} modules need immediate fixing.</h3>`;
+            }
+            
+            finalDiv.style.display = 'block';
+        }
+        
+        async function testReactRendering() {
+            addResult('comprehensive-results', 'testing', '⚛️ Testing React rendering system...');
+            
+            try {
+                const response = await fetch('/');
+                const html = await response.text();
+                
+                if (html.includes('createRoot') || html.includes('main.tsx')) {
+                    addResult('comprehensive-results', 'working', '✅ React rendering system active');
+                } else {
+                    addResult('comprehensive-results', 'broken', '❌ React rendering system not detected');
+                }
+            } catch (error) {
+                addResult('comprehensive-results', 'broken', `❌ React test failed: ${error.message}`);
+            }
+        }
+        
+        function testIframeAccess() {
+            addResult('comprehensive-results', 'testing', '🖼️ Loading all modules in iframes for visual verification...');
+            
+            for (let i = 1; i <= 10; i++) {
+                document.getElementById(`iframe-${i}`).src = `/module/${i}`;
+            }
+            
+            setTimeout(() => {
+                addResult('comprehensive-results', 'working', '✅ All iframes loaded - check visually above');
+            }, 2000);
+        }
+        
+        // Auto-start critical tests
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                addResult('comprehensive-results', 'testing', '🚀 Auto-starting emergency module tests...');
+                testAllModulesComprehensive();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

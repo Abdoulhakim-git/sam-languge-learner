@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Routing Issue</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug-box { background: #f8f9fa; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #007bff; }
+        .success { border-left-color: #28a745; background: #d4edda; }
+        .error { border-left-color: #dc3545; background: #f8d7da; }
+        .warning { border-left-color: #ffc107; background: #fff3cd; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .test-link { display: inline-block; padding: 10px 20px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; margin: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Debug Routing Issue for Modules 4 & 5</h1>
+    
+    <div class="debug-box">
+        <h2>🔍 Root Cause Analysis</h2>
+        <p>Let's identify exactly why Module 4 and 5 buttons don't work on the modules page.</p>
+        <button onclick="analyzeIssue()">Analyze Issue</button>
+    </div>
+    
+    <div class="debug-box">
+        <h2>📱 Direct Navigation Tests</h2>
+        <p>Test if direct navigation works outside of the modules page buttons.</p>
+        <a href="/module/4" class="test-link">Direct Module 4</a>
+        <a href="/module/5" class="test-link">Direct Module 5</a>
+        <button onclick="testNavigationMethods()">Test All Navigation Methods</button>
+    </div>
+    
+    <div class="debug-box">
+        <h2>🛠️ Modules Page Button Analysis</h2>
+        <p>Check if the issue is with the modules page buttons specifically.</p>
+        <button onclick="analyzeModulesPage()">Analyze Modules Page</button>
+    </div>
+    
+    <div id="results"></div>
+    
+    <script>
+        function addResult(title, status, details) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `debug-box ${status}`;
+            div.innerHTML = `<h3>${title}</h3><p>${details}</p>`;
+            results.appendChild(div);
+        }
+        
+        async function analyzeIssue() {
+            addResult('🔍 Starting Analysis', 'warning', 'Checking all possible causes for Module 4 & 5 not opening...');
+            
+            // Check if modules return content
+            try {
+                const response4 = await fetch('/module/4');
+                const html4 = await response4.text();
+                const hasTestContent = html4.includes('TEST MODULE');
+                
+                addResult(
+                    `Module 4 Server Response: ${response4.status}`, 
+                    response4.ok ? 'success' : 'error',
+                    `Content includes TEST MODULE: ${hasTestContent ? 'YES' : 'NO'}`
+                );
+            } catch (error) {
+                addResult('Module 4 Error', 'error', error.message);
+            }
+            
+            try {
+                const response5 = await fetch('/module/5');
+                const html5 = await response5.text();
+                const hasTestContent = html5.includes('TEST MODULE');
+                
+                addResult(
+                    `Module 5 Server Response: ${response5.status}`, 
+                    response5.ok ? 'success' : 'error',
+                    `Content includes TEST MODULE: ${hasTestContent ? 'YES' : 'NO'}`
+                );
+            } catch (error) {
+                addResult('Module 5 Error', 'error', error.message);
+            }
+        }
+        
+        function testNavigationMethods() {
+            addResult('🧪 Navigation Methods Test', 'warning', 'Testing different ways to navigate to modules...');
+            
+            // Method 1: Direct window.location
+            const test1 = document.createElement('button');
+            test1.textContent = 'Method 1: window.location.href = "/module/4"';
+            test1.onclick = () => { window.location.href = '/module/4'; };
+            
+            // Method 2: Direct link click
+            const test2 = document.createElement('a');
+            test2.href = '/module/4';
+            test2.textContent = 'Method 2: Direct link click';
+            test2.style.cssText = 'display: inline-block; padding: 8px 16px; background: #17a2b8; color: white; text-decoration: none; border-radius: 4px; margin: 5px;';
+            
+            // Method 3: New tab
+            const test3 = document.createElement('a');
+            test3.href = '/module/4';
+            test3.target = '_blank';
+            test3.textContent = 'Method 3: New tab';
+            test3.style.cssText = 'display: inline-block; padding: 8px 16px; background: #6f42c1; color: white; text-decoration: none; border-radius: 4px; margin: 5px;';
+            
+            const testDiv = document.createElement('div');
+            testDiv.className = 'debug-box';
+            testDiv.innerHTML = '<h3>🧪 Try These Navigation Methods:</h3>';
+            testDiv.appendChild(test1);
+            testDiv.appendChild(test2);
+            testDiv.appendChild(test3);
+            
+            document.getElementById('results').appendChild(testDiv);
+        }
+        
+        async function analyzeModulesPage() {
+            try {
+                const modulesResponse = await fetch('/modules');
+                const modulesHtml = await modulesResponse.text();
+                
+                const hasModule4Link = modulesHtml.includes('/module/4');
+                const hasModule5Link = modulesHtml.includes('/module/5');
+                const hasStartLearning = modulesHtml.includes('Start Learning');
+                
+                addResult(
+                    'Modules Page Analysis',
+                    modulesResponse.ok ? 'success' : 'error',
+                    `Status: ${modulesResponse.status}
+                     Contains /module/4 links: ${hasModule4Link ? 'YES' : 'NO'}
+                     Contains /module/5 links: ${hasModule5Link ? 'YES' : 'NO'}
+                     Contains "Start Learning" buttons: ${hasStartLearning ? 'YES' : 'NO'}`
+                );
+                
+                if (hasModule4Link && hasModule5Link && hasStartLearning) {
+                    addResult(
+                        '✅ Modules Page Structure OK',
+                        'success',
+                        'The modules page contains proper links. Issue is likely client-side React routing or navigation handling.'
+                    );
+                } else {
+                    addResult(
+                        '❌ Modules Page Issue Found',
+                        'error',
+                        'The modules page is missing expected links or buttons.'
+                    );
+                }
+            } catch (error) {
+                addResult('Modules Page Error', 'error', error.message);
+            }
+        }
+        
+        // Auto-start analysis
+        window.addEventListener('load', () => {
+            setTimeout(analyzeIssue, 1000);
+        });
+    </script>
+</body>
+</html>

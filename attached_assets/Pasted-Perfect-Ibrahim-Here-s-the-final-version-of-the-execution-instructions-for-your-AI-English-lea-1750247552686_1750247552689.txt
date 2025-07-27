@@ -1,0 +1,138 @@
+Perfect, Ibrahim. Here's the **final version of the execution instructions** for your AI English learning app, **including the clickable links at the end of each part**, as you requested. Everything is structured to guide the app builder step by step:
+
+---
+
+### ✅ **FINAL INSTRUCTIONS FOR THE AI APP BUILDER**
+
+**App Name:** *Learn English with Teacher Sam*
+
+---
+
+### 🟢 1. **VOICE CONFIGURATION**
+
+* **Voice**: Use **Matthew**
+* **Speed**: Slow and calm, like in a classroom
+* **Tone**: Friendly, joyful, clear
+* **Pauses**: Insert a **1–2 second pause** after:
+
+  * Every explanation
+  * Every example
+  * Every question
+
+---
+
+### 🖼️ 2. **IMAGES & VISUALS**
+
+For **every word, sentence, or explanation**, display:
+
+* A **related image or animation** (realistic or cartoon-style)
+* **Text on-screen** in large, colorful, child-friendly font
+* Backgrounds with **Nigerien cultural visuals**:
+
+  * Traditional patterns
+  * Kids in Nigerien classrooms
+  * Local foods and landscapes
+
+---
+
+### 🌐 3. **LANGUAGE OPTIONS**
+
+From the **Home Page**, add subtitle selector:
+
+* “Choose your learning language”
+
+  * 🇫🇷 French subtitles
+  * 🇳🇪 Hausa subtitles
+* All **spoken content** is in English
+* Subtitles must display **word-for-word** with audio narration
+
+---
+
+### ✍️ 4. **SCREEN TEXT**
+
+* Each explanation by Teacher Sam must appear as **text on screen**
+* Display one sentence at a time, synchronized with Matthew's voice
+* Keywords (verbs, nouns, adjectives) should be in **different colors**
+
+---
+
+### 🎮 5. **INTERACTIVITY**
+
+After each section:
+
+* Show a **practice game or quiz**
+* Example formats:
+
+  * Click on the correct image
+  * Drag and drop
+  * True or false
+  * “Guess what’s missing?”
+* Make it fun and reinforce learning
+
+---
+
+### 📎 6. **CLICKABLE LINKS**
+
+**At the end of each part** (not just the end of the module), the app must show:
+
+* A visible **button** or link titled:
+
+  * 🔗 **"Click here to play"**
+  * 🔗 **"Click here to practice"**
+* Make it colorful and clickable
+* Example link placement:
+
+```text
+🎮 Now let’s play a game to practice!
+🔗 Click here to play: [Insert Link Here]
+```
+
+The **link** must appear clearly **on screen** and be:
+
+* Always clickable
+* Positioned after Teacher Sam’s last sentence of the part
+* Designed to blend visually with the child-friendly interface
+
+---
+
+### 📚 7. **MODULE-SPECIFIC IMAGE RULE**
+
+| Module                                   | What to Show                                            |
+| ---------------------------------------- | ------------------------------------------------------- |
+| **Module 1 (Alphabet)**                  | One image per letter (e.g., A-Apple 🍎, B-Ball 🏀...)   |
+| **Module 2 (Greetings)**                 | Kids waving, shaking hands, etc.                        |
+| **Module 3 (Family)**                    | Cartoon family tree, local family styles                |
+| **Module 4 (Classroom)**                 | Real Nigerien classroom photos + cartoon objects        |
+| **Module 5 (Verbs)**                     | Show real kids or drawings acting (eating, sleeping...) |
+| **Module 6 (Food/Animals)**              | Use local food/animals (millet, goats, chickens...)     |
+| **Module 7 (Present Continuous)**        | Animations of actions (reading, jumping, singing)       |
+| **Module 8 (Adjectives & Prepositions)** | Use chairs, books, school bags to show position         |
+| **Module 9 (Time/Questions)**            | Clock animations, classroom or home questions           |
+| **Module 10 (Hobbies/Past)**             | Daily life scenes of Nigerien kids, football, drawing   |
+
+---
+
+### 🔄 8. **END OF PART FLOW (EXAMPLE TEMPLATE)**
+
+At the **end of each PART** in a module, follow this format:
+
+```text
+✔️ Great job learning the vowels!  
+Now let’s play a game to test your skills.
+
+🔗 Click here to play: [Insert Link or Button]
+```
+
+The app should **automatically pause** after the explanation so the child can click.
+
+---
+
+### 🧩 9. **EXTRA FEATURES (Optional but Recommended)**
+
+* **Progress bar** showing child’s journey through the module
+* **“Repeat After Me” Mode** where voice pauses for child to repeat
+* **Offline Practice Mode** with coloring or matching activities
+
+---
+
+Would you like me to design a **demo layout or animation script** for one part, like the Alphabet? I can prepare a visual storyboard or generate a sample code snippet for the app builder.

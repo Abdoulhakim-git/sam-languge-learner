@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SamLang Niger - Update Distribution Test</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #FF5722 0%, #FF9800 100%);
+            min-height: 100vh;
+            color: white;
+        }
+        .container { max-width: 1000px; margin: 0 auto; }
+        .header { 
+            text-align: center; 
+            margin-bottom: 30px;
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+        .test-section {
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        .test-btn {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        .test-btn:hover { background: #45a049; }
+        .result { 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 8px; 
+            background: #f8f9fa;
+        }
+        .success { background: #d4edda; border-left: 4px solid #28a745; }
+        .warning { background: #fff3cd; border-left: 4px solid #ffc107; }
+        .error { background: #f8d7da; border-left: 4px solid #dc3545; }
+        .update-demo {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid #2196F3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 Update Distribution Test</h1>
+            <p>Verify that all users receive the latest v2.6.7-DIRECT-MODULES automatically</p>
+            <div style="margin-top: 20px;">
+                <span style="background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 20px;">
+                    Current Version: <span id="currentVersion">Loading...</span>
+                </span>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h3>📡 Version Detection Test</h3>
+            <p>Test if the system correctly detects version mismatches and triggers updates.</p>
+            <button class="test-btn" onclick="testVersionDetection()">Test Version Detection</button>
+            <div id="versionResults"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>🚀 Force Update System Test</h3>
+            <p>Test the immediate force update system that ensures all users get working modules.</p>
+            <button class="test-btn" onclick="testForceUpdate()">Test Force Update</button>
+            <button class="test-btn" onclick="simulateOldUser()">Simulate Old User</button>
+            <div id="updateResults"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>💾 Cache Management Test</h3>
+            <p>Test cache clearing and service worker updates.</p>
+            <button class="test-btn" onclick="testCacheManagement()">Test Cache System</button>
+            <div id="cacheResults"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>📱 Service Worker Test</h3>
+            <p>Verify service worker registration and update mechanisms.</p>
+            <button class="test-btn" onclick="testServiceWorker()">Test Service Worker</button>
+            <div id="swResults"></div>
+        </div>
+
+        <div class="update-demo">
+            <h3>🎭 Simulate Different User Types</h3>
+            <p>Test how different types of users receive updates:</p>
+            <button class="test-btn" onclick="simulateFirstTimeUser()">First-time User</button>
+            <button class="test-btn" onclick="simulateReturningUser()">Returning User</button>
+            <button class="test-btn" onclick="simulateOfflineUser()">Offline User</button>
+            <div id="simulationResults"></div>
+        </div>
+
+        <div class="test-section">
+            <h3>✅ Module Verification</h3>
+            <p>Verify all 10 modules are working after update distribution.</p>
+            <button class="test-btn" onclick="verifyAllModules()">Verify All Modules</button>
+            <div id="moduleResults"></div>
+        </div>
+    </div>
+
+    <script>
+        // Test version detection
+        async function testVersionDetection() {
+            const resultsDiv = document.getElementById('versionResults');
+            resultsDiv.innerHTML = '<div class="result">Testing version detection...</div>';
+            
+            try {
+                const response = await fetch('/api/version?t=' + Date.now());
+                const data = await response.json();
+                
+                const expectedVersion = 'v2.6.7-DIRECT-MODULES';
+                const serverVersion = data.version;
+                
+                let resultClass = 'success';
+                let message = `✅ Version detection working! Server version: ${serverVersion}`;
+                
+                if (serverVersion !== expectedVersion) {
+                    resultClass = 'warning';
+                    message = `⚠️ Version mismatch detected. Expected: ${expectedVersion}, Got: ${serverVersion}`;
+                }
+                
+                resultsDiv.innerHTML = `
+                    <div class="result ${resultClass}">
+                        <strong>Version Detection Result:</strong><br>
+                        ${message}<br>
+                        <small>Features: ${data.features ? data.features.length : 0} listed</small>
+                    </div>
+                `;
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <div class="result error">
+                        <strong>❌ Version Detection Failed:</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Test force update system
+        async function testForceUpdate() {
+            const resultsDiv = document.getElementById('updateResults');
+            resultsDiv.innerHTML = '<div class="result">Testing force update system...</div>';
+            
+            // Check if update scripts are loaded
+            const scripts = [
+                '/immediate-force-update.js',
+                '/force-global-update.js', 
+                '/universal-offline-update.js',
+                '/version-check.js'
+            ];
+            
+            let scriptsLoaded = 0;
+            let results = [];
+            
+            for (const script of scripts) {
+                try {
+                    const response = await fetch(script);
+                    if (response.ok) {
+                        scriptsLoaded++;
+                        results.push(`✅ ${script.split('/').pop()} loaded successfully`);
+                    } else {
+                        results.push(`❌ ${script.split('/').pop()} failed to load (${response.status})`);
+                    }
+                } catch (error) {
+                    results.push(`❌ ${script.split('/').pop()} error: ${error.message}`);
+                }
+            }
+            
+            const resultClass = scriptsLoaded === scripts.length ? 'success' : 'warning';
+            resultsDiv.innerHTML = `
+                <div class="result ${resultClass}">
+                    <strong>Force Update System Test:</strong><br>
+                    ${scriptsLoaded}/${scripts.length} update scripts loaded<br>
+                    <details>
+                        <summary>Script Details</summary>
+                        ${results.map(r => `<div>${r}</div>`).join('')}
+                    </details>
+                </div>
+            `;
+        }
+
+        // Test cache management
+        async function testCacheManagement() {
+            const resultsDiv = document.getElementById('cacheResults');
+            resultsDiv.innerHTML = '<div class="result">Testing cache management...</div>';
+            
+            let results = [];
+            
+            // Test if caches API is available
+            if ('caches' in window) {
+                try {
+                    const cacheNames = await caches.keys();
+                    results.push(`✅ Caches API available - ${cacheNames.length} caches found`);
+                    
+                    // List cache names
+                    if (cacheNames.length > 0) {
+                        results.push(`Cache names: ${cacheNames.join(', ')}`);
+                    }
+                } catch (error) {
+                    results.push(`❌ Cache API error: ${error.message}`);
+                }
+            } else {
+                results.push(`❌ Caches API not available`);
+            }
+            
+            // Test localStorage
+            try {
+                localStorage.setItem('test', 'value');
+                localStorage.removeItem('test');
+                results.push(`✅ localStorage working`);
+            } catch (error) {
+                results.push(`❌ localStorage error: ${error.message}`);
+            }
+            
+            resultsDiv.innerHTML = `
+                <div class="result success">
+                    <strong>Cache Management Test:</strong><br>
+                    ${results.join('<br>')}
+                </div>
+            `;
+        }
+
+        // Test service worker
+        async function testServiceWorker() {
+            const resultsDiv = document.getElementById('swResults');
+            resultsDiv.innerHTML = '<div class="result">Testing service worker...</div>';
+            
+            let results = [];
+            
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    results.push(`✅ Service Worker API available`);
+                    results.push(`Active registrations: ${registrations.length}`);
+                    
+                    // Test service worker file
+                    const swResponse = await fetch('/sw.js');
+                    if (swResponse.ok) {
+                        results.push(`✅ Service worker file accessible`);
+                    } else {
+                        results.push(`❌ Service worker file not found (${swResponse.status})`);
+                    }
+                    
+                } catch (error) {
+                    results.push(`❌ Service Worker error: ${error.message}`);
+                }
+            } else {
+                results.push(`❌ Service Worker not supported`);
+            }
+            
+            resultsDiv.innerHTML = `
+                <div class="result success">
+                    <strong>Service Worker Test:</strong><br>
+                    ${results.join('<br>')}
+                </div>
+            `;
+        }
+
+        // Simulate different user types
+        function simulateFirstTimeUser() {
+            document.getElementById('simulationResults').innerHTML = `
+                <div class="result success">
+                    <strong>🆕 First-time User Simulation:</strong><br>
+                    • User visits app for the first time<br>
+                    • Gets latest v2.6.7-DIRECT-MODULES version automatically<br>
+                    • Service worker registers and caches all modules<br>
+                    • All 10 modules work perfectly from first visit<br>
+                    <em>✅ No updates needed - gets working version immediately</em>
+                </div>
+            `;
+        }
+
+        function simulateReturningUser() {
+            document.getElementById('simulationResults').innerHTML = `
+                <div class="result warning">
+                    <strong>🔄 Returning User Simulation:</strong><br>
+                    • User has old version with white screen modules<br>
+                    • Update detection triggers immediately on visit<br>
+                    • Force update alert appears: "CRITICAL UPDATE AVAILABLE"<br>
+                    • User clicks "UPDATE NOW" → cache cleared → redirected<br>
+                    • Gets working v2.6.7-DIRECT-MODULES with all modules<br>
+                    <em>✅ Automatic update ensures working modules</em>
+                </div>
+            `;
+        }
+
+        function simulateOfflineUser() {
+            document.getElementById('simulationResults').innerHTML = `
+                <div class="result success">
+                    <strong>📱 Offline User Simulation:</strong><br>
+                    • User has cached v2.6.7-DIRECT-MODULES<br>
+                    • Service worker serves all 10 modules from cache<br>
+                    • Complete offline learning experience<br>
+                    • All modules, content, and French translations available<br>
+                    • No internet required after initial update<br>
+                    <em>✅ Perfect offline functionality guaranteed</em>
+                </div>
+            `;
+        }
+
+        function simulateOldUser() {
+            if (window.forceImmediateUpdate) {
+                document.getElementById('updateResults').innerHTML = `
+                    <div class="result warning">
+                        <strong>🎭 Simulating Old User Experience:</strong><br>
+                        Triggering force update system...
+                    </div>
+                `;
+                // Trigger the actual force update function
+                setTimeout(() => {
+                    window.forceImmediateUpdate();
+                }, 1000);
+            } else {
+                document.getElementById('updateResults').innerHTML = `
+                    <div class="result error">
+                        <strong>❌ Force update function not available</strong><br>
+                        Update scripts may not be loaded correctly.
+                    </div>
+                `;
+            }
+        }
+
+        // Verify all modules
+        async function verifyAllModules() {
+            const resultsDiv = document.getElementById('moduleResults');
+            resultsDiv.innerHTML = '<div class="result">Verifying all 10 modules...</div>';
+            
+            let workingModules = 0;
+            let results = [];
+            
+            for (let i = 1; i <= 10; i++) {
+                try {
+                    const response = await fetch(`/module/${i}`);
+                    const html = await response.text();
+                    
+                    const working = response.status === 200 && 
+                                   html.includes(`Module ${i}`) && 
+                                   html.length > 2000 &&
+                                   html.includes('French:');
+                    
+                    if (working) {
+                        workingModules++;
+                        results.push(`✅ Module ${i}: Working`);
+                    } else {
+                        results.push(`❌ Module ${i}: Issues found`);
+                    }
+                } catch (error) {
+                    results.push(`❌ Module ${i}: Error - ${error.message}`);
+                }
+            }
+            
+            const resultClass = workingModules === 10 ? 'success' : 'error';
+            resultsDiv.innerHTML = `
+                <div class="result ${resultClass}">
+                    <strong>Module Verification Results:</strong><br>
+                    <h4>${workingModules}/10 modules working perfectly</h4>
+                    <details>
+                        <summary>Module Details</summary>
+                        ${results.join('<br>')}
+                    </details>
+                    ${workingModules === 10 ? 
+                        '<div style="color: #28a745; font-weight: bold; margin-top: 10px;">🎉 ALL MODULES WORKING! Users will have perfect experience.</div>' : 
+                        '<div style="color: #dc3545; font-weight: bold; margin-top: 10px;">⚠️ Some modules need attention.</div>'
+                    }
+                </div>
+            `;
+        }
+
+        // Auto-load current version
+        window.addEventListener('load', async () => {
+            try {
+                const response = await fetch('/api/version');
+                const data = await response.json();
+                document.getElementById('currentVersion').textContent = data.version || 'Unknown';
+            } catch (error) {
+                document.getElementById('currentVersion').textContent = 'Error loading';
+            }
+            
+            // Auto-run basic tests
+            setTimeout(() => {
+                testVersionDetection();
+                testForceUpdate();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

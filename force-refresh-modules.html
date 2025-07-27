@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Force Refresh SamLang Niger</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        .success { background: #d1fae5; color: #065f46; }
+        .error { background: #fee2e2; color: #991b1b; }
+        .loading { background: #fef3c7; color: #92400e; }
+        .button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        .button:hover { opacity: 0.9; }
+        #progress { width: 100%; background: #e5e7eb; border-radius: 10px; height: 20px; margin: 20px 0; }
+        #progressBar { background: #667eea; height: 100%; border-radius: 10px; width: 0%; transition: width 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 SamLang Niger - Force Refresh to 15 Modules</h1>
+        
+        <div id="status" class="status loading">Initializing cache clearing...</div>
+        
+        <div id="progress">
+            <div id="progressBar"></div>
+        </div>
+        
+        <div id="results"></div>
+        
+        <button class="button" onclick="startForceRefresh()">🔄 Force Clear Cache & Reload</button>
+        <button class="button" onclick="testAllModules()">🧪 Test All 15 Modules</button>
+        <button class="button" onclick="goToModules()">📚 Go to Modules Page</button>
+    </div>
+
+    <script>
+        let progress = 0;
+        
+        function updateProgress(percent, message) {
+            progress = percent;
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('status').textContent = message;
+        }
+        
+        async function startForceRefresh() {
+            updateProgress(10, 'Clearing localStorage...');
+            localStorage.clear();
+            
+            updateProgress(20, 'Clearing sessionStorage...');
+            sessionStorage.clear();
+            
+            updateProgress(30, 'Unregistering service workers...');
+            if ('serviceWorker' in navigator) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                for (let registration of registrations) {
+                    await registration.unregister();
+                }
+            }
+            
+            updateProgress(50, 'Clearing all caches...');
+            if ('caches' in window) {
+                const cacheNames = await caches.keys();
+                for (let cacheName of cacheNames) {
+                    await caches.delete(cacheName);
+                    console.log('Deleted cache:', cacheName);
+                }
+            }
+            
+            updateProgress(70, 'Setting version flag...');
+            localStorage.setItem('samlang-version', '3.0.0-EXPANDED');
+            localStorage.setItem('modules-count', '15');
+            localStorage.setItem('force-refresh-completed', Date.now().toString());
+            
+            updateProgress(90, 'Preparing to reload...');
+            document.getElementById('status').className = 'status success';
+            updateProgress(100, 'Cache cleared! Reloading in 2 seconds...');
+            
+            setTimeout(() => {
+                window.location.href = '/modules?v=' + Date.now();
+            }, 2000);
+        }
+        
+        async function testAllModules() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<h3>Testing All 15 Modules:</h3>';
+            
+            for (let i = 1; i <= 15; i++) {
+                updateProgress((i/15) * 100, `Testing module ${i}/15...`);
+                
+                try {
+                    const response = await fetch(`/api/modules/${i}?v=${Date.now()}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        results.innerHTML += `<div class="status success">✅ Module ${i}: ${data.title}</div>`;
+                    } else {
+                        results.innerHTML += `<div class="status error">❌ Module ${i}: Error ${response.status}</div>`;
+                    }
+                } catch (error) {
+                    results.innerHTML += `<div class="status error">❌ Module ${i}: ${error.message}</div>`;
+                }
+                
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+            
+            updateProgress(100, 'Test completed!');
+            document.getElementById('status').className = 'status success';
+        }
+        
+        function goToModules() {
+            window.location.href = '/modules?v=' + Date.now();
+        }
+        
+        // Auto-start the force refresh process
+        setTimeout(startForceRefresh, 1000);
+    </script>
+</body>
+</html>

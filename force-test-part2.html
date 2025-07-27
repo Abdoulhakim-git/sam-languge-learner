@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Force Test Part 2 - Emergency Debug</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .test-container { max-width: 1200px; margin: 0 auto; }
+        .emergency-test { background: #ffebee; border: 2px solid #f44336; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .success { background: #e8f5e9; border: 2px solid #4caf50; }
+        .warning { background: #fff3e0; border: 2px solid #ff9800; }
+        .console-output { background: #263238; color: #00ff00; padding: 15px; border-radius: 4px; font-family: monospace; height: 300px; overflow-y: auto; }
+        button { padding: 15px 30px; margin: 10px; background: #f44336; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #d32f2f; }
+        .module-frame { width: 100%; height: 600px; border: 3px solid #f44336; border-radius: 8px; margin: 10px 0; }
+        .test-step { background: white; padding: 15px; margin: 10px 0; border-radius: 6px; border-left: 4px solid #2196f3; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 4px; overflow-x: auto; }
+        h1, h2 { color: #d32f2f; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🚨 EMERGENCY: Force Test Part 2 White Screen Issue</h1>
+        <p>This will directly test and debug the white screen issue in Module 13 and 14 Part 2</p>
+        
+        <div class="emergency-test">
+            <h2>🔥 EMERGENCY TEST PROTOCOL</h2>
+            <button onclick="emergencyTestPart2()">🚨 START EMERGENCY TEST</button>
+            <button onclick="directAPITest()">🔍 TEST API DIRECTLY</button>
+            <button onclick="manualModuleLoad()">📱 MANUAL MODULE LOAD</button>
+            <div id="emergency-results"></div>
+        </div>
+        
+        <div class="test-step">
+            <h2>Step 1: API Response Test</h2>
+            <div id="api-test-results"></div>
+        </div>
+        
+        <div class="test-step">
+            <h2>Step 2: Module 13 Force Test</h2>
+            <iframe id="module13-test" class="module-frame" src="about:blank"></iframe>
+            <div id="module13-console" class="console-output"></div>
+        </div>
+        
+        <div class="test-step">
+            <h2>Step 3: Module 14 Force Test</h2>
+            <iframe id="module14-test" class="module-frame" src="about:blank"></iframe>
+            <div id="module14-console" class="console-output"></div>
+        </div>
+        
+        <div class="test-step">
+            <h2>📊 Debug Summary</h2>
+            <div id="debug-summary"></div>
+        </div>
+    </div>
+
+    <script>
+        let testResults = [];
+        
+        function addResult(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            testResults.push({ timestamp, message, type });
+            updateSummary();
+            console.log(`[${type}] ${message}`);
+        }
+        
+        function updateSummary() {
+            const summaryDiv = document.getElementById('debug-summary');
+            const recent = testResults.slice(-10);
+            summaryDiv.innerHTML = `
+                <h3>Latest Test Results:</h3>
+                ${recent.map(r => `<div class="${r.type}">[${r.timestamp}] ${r.message}</div>`).join('')}
+            `;
+        }
+        
+        async function directAPITest() {
+            const resultsDiv = document.getElementById('api-test-results');
+            resultsDiv.innerHTML = '<p>Testing API responses...</p>';
+            addResult('Starting direct API test');
+            
+            try {
+                // Test Module 13
+                const response13 = await fetch('/api/modules/13');
+                const data13 = await response13.json();
+                
+                addResult(`Module 13: ${response13.status} - ${data13.lessons?.length} lessons`);
+                addResult(`Lesson 2 storyFrameworks: ${data13.lessons[1]?.content?.storyFrameworks?.length || 0} items`);
+                
+                // Test Module 14
+                const response14 = await fetch('/api/modules/14');
+                const data14 = await response14.json();
+                
+                addResult(`Module 14: ${response14.status} - ${data14.lessons?.length} lessons`);
+                addResult(`Lesson 2 questionStructure exists: ${!!data14.lessons[1]?.content?.questionStructure}`);
+                addResult(`Lesson 2 timeExpressions: ${data14.lessons[1]?.content?.timeExpressions?.length || 0} items`);
+                
+                resultsDiv.innerHTML = `
+                    <div class="success">
+                        <h3>✅ API Test Results</h3>
+                        <p><strong>Module 13:</strong> ${data13.lessons[1]?.content?.storyFrameworks?.length || 0} story frameworks in lesson 2</p>
+                        <p><strong>Module 14:</strong> ${data14.lessons[1]?.content?.timeExpressions?.length || 0} time expressions in lesson 2</p>
+                        <details>
+                            <summary>Full Module 13 Lesson 2 Data</summary>
+                            <pre>${JSON.stringify(data13.lessons[1]?.content, null, 2)}</pre>
+                        </details>
+                        <details>
+                            <summary>Full Module 14 Lesson 2 Data</summary>
+                            <pre>${JSON.stringify(data14.lessons[1]?.content, null, 2)}</pre>
+                        </details>
+                    </div>
+                `;
+                
+            } catch (error) {
+                addResult(`API test failed: ${error.message}`, 'error');
+                resultsDiv.innerHTML = `<div class="emergency-test"><h3>❌ API ERROR</h3><p>${error.message}</p></div>`;
+            }
+        }
+        
+        function manualModuleLoad() {
+            addResult('Starting manual module load test');
+            
+            // Load Module 13
+            const iframe13 = document.getElementById('module13-test');
+            const console13 = document.getElementById('module13-console');
+            
+            console13.innerHTML = 'Loading Module 13...';
+            iframe13.src = '/module/13';
+            
+            iframe13.onload = () => {
+                addResult('Module 13 loaded');
+                console13.innerHTML += '<br>✅ Module 13 loaded successfully';
+                
+                setTimeout(() => {
+                    try {
+                        const doc = iframe13.contentDocument;
+                        const partButtons = Array.from(doc.querySelectorAll('button')).filter(btn => 
+                            btn.textContent && btn.textContent.includes('Part 2')
+                        );
+                        
+                        if (partButtons.length > 0) {
+                            addResult(`Found Part 2 button in Module 13: "${partButtons[0].textContent}"`);
+                            console13.innerHTML += '<br>🔍 Found Part 2 button, attempting click...';
+                            
+                            // Click the button
+                            partButtons[0].click();
+                            addResult('Clicked Part 2 button in Module 13');
+                            
+                            // Check result after click
+                            setTimeout(() => {
+                                const afterClick = doc.body.textContent.trim();
+                                const hasPartContent = afterClick.includes('Story Examples') || afterClick.includes('storyFrameworks');
+                                
+                                if (hasPartContent) {
+                                    addResult('Module 13 Part 2 content loaded successfully', 'success');
+                                    console13.innerHTML += '<br>✅ Part 2 content found!';
+                                } else {
+                                    addResult('Module 13 Part 2 showing white screen', 'error');
+                                    console13.innerHTML += '<br>❌ WHITE SCREEN DETECTED';
+                                    console13.innerHTML += `<br>Body content: ${afterClick.substring(0, 200)}...`;
+                                }
+                            }, 2000);
+                        } else {
+                            addResult('No Part 2 button found in Module 13', 'error');
+                            console13.innerHTML += '<br>❌ No Part 2 button found';
+                        }
+                    } catch (e) {
+                        addResult(`Cannot access Module 13 iframe: ${e.message}`, 'error');
+                        console13.innerHTML += `<br>❌ Error: ${e.message}`;
+                    }
+                }, 3000);
+            };
+            
+            // Load Module 14
+            const iframe14 = document.getElementById('module14-test');
+            const console14 = document.getElementById('module14-console');
+            
+            console14.innerHTML = 'Loading Module 14...';
+            iframe14.src = '/module/14';
+            
+            iframe14.onload = () => {
+                addResult('Module 14 loaded');
+                console14.innerHTML += '<br>✅ Module 14 loaded successfully';
+                
+                setTimeout(() => {
+                    try {
+                        const doc = iframe14.contentDocument;
+                        const partButtons = Array.from(doc.querySelectorAll('button')).filter(btn => 
+                            btn.textContent && btn.textContent.includes('Part 2')
+                        );
+                        
+                        if (partButtons.length > 0) {
+                            addResult(`Found Part 2 button in Module 14: "${partButtons[0].textContent}"`);
+                            console14.innerHTML += '<br>🔍 Found Part 2 button, attempting click...';
+                            
+                            // Click the button
+                            partButtons[0].click();
+                            addResult('Clicked Part 2 button in Module 14');
+                            
+                            // Check result after click
+                            setTimeout(() => {
+                                const afterClick = doc.body.textContent.trim();
+                                const hasPartContent = afterClick.includes('Questions') || afterClick.includes('Time Expressions');
+                                
+                                if (hasPartContent) {
+                                    addResult('Module 14 Part 2 content loaded successfully', 'success');
+                                    console14.innerHTML += '<br>✅ Part 2 content found!';
+                                } else {
+                                    addResult('Module 14 Part 2 showing white screen', 'error');
+                                    console14.innerHTML += '<br>❌ WHITE SCREEN DETECTED';
+                                    console14.innerHTML += `<br>Body content: ${afterClick.substring(0, 200)}...`;
+                                }
+                            }, 2000);
+                        } else {
+                            addResult('No Part 2 button found in Module 14', 'error');
+                            console14.innerHTML += '<br>❌ No Part 2 button found';
+                        }
+                    } catch (e) {
+                        addResult(`Cannot access Module 14 iframe: ${e.message}`, 'error');
+                        console14.innerHTML += `<br>❌ Error: ${e.message}`;
+                    }
+                }, 3000);
+            };
+        }
+        
+        function emergencyTestPart2() {
+            const resultsDiv = document.getElementById('emergency-results');
+            resultsDiv.innerHTML = '<h3>🚨 EMERGENCY TEST RUNNING...</h3>';
+            addResult('Starting emergency Part 2 test protocol');
+            
+            // Run all tests
+            setTimeout(directAPITest, 500);
+            setTimeout(manualModuleLoad, 1000);
+            
+            resultsDiv.innerHTML += '<p>All emergency tests initiated. Check results above.</p>';
+        }
+        
+        // Auto-start
+        window.onload = () => {
+            addResult('Emergency debug tool initialized');
+            // Auto-run API test
+            setTimeout(directAPITest, 1000);
+        };
+    </script>
+</body>
+</html>

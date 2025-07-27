@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency Module 13 & 14 Fix</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .emergency { background: #ff4444; color: white; padding: 15px; border-radius: 8px; margin: 20px 0; }
+        .test { background: #f8f9fa; padding: 10px; border-radius: 5px; margin: 10px 0; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .result { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .pass { background: #d4edda; color: #155724; }
+        .fail { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="emergency">
+        <h1>🚨 EMERGENCY MODULE 13 & 14 FIX</h1>
+        <p>Part 2 sections still not rendering. Investigating root cause...</p>
+    </div>
+
+    <button onclick="debugModule13()">Debug Module 13</button>
+    <button onclick="debugModule14()">Debug Module 14</button>
+    <button onclick="testDirectAPI()">Test API Data</button>
+    <button onclick="openModulesInNewTabs()">Open Modules (Check Console)</button>
+
+    <div id="results"></div>
+
+    <script>
+        function addResult(message, type = 'test') {
+            const div = document.createElement('div');
+            div.className = `result ${type}`;
+            div.innerHTML = message;
+            document.getElementById('results').appendChild(div);
+        }
+
+        async function debugModule13() {
+            addResult('🔍 Debugging Module 13...');
+            try {
+                const response = await fetch('/api/modules/13');
+                const data = await response.json();
+                
+                addResult(`✅ API Response: ${response.status}`, 'pass');
+                addResult(`📊 Lessons count: ${data.lessons.length}`, 'pass');
+                
+                if (data.lessons[1]) {
+                    const lesson2 = data.lessons[1];
+                    addResult(`📝 Lesson 2 ID: ${lesson2.id}`, 'pass');
+                    addResult(`📝 Lesson 2 Title: "${lesson2.title}"`, 'pass');
+                    
+                    const hasStories = !!lesson2.content.storyFrameworks;
+                    const hasQuestions = !!lesson2.content.practiceQuestions;
+                    
+                    addResult(`${hasStories ? '✅' : '❌'} Story Frameworks: ${hasStories}`, hasStories ? 'pass' : 'fail');
+                    addResult(`${hasQuestions ? '✅' : '❌'} Practice Questions: ${hasQuestions}`, hasQuestions ? 'pass' : 'fail');
+                    
+                    if (hasStories) {
+                        addResult(`📚 Story count: ${lesson2.content.storyFrameworks.length}`, 'pass');
+                    }
+                    if (hasQuestions) {
+                        addResult(`❓ Question count: ${lesson2.content.practiceQuestions.length}`, 'pass');
+                    }
+                } else {
+                    addResult('❌ Lesson 2 not found!', 'fail');
+                }
+            } catch (error) {
+                addResult(`❌ Error: ${error.message}`, 'fail');
+            }
+        }
+
+        async function debugModule14() {
+            addResult('🔍 Debugging Module 14...');
+            try {
+                const response = await fetch('/api/modules/14');
+                const data = await response.json();
+                
+                addResult(`✅ API Response: ${response.status}`, 'pass');
+                addResult(`📊 Lessons count: ${data.lessons.length}`, 'pass');
+                
+                if (data.lessons[1]) {
+                    const lesson2 = data.lessons[1];
+                    addResult(`📝 Lesson 2 ID: ${lesson2.id}`, 'pass');
+                    addResult(`📝 Lesson 2 Title: "${lesson2.title}"`, 'pass');
+                    
+                    const hasQuestionStructure = !!lesson2.content.questionStructure;
+                    const hasTimeExpressions = !!lesson2.content.timeExpressions;
+                    
+                    addResult(`${hasQuestionStructure ? '✅' : '❌'} Question Structure: ${hasQuestionStructure}`, hasQuestionStructure ? 'pass' : 'fail');
+                    addResult(`${hasTimeExpressions ? '✅' : '❌'} Time Expressions: ${hasTimeExpressions}`, hasTimeExpressions ? 'pass' : 'fail');
+                    
+                    if (hasQuestionStructure) {
+                        addResult(`❓ Question examples: ${lesson2.content.questionStructure.examples.length}`, 'pass');
+                    }
+                    if (hasTimeExpressions) {
+                        addResult(`⏰ Time expressions: ${lesson2.content.timeExpressions.length}`, 'pass');
+                    }
+                } else {
+                    addResult('❌ Lesson 2 not found!', 'fail');
+                }
+            } catch (error) {
+                addResult(`❌ Error: ${error.message}`, 'fail');
+            }
+        }
+
+        async function testDirectAPI() {
+            addResult('🧪 Testing direct API structure...');
+            
+            const modules = [13, 14];
+            for (let moduleId of modules) {
+                try {
+                    const response = await fetch(`/api/modules/${moduleId}`);
+                    const data = await response.json();
+                    
+                    addResult(`Module ${moduleId}: ${data.lessons.length} lessons`, 'pass');
+                    
+                    data.lessons.forEach((lesson, index) => {
+                        addResult(`  Lesson ${index + 1} (ID: ${lesson.id}): "${lesson.title}"`, 'pass');
+                        
+                        if (index === 1) { // Part 2
+                            const contentKeys = Object.keys(lesson.content);
+                            addResult(`    Content properties: ${contentKeys.join(', ')}`, 'pass');
+                        }
+                    });
+                } catch (error) {
+                    addResult(`Module ${moduleId} error: ${error.message}`, 'fail');
+                }
+            }
+        }
+
+        function openModulesInNewTabs() {
+            addResult('🚀 Opening modules in new tabs...');
+            addResult('👀 CHECK BROWSER CONSOLE for React debugging logs!');
+            
+            window.open('/module/13', '_blank');
+            setTimeout(() => {
+                window.open('/module/14', '_blank');
+            }, 1000);
+        }
+
+        // Auto-run basic test
+        setTimeout(() => {
+            addResult('🎯 Emergency debugging ready. Click buttons to investigate.');
+        }, 100);
+    </script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Buttons Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .test-section { margin: 20px 0; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .status { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .warning { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; }
+        iframe { width: 100%; height: 600px; border: 2px solid #ddd; border-radius: 8px; margin: 10px 0; }
+        button { padding: 12px 24px; margin: 8px; background: #007bff; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #0056b3; }
+        .navigation-test { display: flex; gap: 20px; margin: 20px 0; }
+        .module-test { flex: 1; }
+        h1, h2 { color: #333; }
+        .test-results { margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 Module Navigation Buttons Test - SamLang Niger</h1>
+        <p>Testing if Part 1 and Part 2 buttons are visible and functional in Module 13 and 14</p>
+        
+        <div id="test-results" class="test-results"></div>
+        
+        <div class="navigation-test">
+            <div class="module-test">
+                <div class="test-section">
+                    <h2>Module 13 Test</h2>
+                    <button onclick="testModule(13)">🧪 Test Module 13 Navigation</button>
+                    <button onclick="loadModule(13)">📖 Load Module 13</button>
+                    <iframe id="module13-iframe" src="about:blank"></iframe>
+                    <div id="module13-results"></div>
+                </div>
+            </div>
+            
+            <div class="module-test">
+                <div class="test-section">
+                    <h2>Module 14 Test</h2>
+                    <button onclick="testModule(14)">🧪 Test Module 14 Navigation</button>
+                    <button onclick="loadModule(14)">📖 Load Module 14</button>
+                    <iframe id="module14-iframe" src="about:blank"></iframe>
+                    <div id="module14-results"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-section">
+            <h2>API Response Test</h2>
+            <button onclick="testAPI()">🔗 Test API Endpoints</button>
+            <div id="api-results"></div>
+        </div>
+    </div>
+
+    <script>
+        function log(message, type = 'info', targetId = 'test-results') {
+            const target = document.getElementById(targetId);
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            target.appendChild(div);
+            console.log(`[${type}]`, message);
+        }
+
+        function loadModule(moduleId) {
+            log(`Loading Module ${moduleId} in iframe...`, 'warning', `module${moduleId}-results`);
+            const iframe = document.getElementById(`module${moduleId}-iframe`);
+            iframe.src = `/module/${moduleId}`;
+            
+            iframe.onload = () => {
+                log(`✅ Module ${moduleId} loaded successfully`, 'success', `module${moduleId}-results`);
+                
+                // Small delay to let React render
+                setTimeout(() => {
+                    try {
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        
+                        // Look for navigation buttons
+                        const allButtons = iframeDoc.querySelectorAll('button');
+                        log(`Found ${allButtons.length} total buttons in Module ${moduleId}`, 'info', `module${moduleId}-results`);
+                        
+                        // Look specifically for Part buttons
+                        const partButtons = Array.from(allButtons).filter(btn => 
+                            btn.textContent && btn.textContent.includes('Part')
+                        );
+                        
+                        if (partButtons.length > 0) {
+                            log(`✅ SUCCESS: Found ${partButtons.length} Part buttons in Module ${moduleId}`, 'success', `module${moduleId}-results`);
+                            partButtons.forEach((btn, index) => {
+                                log(`   Button ${index + 1}: "${btn.textContent.trim()}"`, 'info', `module${moduleId}-results`);
+                            });
+                        } else {
+                            log(`❌ ERROR: No Part buttons found in Module ${moduleId}`, 'error', `module${moduleId}-results`);
+                            
+                            // Show first few buttons for debugging
+                            const firstButtons = Array.from(allButtons).slice(0, 5);
+                            firstButtons.forEach((btn, index) => {
+                                log(`   Button ${index + 1}: "${btn.textContent.trim()}"`, 'warning', `module${moduleId}-results`);
+                            });
+                        }
+                        
+                    } catch (e) {
+                        log(`⚠️ Cannot access iframe content: ${e.message}`, 'warning', `module${moduleId}-results`);
+                    }
+                }, 2000);
+            };
+            
+            iframe.onerror = () => {
+                log(`❌ Failed to load Module ${moduleId}`, 'error', `module${moduleId}-results`);
+            };
+        }
+
+        async function testModule(moduleId) {
+            log(`Testing Module ${moduleId} navigation...`, 'warning', `module${moduleId}-results`);
+            
+            try {
+                // Test API first
+                const response = await fetch(`/api/modules/${moduleId}`);
+                if (!response.ok) {
+                    log(`❌ API Error: ${response.status}`, 'error', `module${moduleId}-results`);
+                    return;
+                }
+                
+                const data = await response.json();
+                log(`✅ API Success: ${data.lessons?.length || 0} lessons found`, 'success', `module${moduleId}-results`);
+                
+                // Load the module
+                loadModule(moduleId);
+                
+            } catch (error) {
+                log(`❌ Test failed: ${error.message}`, 'error', `module${moduleId}-results`);
+            }
+        }
+
+        async function testAPI() {
+            log('Testing API endpoints...', 'warning', 'api-results');
+            
+            for (const moduleId of [13, 14]) {
+                try {
+                    const response = await fetch(`/api/modules/${moduleId}`);
+                    const data = await response.json();
+                    
+                    log(`Module ${moduleId}: ${response.status} - ${data.lessons?.length || 0} lessons`, 
+                        response.ok ? 'success' : 'error', 'api-results');
+                        
+                } catch (error) {
+                    log(`Module ${moduleId}: Error - ${error.message}`, 'error', 'api-results');
+                }
+            }
+        }
+
+        // Auto-start tests
+        window.onload = () => {
+            log('🚀 Starting navigation tests...', 'warning');
+            setTimeout(() => testAPI(), 500);
+            setTimeout(() => testModule(13), 1000);
+            setTimeout(() => testModule(14), 1500);
+        };
+    </script>
+</body>
+</html>

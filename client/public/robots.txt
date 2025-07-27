@@ -1,0 +1,32 @@
+User-agent: *
+Allow: /
+
+# SamLang Niger - English Learning App
+# Primary search terms: SamLang Niger, Teacher Sam, English learning Niger
+# Local Voice, Global Language
+
+# Sitemap location  
+Sitemap: https://teacher-sam-english.replit.app/sitemap.xml
+
+# Main pages for crawling
+Allow: /modules
+Allow: /module/
+Allow: /api/
+
+# Encourage indexing of educational content
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+# Social media crawlers
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+# Educational content crawlers
+User-agent: *
+Allow: /*.html
+Allow: /*.js
+Allow: /*.css

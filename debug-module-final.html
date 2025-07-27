@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Final Module Debug - White Screen Issue</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .test-result { border: 3px solid #ccc; margin: 15px 0; padding: 20px; border-radius: 8px; }
+        .success { border-color: #4caf50; background: #e8f5e9; }
+        .error { border-color: #f44336; background: #ffebee; }
+        .warning { border-color: #ff9800; background: #fff3e0; }
+        button { padding: 12px 24px; margin: 8px; background: #2196f3; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        button:hover { background: #1976d2; }
+        iframe { width: 100%; height: 600px; border: 2px solid #ddd; border-radius: 4px; margin: 10px 0; }
+        pre { background: #f5f5f5; padding: 12px; border-radius: 4px; overflow-x: auto; font-size: 12px; }
+        .console-log { background: #1a1a1a; color: #00ff41; padding: 15px; border-radius: 4px; font-family: monospace; height: 200px; overflow-y: auto; margin: 10px 0; }
+        h1, h2, h3 { color: #333; margin-top: 0; }
+        .step { background: #f8f9fa; padding: 15px; margin: 10px 0; border-left: 4px solid #2196f3; }
+    </style>
+</head>
+<body>
+    <h1>🔧 Final Debug: Module 13 & 14 White Screen Issue</h1>
+    <p><strong>Goal:</strong> Find and fix the exact cause of Part 2 white screens</p>
+    
+    <div class="test-result">
+        <h2>🧪 Step 1: API Data Verification</h2>
+        <button onclick="verifyAPIs()">Verify Module APIs</button>
+        <div id="api-verification"></div>
+    </div>
+    
+    <div class="test-result">
+        <h2>🧪 Step 2: Module 13 Live Test</h2>
+        <button onclick="testModule13()">Load & Test Module 13</button>
+        <iframe id="module13-frame" src="about:blank"></iframe>
+        <div id="module13-console" class="console-log">Module 13 console will appear here...</div>
+    </div>
+    
+    <div class="test-result">
+        <h2>🧪 Step 3: Module 14 Live Test</h2>
+        <button onclick="testModule14()">Load & Test Module 14</button>
+        <iframe id="module14-frame" src="about:blank"></iframe>
+        <div id="module14-console" class="console-log">Module 14 console will appear here...</div>
+    </div>
+    
+    <div class="test-result">
+        <h2>📋 Final Results</h2>
+        <div id="final-results">Click the buttons above to run tests...</div>
+    </div>
+
+    <script>
+        let testResults = [];
+        
+        function addResult(message, status = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            testResults.push(`[${timestamp}] ${status.toUpperCase()}: ${message}`);
+            console.log(`[${timestamp}] ${status.toUpperCase()}: ${message}`);
+            updateFinalResults();
+        }
+        
+        function updateFinalResults() {
+            const resultsDiv = document.getElementById('final-results');
+            const recentResults = testResults.slice(-10);
+            resultsDiv.innerHTML = `
+                <h3>Recent Test Results:</h3>
+                <div class="console-log">
+                    ${recentResults.map(result => `<div>${result}</div>`).join('')}
+                </div>
+            `;
+        }
+        
+        async function verifyAPIs() {
+            addResult('Starting API verification for both modules');
+            const verificationDiv = document.getElementById('api-verification');
+            verificationDiv.innerHTML = 'Testing APIs...';
+            
+            try {
+                // Test Module 13 API
+                addResult('Fetching Module 13 API data');
+                const response13 = await fetch('/api/modules/13');
+                const data13 = await response13.json();
+                
+                // Test Module 14 API
+                addResult('Fetching Module 14 API data');
+                const response14 = await fetch('/api/modules/14');
+                const data14 = await response14.json();
+                
+                const lesson13_2 = data13.lessons[1];
+                const lesson14_2 = data14.lessons[1];
+                
+                addResult(`Module 13 Lesson 2: Title="${lesson13_2?.title}"`);
+                addResult(`Module 13 Lesson 2: Has storyFrameworks=${!!lesson13_2?.content?.storyFrameworks}`);
+                addResult(`Module 13 Lesson 2: storyFrameworks count=${lesson13_2?.content?.storyFrameworks?.length || 0}`);
+                
+                addResult(`Module 14 Lesson 2: Title="${lesson14_2?.title}"`);
+                addResult(`Module 14 Lesson 2: Has timeExpressions=${!!lesson14_2?.content?.timeExpressions}`);
+                addResult(`Module 14 Lesson 2: timeExpressions count=${lesson14_2?.content?.timeExpressions?.length || 0}`);
+                
+                verificationDiv.innerHTML = `
+                    <div class="success">
+                        <h3>✅ API Verification Complete</h3>
+                        <p><strong>Module 13:</strong> ${lesson13_2?.content?.storyFrameworks?.length || 0} story frameworks</p>
+                        <p><strong>Module 14:</strong> ${lesson14_2?.content?.timeExpressions?.length || 0} time expressions</p>
+                        <details>
+                            <summary>Module 13 Lesson 2 Content</summary>
+                            <pre>${JSON.stringify(lesson13_2?.content, null, 2)}</pre>
+                        </details>
+                        <details>
+                            <summary>Module 14 Lesson 2 Content</summary>
+                            <pre>${JSON.stringify(lesson14_2?.content, null, 2)}</pre>
+                        </details>
+                    </div>
+                `;
+                verificationDiv.className = 'test-result success';
+                addResult('API verification completed successfully', 'success');
+                
+            } catch (error) {
+                addResult(`API verification failed: ${error.message}`, 'error');
+                verificationDiv.innerHTML = `<div class="error">API Error: ${error.message}</div>`;
+                verificationDiv.className = 'test-result error';
+            }
+        }
+        
+        function testModule13() {
+            addResult('Starting Module 13 test');
+            const iframe = document.getElementById('module13-frame');
+            const consoleDiv = document.getElementById('module13-console');
+            
+            consoleDiv.innerHTML = 'Loading Module 13...';
+            iframe.src = '/module/13';
+            
+            iframe.onload = () => {
+                addResult('Module 13 loaded successfully');
+                consoleDiv.innerHTML += '<br>✅ Module 13 loaded';
+                
+                setTimeout(() => {
+                    testModule13Part2(iframe, consoleDiv);
+                }, 2000);
+            };
+            
+            iframe.onerror = () => {
+                addResult('Failed to load Module 13', 'error');
+                consoleDiv.innerHTML += '<br>❌ Module 13 load failed';
+            };
+        }
+        
+        function testModule13Part2(iframe, consoleDiv) {
+            try {
+                const doc = iframe.contentDocument || iframe.contentWindow.document;
+                const buttons = Array.from(doc.querySelectorAll('button'));
+                
+                addResult(`Found ${buttons.length} buttons in Module 13`);
+                consoleDiv.innerHTML += `<br>🔍 Found ${buttons.length} buttons`;
+                
+                // Find Part 2 button
+                const part2Button = buttons.find(btn => 
+                    btn.textContent && (btn.textContent.includes('Part 2') || btn.textContent.includes('Tell Me'))
+                );
+                
+                if (part2Button) {
+                    addResult(`Found Part 2 button: "${part2Button.textContent}"`);
+                    consoleDiv.innerHTML += `<br>🎯 Part 2 button: "${part2Button.textContent}"`;
+                    
+                    // Record state before click
+                    const beforeClick = {
+                        bodyLength: doc.body.innerHTML.length,
+                        bodyText: doc.body.textContent.trim()
+                    };
+                    
+                    // Click Part 2 button
+                    setTimeout(() => {
+                        addResult('Clicking Part 2 button in Module 13');
+                        part2Button.click();
+                        consoleDiv.innerHTML += '<br>🖱️ Clicked Part 2 button';
+                        
+                        // Check results after click
+                        setTimeout(() => {
+                            const afterClick = {
+                                bodyLength: doc.body.innerHTML.length,
+                                bodyText: doc.body.textContent.trim()
+                            };
+                            
+                            const hasStoryContent = afterClick.bodyText.includes('Story Examples') || 
+                                                   afterClick.bodyText.includes('Yesterday at School') || 
+                                                   afterClick.bodyText.includes('storyFrameworks');
+                            
+                            addResult(`Module 13 After Click: Body length changed from ${beforeClick.bodyLength} to ${afterClick.bodyLength}`);
+                            addResult(`Module 13 Has story content: ${hasStoryContent}`);
+                            
+                            if (hasStoryContent) {
+                                addResult('Module 13 Part 2 working correctly!', 'success');
+                                consoleDiv.innerHTML += '<br><span style="color: #4caf50;">✅ SUCCESS: Part 2 content found!</span>';
+                            } else {
+                                addResult('Module 13 Part 2 showing white screen', 'error');
+                                consoleDiv.innerHTML += '<br><span style="color: #f44336;">❌ WHITE SCREEN: No story content found</span>';
+                                consoleDiv.innerHTML += `<br>Body text sample: ${afterClick.bodyText.substring(0, 200)}...`;
+                            }
+                        }, 3000);
+                    }, 1000);
+                } else {
+                    addResult('Part 2 button not found in Module 13', 'error');
+                    consoleDiv.innerHTML += '<br>❌ Part 2 button not found';
+                    consoleDiv.innerHTML += `<br>Available buttons: ${buttons.map(b => `"${b.textContent}"`).join(', ')}`;
+                }
+                
+            } catch (error) {
+                addResult(`Error testing Module 13: ${error.message}`, 'error');
+                consoleDiv.innerHTML += `<br>❌ Error: ${error.message}`;
+            }
+        }
+        
+        function testModule14() {
+            addResult('Starting Module 14 test');
+            const iframe = document.getElementById('module14-frame');
+            const consoleDiv = document.getElementById('module14-console');
+            
+            consoleDiv.innerHTML = 'Loading Module 14...';
+            iframe.src = '/module/14';
+            
+            iframe.onload = () => {
+                addResult('Module 14 loaded successfully');
+                consoleDiv.innerHTML += '<br>✅ Module 14 loaded';
+                
+                setTimeout(() => {
+                    testModule14Part2(iframe, consoleDiv);
+                }, 2000);
+            };
+            
+            iframe.onerror = () => {
+                addResult('Failed to load Module 14', 'error');
+                consoleDiv.innerHTML += '<br>❌ Module 14 load failed';
+            };
+        }
+        
+        function testModule14Part2(iframe, consoleDiv) {
+            try {
+                const doc = iframe.contentDocument || iframe.contentWindow.document;
+                const buttons = Array.from(doc.querySelectorAll('button'));
+                
+                addResult(`Found ${buttons.length} buttons in Module 14`);
+                consoleDiv.innerHTML += `<br>🔍 Found ${buttons.length} buttons`;
+                
+                // Find Part 2 button
+                const part2Button = buttons.find(btn => 
+                    btn.textContent && (btn.textContent.includes('Part 2') || btn.textContent.includes('Questions'))
+                );
+                
+                if (part2Button) {
+                    addResult(`Found Part 2 button: "${part2Button.textContent}"`);
+                    consoleDiv.innerHTML += `<br>🎯 Part 2 button: "${part2Button.textContent}"`;
+                    
+                    // Record state before click
+                    const beforeClick = {
+                        bodyLength: doc.body.innerHTML.length,
+                        bodyText: doc.body.textContent.trim()
+                    };
+                    
+                    // Click Part 2 button
+                    setTimeout(() => {
+                        addResult('Clicking Part 2 button in Module 14');
+                        part2Button.click();
+                        consoleDiv.innerHTML += '<br>🖱️ Clicked Part 2 button';
+                        
+                        // Check results after click
+                        setTimeout(() => {
+                            const afterClick = {
+                                bodyLength: doc.body.innerHTML.length,
+                                bodyText: doc.body.textContent.trim()
+                            };
+                            
+                            const hasTimeContent = afterClick.bodyText.includes('Time Expressions') || 
+                                                  afterClick.bodyText.includes('Tomorrow') || 
+                                                  afterClick.bodyText.includes('timeExpressions');
+                            
+                            addResult(`Module 14 After Click: Body length changed from ${beforeClick.bodyLength} to ${afterClick.bodyLength}`);
+                            addResult(`Module 14 Has time expressions content: ${hasTimeContent}`);
+                            
+                            if (hasTimeContent) {
+                                addResult('Module 14 Part 2 working correctly!', 'success');
+                                consoleDiv.innerHTML += '<br><span style="color: #4caf50;">✅ SUCCESS: Part 2 content found!</span>';
+                            } else {
+                                addResult('Module 14 Part 2 showing white screen', 'error');
+                                consoleDiv.innerHTML += '<br><span style="color: #f44336;">❌ WHITE SCREEN: No time expressions found</span>';
+                                consoleDiv.innerHTML += `<br>Body text sample: ${afterClick.bodyText.substring(0, 200)}...`;
+                            }
+                        }, 3000);
+                    }, 1000);
+                } else {
+                    addResult('Part 2 button not found in Module 14', 'error');
+                    consoleDiv.innerHTML += '<br>❌ Part 2 button not found';
+                    consoleDiv.innerHTML += `<br>Available buttons: ${buttons.map(b => `"${b.textContent}"`).join(', ')}`;
+                }
+                
+            } catch (error) {
+                addResult(`Error testing Module 14: ${error.message}`, 'error');
+                consoleDiv.innerHTML += `<br>❌ Error: ${error.message}`;
+            }
+        }
+        
+        // Auto-start API verification
+        window.onload = () => {
+            addResult('Debug session started');
+            setTimeout(verifyAPIs, 500);
+        };
+    </script>
+</body>
+</html>

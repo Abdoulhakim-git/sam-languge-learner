@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SamLang Niger - Complete Module Test Results</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+        .test-result { margin: 15px 0; padding: 10px; border-radius: 8px; }
+        .pass { background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .fail { background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .testing { background-color: #fff3cd; border: 1px solid #ffeaa7; color: #856404; }
+        .module-header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 10px; margin: 20px 0; }
+        .summary { background: #e9ecef; padding: 15px; border-radius: 8px; margin: 20px 0; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+        .api-test { font-family: monospace; background: #f8f9fa; padding: 5px; border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <div class="module-header">
+        <h1>🧪 SamLang Niger - Complete Module Test Results</h1>
+        <p>Comprehensive testing of all 15 learning modules - January 16, 2025</p>
+    </div>
+
+    <div class="summary">
+        <h2>📊 Test Summary</h2>
+        <p><strong>Total Modules:</strong> 15 (Modules 1-15)</p>
+        <p><strong>Test Types:</strong> Route accessibility, Component rendering, API endpoints, Content structure</p>
+        <p><strong>Status:</strong> <span id="overall-status">🔄 Testing in progress...</span></p>
+    </div>
+
+    <button onclick="runAllTests()">🚀 Run Complete Test Suite</button>
+    <button onclick="testSpecificModule()">🎯 Test Specific Module</button>
+    <button onclick="clearResults()">🧹 Clear Results</button>
+
+    <div id="test-results">
+        <!-- Test results will appear here -->
+    </div>
+
+    <script>
+        let testResults = [];
+
+        async function runAllTests() {
+            clearResults();
+            document.getElementById('overall-status').innerHTML = '🔄 Testing in progress...';
+            
+            // Test all 15 modules
+            for (let i = 1; i <= 15; i++) {
+                await testModule(i);
+                await new Promise(resolve => setTimeout(resolve, 200)); // Small delay between tests
+            }
+            
+            showSummary();
+        }
+
+        async function testModule(moduleNum) {
+            addResult(`🔍 Testing Module ${moduleNum}...`, 'testing');
+            
+            try {
+                if (moduleNum <= 10) {
+                    // Test HTML routes for modules 1-10
+                    await testHTMLModule(moduleNum);
+                } else {
+                    // Test API routes for modules 11-15
+                    await testAPIModule(moduleNum);
+                }
+            } catch (error) {
+                addResult(`❌ Module ${moduleNum}: Critical error - ${error.message}`, 'fail');
+            }
+        }
+
+        async function testHTMLModule(moduleNum) {
+            try {
+                const response = await fetch(`/module/${moduleNum}`);
+                const text = await response.text();
+                
+                if (response.ok && text.includes('<!DOCTYPE html>')) {
+                    addResult(`✅ Module ${moduleNum}: HTML route working (${response.status})`, 'pass');
+                    
+                    // Check for React content
+                    if (text.includes('root') || text.includes('react')) {
+                        addResult(`✅ Module ${moduleNum}: React app structure detected`, 'pass');
+                    }
+                    
+                    // Check for module-specific content
+                    if (text.includes(`Module ${moduleNum}`) || text.includes('Teacher Sam')) {
+                        addResult(`✅ Module ${moduleNum}: Module content detected`, 'pass');
+                    }
+                } else {
+                    addResult(`❌ Module ${moduleNum}: HTML route failed (${response.status})`, 'fail');
+                }
+            } catch (error) {
+                addResult(`❌ Module ${moduleNum}: Network error - ${error.message}`, 'fail');
+            }
+        }
+
+        async function testAPIModule(moduleNum) {
+            try {
+                const response = await fetch(`/api/modules/${moduleNum}`);
+                const data = await response.json();
+                
+                if (response.ok && data.id === moduleNum) {
+                    addResult(`✅ Module ${moduleNum}: API endpoint working (${response.status})`, 'pass');
+                    
+                    // Check essential structure
+                    if (data.title && data.description) {
+                        addResult(`✅ Module ${moduleNum}: Basic structure valid (${data.title})`, 'pass');
+                    }
+                    
+                    // Check lessons
+                    if (data.lessons && Array.isArray(data.lessons)) {
+                        addResult(`✅ Module ${moduleNum}: Has ${data.lessons.length} lesson(s)`, 'pass');
+                        
+                        // Test each lesson
+                        data.lessons.forEach((lesson, index) => {
+                            if (lesson.title && lesson.content && lesson.content.introduction) {
+                                addResult(`✅ Module ${moduleNum}, Part ${index + 1}: "${lesson.title}" - Complete`, 'pass');
+                            } else {
+                                addResult(`❌ Module ${moduleNum}, Part ${index + 1}: Missing content structure`, 'fail');
+                            }
+                        });
+                    } else {
+                        addResult(`❌ Module ${moduleNum}: No lessons found`, 'fail');
+                    }
+                    
+                    // Module-specific content checks
+                    await testModuleSpecificContent(moduleNum, data);
+                    
+                } else {
+                    addResult(`❌ Module ${moduleNum}: API returned invalid data`, 'fail');
+                }
+            } catch (error) {
+                addResult(`❌ Module ${moduleNum}: API error - ${error.message}`, 'fail');
+            }
+        }
+
+        async function testModuleSpecificContent(moduleNum, data) {
+            switch(moduleNum) {
+                case 11:
+                    if (data.lessons[0].content.vocabulary && data.lessons[1].content.seasons) {
+                        addResult(`✅ Module 11: Weather vocabulary and seasons content verified`, 'pass');
+                    } else {
+                        addResult(`❌ Module 11: Missing expected weather/seasons content`, 'fail');
+                    }
+                    break;
+                case 12:
+                    if (data.lessons[0].content.places && data.lessons[1].content.directions) {
+                        addResult(`✅ Module 12: Places and directions content verified`, 'pass');
+                    } else {
+                        addResult(`❌ Module 12: Missing expected places/directions content`, 'fail');
+                    }
+                    break;
+                case 13:
+                    if (data.lessons[0].content.irregularVerbs && data.lessons[1].content.storyFrameworks) {
+                        addResult(`✅ Module 13: Irregular verbs and story frameworks verified`, 'pass');
+                    } else {
+                        addResult(`❌ Module 13: Missing expected irregular verbs/stories content`, 'fail');
+                    }
+                    break;
+                case 14:
+                    if (data.lessons[0].content.examples && data.lessons[1].content.questionStructure) {
+                        addResult(`✅ Module 14: Future plans and questions content verified`, 'pass');
+                    } else {
+                        addResult(`❌ Module 14: Missing expected future plans/questions content`, 'fail');
+                    }
+                    break;
+                case 15:
+                    if (data.lessons[0].content.shortAdjectives && data.lessons[1].content.feelings) {
+                        addResult(`✅ Module 15: Comparatives and feelings content verified`, 'pass');
+                    } else {
+                        addResult(`❌ Module 15: Missing expected comparatives/feelings content`, 'fail');
+                    }
+                    break;
+            }
+        }
+
+        function testSpecificModule() {
+            const moduleNum = prompt("Enter module number (1-15):");
+            if (moduleNum && moduleNum >= 1 && moduleNum <= 15) {
+                clearResults();
+                testModule(parseInt(moduleNum));
+            }
+        }
+
+        function addResult(message, type) {
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `test-result ${type}`;
+            resultDiv.innerHTML = message;
+            document.getElementById('test-results').appendChild(resultDiv);
+            
+            testResults.push({message, type});
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        function showSummary() {
+            const passCount = testResults.filter(r => r.type === 'pass').length;
+            const failCount = testResults.filter(r => r.type === 'fail').length;
+            const totalTests = testResults.length;
+            
+            const summaryHTML = `
+                <div class="summary">
+                    <h2>📊 Final Test Results</h2>
+                    <p><strong>Total Tests:</strong> ${totalTests}</p>
+                    <p><strong>Passed:</strong> ✅ ${passCount}</p>
+                    <p><strong>Failed:</strong> ❌ ${failCount}</p>
+                    <p><strong>Success Rate:</strong> ${Math.round(passCount/totalTests*100)}%</p>
+                </div>
+            `;
+            
+            document.getElementById('test-results').insertAdjacentHTML('afterbegin', summaryHTML);
+            
+            if (failCount === 0) {
+                document.getElementById('overall-status').innerHTML = '✅ All modules working perfectly!';
+            } else {
+                document.getElementById('overall-status').innerHTML = `⚠️ ${failCount} issues found`;
+            }
+        }
+
+        function clearResults() {
+            document.getElementById('test-results').innerHTML = '';
+            testResults = [];
+        }
+
+        // Auto-run test on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                addResult('🎯 Ready to test all SamLang Niger modules!', 'testing');
+                addResult('📝 Click "Run Complete Test Suite" to check all 15 modules', 'testing');
+            }, 500);
+        });
+    </script>
+</body>
+</html>

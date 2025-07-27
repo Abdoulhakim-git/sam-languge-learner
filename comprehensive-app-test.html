@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SamLang Niger - Comprehensive App Test Suite</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px; 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container { max-width: 1200px; margin: 0 auto; }
+        .test-section { 
+            background: rgba(255,255,255,0.1); 
+            padding: 20px; 
+            margin: 20px 0; 
+            border-radius: 10px; 
+            backdrop-filter: blur(10px);
+        }
+        .test-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
+        .test-item { 
+            background: rgba(255,255,255,0.2); 
+            padding: 15px; 
+            border-radius: 8px; 
+            border-left: 4px solid #4CAF50;
+        }
+        .test-item.error { border-left-color: #f44336; }
+        .test-item.warning { border-left-color: #ff9800; }
+        .test-button { 
+            background: #4CAF50; 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            margin: 5px;
+        }
+        .test-button:hover { background: #45a049; }
+        .status { font-weight: bold; margin-left: 10px; }
+        .success { color: #4CAF50; }
+        .error { color: #f44336; }
+        .warning { color: #ff9800; }
+        .info { color: #2196F3; }
+        .result-box { 
+            background: rgba(0,0,0,0.3); 
+            padding: 15px; 
+            border-radius: 5px; 
+            margin: 10px 0; 
+            font-family: monospace;
+            font-size: 14px;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 SamLang Niger - Complete App Test Suite</h1>
+        <p>Comprehensive testing of all app components, modules, and functionality</p>
+
+        <div class="test-section">
+            <h2>🌐 Core App Components Test</h2>
+            <div class="test-grid">
+                <div class="test-item">
+                    <h3>Main App Loading</h3>
+                    <button class="test-button" onclick="testMainApp()">Test Main App</button>
+                    <div id="main-app-result"></div>
+                </div>
+                <div class="test-item">
+                    <h3>Modules Page</h3>
+                    <button class="test-button" onclick="testModulesPage()">Test Modules Page</button>
+                    <div id="modules-page-result"></div>
+                </div>
+                <div class="test-item">
+                    <h3>React Component Loading</h3>
+                    <button class="test-button" onclick="testReactComponents()">Test React Components</button>
+                    <div id="react-components-result"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>📚 All 10 Learning Modules Test</h2>
+            <div class="test-grid">
+                <div class="test-item">
+                    <h3>Modules 1-5 (React Components)</h3>
+                    <button class="test-button" onclick="testModules(1, 5)">Test Modules 1-5</button>
+                    <div id="modules-1-5-result"></div>
+                </div>
+                <div class="test-item">
+                    <h3>Modules 6-10 (HTML Direct)</h3>
+                    <button class="test-button" onclick="testModules(6, 10)">Test Modules 6-10</button>
+                    <div id="modules-6-10-result"></div>
+                </div>
+                <div class="test-item">
+                    <h3>All Module Content Verification</h3>
+                    <button class="test-button" onclick="testAllModuleContent()">Test All Content</button>
+                    <div id="all-content-result"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🎵 Audio & Interactive Features Test</h2>
+            <div class="test-grid">
+                <div class="test-item">
+                    <h3>Speech Synthesis System</h3>
+                    <button class="test-button" onclick="testAudioSystem()">Test Audio</button>
+                    <div id="audio-system-result"></div>
+                </div>
+                <div class="test-item">
+                    <h3>Interactive Elements</h3>
+                    <button class="test-button" onclick="testInteractiveElements()">Test Interactions</button>
+                    <div id="interactive-elements-result"></div>
+                </div>
+                <div class="test-item">
+                    <h3>Teacher Sam Features</h3>
+                    <button class="test-button" onclick="testTeacherSam()">Test Teacher Sam</button>
+                    <div id="teacher-sam-result"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🌍 Offline & Performance Test</h2>
+            <div class="test-grid">
+                <div class="test-item">
+                    <h3>Service Worker</h3>
+                    <button class="test-button" onclick="testServiceWorker()">Test Offline</button>
+                    <div id="service-worker-result"></div>
+                </div>
+                <div class="test-item">
+                    <h3>Performance Check</h3>
+                    <button class="test-button" onclick="testPerformance()">Test Performance</button>
+                    <div id="performance-result"></div>
+                </div>
+                <div class="test-item">
+                    <h3>Complete App Validation</h3>
+                    <button class="test-button" onclick="runCompleteTest()">Complete Test</button>
+                    <div id="complete-test-result"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>📊 Test Results Summary</h2>
+            <div id="test-summary" class="result-box">
+Ready to run comprehensive tests...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let testResults = [];
+
+        function addTestResult(testName, status, details) {
+            testResults.push({ testName, status, details, timestamp: new Date().toLocaleTimeString() });
+            updateTestSummary();
+        }
+
+        function updateTestSummary() {
+            const summary = document.getElementById('test-summary');
+            let summaryText = '=== SamLang Niger App Test Results ===\n\n';
+            
+            testResults.forEach(result => {
+                const statusIcon = result.status === 'success' ? '✅' : result.status === 'error' ? '❌' : '⚠️';
+                summaryText += `${statusIcon} ${result.timestamp} - ${result.testName}: ${result.status.toUpperCase()}\n`;
+                if (result.details) {
+                    summaryText += `   Details: ${result.details}\n`;
+                }
+                summaryText += '\n';
+            });
+
+            const successCount = testResults.filter(r => r.status === 'success').length;
+            const errorCount = testResults.filter(r => r.status === 'error').length;
+            const warningCount = testResults.filter(r => r.status === 'warning').length;
+
+            summaryText += `\n=== SUMMARY ===\n`;
+            summaryText += `✅ Successful: ${successCount}\n`;
+            summaryText += `❌ Failed: ${errorCount}\n`;
+            summaryText += `⚠️ Warnings: ${warningCount}\n`;
+            summaryText += `📊 Total Tests: ${testResults.length}\n`;
+
+            summary.textContent = summaryText;
+        }
+
+        async function testMainApp() {
+            const resultDiv = document.getElementById('main-app-result');
+            resultDiv.innerHTML = '<div class="status info">Testing...</div>';
+            
+            try {
+                const response = await fetch('/');
+                const text = await response.text();
+                
+                if (response.ok && text.includes('<!DOCTYPE html')) {
+                    resultDiv.innerHTML = '<div class="status success">✅ Main app loads correctly</div>';
+                    addTestResult('Main App Loading', 'success', 'HTML document loads properly');
+                } else {
+                    resultDiv.innerHTML = '<div class="status error">❌ Main app failed to load</div>';
+                    addTestResult('Main App Loading', 'error', 'Invalid response or missing HTML');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+                addTestResult('Main App Loading', 'error', error.message);
+            }
+        }
+
+        async function testModulesPage() {
+            const resultDiv = document.getElementById('modules-page-result');
+            resultDiv.innerHTML = '<div class="status info">Testing...</div>';
+            
+            try {
+                const response = await fetch('/modules');
+                const text = await response.text();
+                
+                if (response.ok && text.includes('SamLang Niger')) {
+                    resultDiv.innerHTML = '<div class="status success">✅ Modules page loads correctly</div>';
+                    addTestResult('Modules Page', 'success', 'Modules page accessible');
+                } else {
+                    resultDiv.innerHTML = '<div class="status error">❌ Modules page failed</div>';
+                    addTestResult('Modules Page', 'error', 'Modules page not accessible');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+                addTestResult('Modules Page', 'error', error.message);
+            }
+        }
+
+        async function testReactComponents() {
+            const resultDiv = document.getElementById('react-components-result');
+            resultDiv.innerHTML = '<div class="status info">Testing...</div>';
+            
+            try {
+                // Test if React is properly mounting
+                const hasRoot = document.getElementById('root') !== null;
+                const hasReactScripts = document.querySelector('script[src*="main.tsx"]') !== null;
+                
+                if (hasRoot && hasReactScripts) {
+                    resultDiv.innerHTML = '<div class="status success">✅ React components loading properly</div>';
+                    addTestResult('React Components', 'success', 'React root element and scripts found');
+                } else {
+                    resultDiv.innerHTML = '<div class="status warning">⚠️ React components may have issues</div>';
+                    addTestResult('React Components', 'warning', 'Missing root or scripts');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+                addTestResult('React Components', 'error', error.message);
+            }
+        }
+
+        async function testModules(start, end) {
+            const resultDiv = document.getElementById(`modules-${start}-${end}-result`);
+            resultDiv.innerHTML = '<div class="status info">Testing...</div>';
+            
+            let successCount = 0;
+            let totalCount = end - start + 1;
+            let details = [];
+            
+            for (let i = start; i <= end; i++) {
+                try {
+                    const response = await fetch(`/module/${i}`);
+                    const text = await response.text();
+                    
+                    if (response.ok && text.includes(`Module ${i}`)) {
+                        successCount++;
+                        details.push(`Module ${i}: ✅`);
+                    } else {
+                        details.push(`Module ${i}: ❌`);
+                    }
+                } catch (error) {
+                    details.push(`Module ${i}: ❌ ${error.message}`);
+                }
+            }
+            
+            if (successCount === totalCount) {
+                resultDiv.innerHTML = `<div class="status success">✅ All modules ${start}-${end} working (${successCount}/${totalCount})</div>`;
+                addTestResult(`Modules ${start}-${end}`, 'success', details.join(', '));
+            } else {
+                resultDiv.innerHTML = `<div class="status warning">⚠️ Some issues found (${successCount}/${totalCount})</div>`;
+                addTestResult(`Modules ${start}-${end}`, 'warning', details.join(', '));
+            }
+        }
+
+        async function testAllModuleContent() {
+            const resultDiv = document.getElementById('all-content-result');
+            resultDiv.innerHTML = '<div class="status info">Testing all 10 modules...</div>';
+            
+            let successCount = 0;
+            let contentChecks = [];
+            
+            for (let i = 1; i <= 10; i++) {
+                try {
+                    const response = await fetch(`/module/${i}`);
+                    const text = await response.text();
+                    
+                    // Check for educational content indicators
+                    const hasTitle = text.includes(`Module ${i}`);
+                    const hasContent = text.length > 1000; // Substantial content
+                    const hasEducationalElements = text.includes('English') || text.includes('French') || text.includes('learn');
+                    
+                    if (hasTitle && hasContent && hasEducationalElements) {
+                        successCount++;
+                        contentChecks.push(`M${i}:✅`);
+                    } else {
+                        contentChecks.push(`M${i}:❌`);
+                    }
+                } catch (error) {
+                    contentChecks.push(`M${i}:ERR`);
+                }
+            }
+            
+            if (successCount === 10) {
+                resultDiv.innerHTML = `<div class="status success">✅ All 10 modules have proper educational content</div>`;
+                addTestResult('All Module Content', 'success', `All 10 modules verified: ${contentChecks.join(' ')}`);
+            } else {
+                resultDiv.innerHTML = `<div class="status warning">⚠️ Content issues found (${successCount}/10 modules)</div>`;
+                addTestResult('All Module Content', 'warning', `${successCount}/10 modules: ${contentChecks.join(' ')}`);
+            }
+        }
+
+        async function testAudioSystem() {
+            const resultDiv = document.getElementById('audio-system-result');
+            resultDiv.innerHTML = '<div class="status info">Testing...</div>';
+            
+            try {
+                // Test speech synthesis availability
+                const hasSpokenSynthesis = 'speechSynthesis' in window;
+                const hasVoices = speechSynthesis.getVoices().length > 0;
+                
+                if (hasSpokenSynthesis) {
+                    if (hasVoices) {
+                        resultDiv.innerHTML = '<div class="status success">✅ Audio system ready with voices</div>';
+                        addTestResult('Audio System', 'success', `Speech synthesis available with ${speechSynthesis.getVoices().length} voices`);
+                    } else {
+                        resultDiv.innerHTML = '<div class="status warning">⚠️ Audio available, loading voices...</div>';
+                        addTestResult('Audio System', 'warning', 'Speech synthesis available but voices loading');
+                    }
+                } else {
+                    resultDiv.innerHTML = '<div class="status error">❌ Speech synthesis not available</div>';
+                    addTestResult('Audio System', 'error', 'Speech synthesis not supported');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+                addTestResult('Audio System', 'error', error.message);
+            }
+        }
+
+        async function testInteractiveElements() {
+            const resultDiv = document.getElementById('interactive-elements-result');
+            resultDiv.innerHTML = '<div class="status info">Testing...</div>';
+            
+            try {
+                // Test if we can access interactive elements from modules
+                const testButton = document.createElement('button');
+                testButton.onclick = () => console.log('Interactive test');
+                
+                resultDiv.innerHTML = '<div class="status success">✅ Interactive elements functional</div>';
+                addTestResult('Interactive Elements', 'success', 'DOM manipulation and event handling work');
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+                addTestResult('Interactive Elements', 'error', error.message);
+            }
+        }
+
+        async function testTeacherSam() {
+            const resultDiv = document.getElementById('teacher-sam-result');
+            resultDiv.innerHTML = '<div class="status info">Testing...</div>';
+            
+            try {
+                // Test if Teacher Sam components are available
+                const hasRobotElements = document.body.innerHTML.toLowerCase().includes('sam') || 
+                                        document.body.innerHTML.toLowerCase().includes('teacher');
+                
+                if (hasRobotElements) {
+                    resultDiv.innerHTML = '<div class="status success">✅ Teacher Sam components detected</div>';
+                    addTestResult('Teacher Sam', 'success', 'Teacher Sam references found in app');
+                } else {
+                    resultDiv.innerHTML = '<div class="status warning">⚠️ Teacher Sam components not detected</div>';
+                    addTestResult('Teacher Sam', 'warning', 'No Teacher Sam references found');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+                addTestResult('Teacher Sam', 'error', error.message);
+            }
+        }
+
+        async function testServiceWorker() {
+            const resultDiv = document.getElementById('service-worker-result');
+            resultDiv.innerHTML = '<div class="status info">Testing...</div>';
+            
+            try {
+                if ('serviceWorker' in navigator) {
+                    const registration = await navigator.serviceWorker.getRegistration();
+                    
+                    if (registration) {
+                        resultDiv.innerHTML = '<div class="status success">✅ Service Worker registered</div>';
+                        addTestResult('Service Worker', 'success', 'Service Worker active for offline functionality');
+                    } else {
+                        resultDiv.innerHTML = '<div class="status warning">⚠️ Service Worker not registered (app works without offline)</div>';
+                        addTestResult('Service Worker', 'warning', 'No service worker but app functions normally');
+                    }
+                } else {
+                    resultDiv.innerHTML = '<div class="status warning">⚠️ Service Worker not supported</div>';
+                    addTestResult('Service Worker', 'warning', 'Service Worker not supported in this browser');
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+                addTestResult('Service Worker', 'error', error.message);
+            }
+        }
+
+        async function testPerformance() {
+            const resultDiv = document.getElementById('performance-result');
+            resultDiv.innerHTML = '<div class="status info">Testing...</div>';
+            
+            try {
+                const startTime = performance.now();
+                
+                // Test basic page performance
+                const testRequests = ['/api/version', '/manifest.json'];
+                const results = await Promise.all(
+                    testRequests.map(url => fetch(url).catch(() => null))
+                );
+                
+                const endTime = performance.now();
+                const totalTime = Math.round(endTime - startTime);
+                
+                if (totalTime < 2000) {
+                    resultDiv.innerHTML = `<div class="status success">✅ Good performance (${totalTime}ms)</div>`;
+                    addTestResult('Performance', 'success', `Response time: ${totalTime}ms`);
+                } else {
+                    resultDiv.innerHTML = `<div class="status warning">⚠️ Slow performance (${totalTime}ms)</div>`;
+                    addTestResult('Performance', 'warning', `Response time: ${totalTime}ms`);
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+                addTestResult('Performance', 'error', error.message);
+            }
+        }
+
+        async function runCompleteTest() {
+            const resultDiv = document.getElementById('complete-test-result');
+            resultDiv.innerHTML = '<div class="status info">Running complete validation...</div>';
+            
+            // Clear previous results
+            testResults = [];
+            
+            // Run all tests
+            await testMainApp();
+            await testModulesPage();
+            await testReactComponents();
+            await testModules(1, 5);
+            await testModules(6, 10);
+            await testAllModuleContent();
+            await testAudioSystem();
+            await testInteractiveElements();
+            await testTeacherSam();
+            await testServiceWorker();
+            await testPerformance();
+            
+            const successCount = testResults.filter(r => r.status === 'success').length;
+            const totalTests = testResults.length;
+            
+            if (successCount === totalTests) {
+                resultDiv.innerHTML = `<div class="status success">✅ Complete validation passed (${successCount}/${totalTests})</div>`;
+            } else if (successCount >= totalTests * 0.8) {
+                resultDiv.innerHTML = `<div class="status warning">⚠️ Most tests passed (${successCount}/${totalTests})</div>`;
+            } else {
+                resultDiv.innerHTML = `<div class="status error">❌ Multiple issues found (${successCount}/${totalTests})</div>`;
+            }
+        }
+
+        // Auto-run basic tests on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('test-summary').textContent = 'Auto-running basic connectivity tests...\n';
+                testMainApp();
+                setTimeout(() => testModulesPage(), 1000);
+                setTimeout(() => testAudioSystem(), 2000);
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

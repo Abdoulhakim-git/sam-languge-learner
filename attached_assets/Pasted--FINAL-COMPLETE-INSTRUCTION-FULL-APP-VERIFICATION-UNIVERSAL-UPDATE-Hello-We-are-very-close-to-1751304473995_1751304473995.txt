@@ -1,0 +1,93 @@
+✅ FINAL COMPLETE INSTRUCTION – FULL APP VERIFICATION + UNIVERSAL UPDATE
+Hello,
+
+We are very close to the final version of the app, but several issues are still affecting the quality of the learning experience. To avoid repeated corrections and ensure the app is truly ready, I am now requesting a complete and careful check of the entire app — step by step, part by part — with every feature working properly.
+
+🔍 PLEASE CHECK & FIX THE FOLLOWING – STEP BY STEP:
+✅ 1. MODULES – Open All Lessons One by One
+Open every module from 1 to 10
+
+Open each part inside every module
+
+Make sure every lesson opens correctly and fully
+
+✅ 2. AUDIO – Check All Voice Playback
+The voice of Teacher Sam must:
+
+Start immediately or with a clear “loading” animation
+
+Play completely, with no cut-off or delay
+
+Match the written text and the image
+
+Never repeat or overlap if clicked twice
+
+✅ 3. IMAGES – Display & Relevance
+Every part must include a clear and meaningful image
+
+Images must be correctly linked and not missing
+
+They must match the word or sentence being taught
+
+✅ 4. WRITTEN EXPLANATION & SUBTITLES
+The explanation must be written on screen — not only audio
+
+Subtitles must change based on learner choice:
+
+English
+
+French
+
+Hausa
+
+✅ 5. END-OF-PART LINKS – Practice Activities
+Every part must end with a working “Click to Practice” link
+
+Links must open the right content
+
+They must work on both phone and PC
+
+Preferably, links should also work offline after first loading
+
+✅ 6. CULTURAL SHARING SECTION
+Every part must end with a brief cultural message about Niger
+
+Keep the cultural section visible and different across lessons
+
+In story modules, add at least 1–2 more traditional tales
+
+Each story must include voice, text, subtitles, and images
+
+✅ 7. UNIQUE FEATURES & TECHNICAL STABILITY
+Confirm all app features work properly:
+
+Subtitles switching
+
+Voice recording & playback
+
+Practice games
+
+Auto-updating
+
+Offline functionality
+
+🔁 UNIVERSAL UPDATE FOR ALL USERS
+Very important: Ensure that the app has a universal update system.
+
+✅ All users — even those who downloaded the first version — must automatically receive the updated version without reinstalling.
+
+📴 OFFLINE FUNCTIONALITY
+Please make sure the entire app:
+
+Works even without internet after first installation
+
+Allows learners to complete all lessons, hear audio, and see content offline
+
+📌 FINAL NOTE
+Please test the app yourself from beginning to end, on both mobile and computer, before delivering the next version.
+Every part must work — no missing explanations, no silent sections, no broken links.
+
+We are building something important for children. Let’s finish strong, and get it right.
+
+Thank you for your efforts and commitment.
+

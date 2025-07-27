@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple HomePage Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ff9500, #ffcc00);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        .hero {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .hero h1 {
+            color: #ff9500;
+            margin-bottom: 10px;
+        }
+        .btn {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            background: #1976D2;
+        }
+        .btn-primary {
+            background: #ff9500;
+        }
+        .btn-primary:hover {
+            background: #e8800e;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .feature {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .version {
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <h1>🤖 SamLang Niger - Learn English with Teacher Sam</h1>
+            <p><strong>Local Voice, Global Language</strong></p>
+            <div class="version">
+                ✅ v3.0.2-AUDIO-COMPLETE - Enhanced Offline English Audio System
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature">
+                <h3>🎯 15 Learning Modules</h3>
+                <p>Complete curriculum from Alphabet to Advanced Grammar</p>
+            </div>
+            <div class="feature">
+                <h3>🔊 English-Only Audio</h3>
+                <p>Works offline with guaranteed English voices</p>
+            </div>
+            <div class="feature">
+                <h3>🌍 Niger Cultural Themes</h3>
+                <p>Authentic local context for better learning</p>
+            </div>
+            <div class="feature">
+                <h3>📱 Offline Capability</h3>
+                <p>Learn without internet connection</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="/modules" class="btn btn-primary">🚀 Start Learning (15 Modules)</a>
+            <a href="/offline-audio-test" class="btn">🔊 Test Audio System</a>
+        </div>
+
+        <div style="text-align: center; margin: 20px 0;">
+            <h3>Quick Module Access:</h3>
+            <a href="/module/1" class="btn">Module 1: Alphabet</a>
+            <a href="/module/2" class="btn">Module 2: Greetings</a>
+            <a href="/module/13" class="btn">Module 13: Past Tense</a>
+        </div>
+
+        <div style="background: #f8f9fa; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h3>🔧 System Status:</h3>
+            <p><strong>Version:</strong> <span id="version">Loading...</span></p>
+            <p><strong>Audio System:</strong> <span id="audio-status">Testing...</span></p>
+            <p><strong>Offline Ready:</strong> <span id="offline-status">Checking...</span></p>
+            <button onclick="testAudio()" class="btn">🔊 Test Audio</button>
+            <button onclick="checkVersion()" class="btn">📋 Check Version</button>
+        </div>
+    </div>
+
+    <script>
+        // Test audio system
+        function testAudio() {
+            try {
+                const utterance = new SpeechSynthesisUtterance("Hello! This is Teacher Sam testing the audio system for SamLang Niger!");
+                const voices = speechSynthesis.getVoices();
+                const englishVoices = voices.filter(v => v.lang.startsWith('en'));
+                
+                if (englishVoices.length > 0) {
+                    utterance.voice = englishVoices[0];
+                    document.getElementById('audio-status').textContent = `✅ Working (${englishVoices.length} English voices)`;
+                } else {
+                    document.getElementById('audio-status').textContent = '⚠️ No English voices found';
+                }
+                
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            } catch (error) {
+                document.getElementById('audio-status').textContent = '❌ Audio test failed';
+            }
+        }
+
+        // Check version
+        async function checkVersion() {
+            try {
+                const response = await fetch('/api/version');
+                const data = await response.json();
+                document.getElementById('version').textContent = data.version;
+            } catch (error) {
+                document.getElementById('version').textContent = 'Error loading version';
+            }
+        }
+
+        // Check offline capability
+        function checkOffline() {
+            if ('serviceWorker' in navigator) {
+                document.getElementById('offline-status').textContent = '✅ Service Worker supported';
+            } else {
+                document.getElementById('offline-status').textContent = '⚠️ Limited offline support';
+            }
+        }
+
+        // Auto-run checks
+        window.addEventListener('load', () => {
+            checkVersion();
+            checkOffline();
+            
+            // Auto-test audio after voices load
+            if (speechSynthesis.getVoices().length === 0) {
+                speechSynthesis.addEventListener('voiceschanged', () => {
+                    setTimeout(() => {
+                        const voices = speechSynthesis.getVoices();
+                        const englishVoices = voices.filter(v => v.lang.startsWith('en'));
+                        document.getElementById('audio-status').textContent = 
+                            englishVoices.length > 0 ? 
+                            `✅ Ready (${englishVoices.length} English voices)` : 
+                            '⚠️ No English voices available';
+                    }, 500);
+                });
+            } else {
+                setTimeout(() => {
+                    const voices = speechSynthesis.getVoices();
+                    const englishVoices = voices.filter(v => v.lang.startsWith('en'));
+                    document.getElementById('audio-status').textContent = 
+                        englishVoices.length > 0 ? 
+                        `✅ Ready (${englishVoices.length} English voices)` : 
+                        '⚠️ No English voices available';
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>

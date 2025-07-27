@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SamLang Niger - Offline Audio Test v3.0.2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: linear-gradient(135deg, #ff9500, #ffcc00);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+        }
+        .test-section.pass {
+            border-color: #4CAF50;
+            background: #f9fff9;
+        }
+        .test-section.fail {
+            border-color: #f44336;
+            background: #fff9f9;
+        }
+        .test-button {
+            background: #2196F3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .test-button:hover {
+            background: #1976D2;
+        }
+        .audio-test {
+            background: #4CAF50;
+            color: white;
+        }
+        .audio-test:hover {
+            background: #45a049;
+        }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .voice-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .voice-item {
+            padding: 5px;
+            margin: 2px 0;
+            border-radius: 3px;
+        }
+        .voice-item.english {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        .voice-item.other {
+            background: #ffebee;
+            color: #c62828;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎙️ SamLang Niger - Offline Audio Test v3.0.2</h1>
+        <p>Testing offline functionality and English-only audio system</p>
+
+        <div id="connection-status" class="status info">
+            <strong>Connection Status:</strong> <span id="connection-text">Testing...</span>
+        </div>
+
+        <div class="test-section" id="version-test">
+            <h3>📱 Version & Update System Test</h3>
+            <button class="test-button" onclick="testVersion()">Test Version API</button>
+            <button class="test-button" onclick="testForceUpdate()">Test Force Update</button>
+            <div id="version-results"></div>
+        </div>
+
+        <div class="test-section" id="audio-test">
+            <h3>🔊 Audio System Test</h3>
+            <button class="test-button audio-test" onclick="testEnglishAudio()">Test English Audio</button>
+            <button class="test-button audio-test" onclick="testGreetingAudio()">Test Module 2 Greeting</button>
+            <button class="test-button audio-test" onclick="testAlphabetAudio()">Test Module 1 Letter</button>
+            <div id="audio-results"></div>
+        </div>
+
+        <div class="test-section" id="voice-test">
+            <h3>🎤 Voice System Analysis</h3>
+            <button class="test-button" onclick="analyzeVoices()">Analyze Available Voices</button>
+            <div id="voice-results"></div>
+            <div id="voice-list" class="voice-list" style="display: none;"></div>
+        </div>
+
+        <div class="test-section" id="offline-test">
+            <h3>📡 Offline Functionality Test</h3>
+            <button class="test-button" onclick="testOfflineCapabilities()">Test Offline APIs</button>
+            <button class="test-button" onclick="simulateOffline()">Simulate Offline Mode</button>
+            <div id="offline-results"></div>
+        </div>
+
+        <div class="test-section" id="module-test">
+            <h3>📚 Module Access Test</h3>
+            <button class="test-button" onclick="testAllModules()">Test All 15 Modules</button>
+            <div id="module-results"></div>
+        </div>
+
+        <div class="test-section" id="cache-test">
+            <h3>💾 Cache System Test</h3>
+            <button class="test-button" onclick="testCacheSystem()">Test Service Worker Cache</button>
+            <div id="cache-results"></div>
+        </div>
+    </div>
+
+    <script>
+        let offlineMode = false;
+        
+        // Test network connection
+        function updateConnectionStatus() {
+            const status = navigator.onLine ? 'Online' : 'Offline';
+            const element = document.getElementById('connection-text');
+            element.textContent = status;
+            element.parentElement.className = navigator.onLine ? 'status success' : 'status error';
+        }
+        
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+        updateConnectionStatus();
+
+        // Test version and updates
+        async function testVersion() {
+            const results = document.getElementById('version-results');
+            results.innerHTML = '<p>Testing version API...</p>';
+            
+            try {
+                const response = await fetch('/api/version');
+                const data = await response.json();
+                
+                let html = `<div class="status success">
+                    <strong>Version:</strong> ${data.version}<br>
+                    <strong>Timestamp:</strong> ${data.buildTimestamp}<br>
+                    <strong>Offline Capable:</strong> ${data.offlineCapable ? 'Yes' : 'No'}<br>
+                    <strong>Audio Fixed:</strong> ${data.audioFixed ? 'Yes' : 'No'}
+                </div>`;
+                
+                if (data.version === '3.0.2-AUDIO-COMPLETE') {
+                    html += '<div class="status success">✅ Latest version confirmed!</div>';
+                    document.getElementById('version-test').classList.add('pass');
+                } else {
+                    html += '<div class="status error">❌ Version mismatch!</div>';
+                    document.getElementById('version-test').classList.add('fail');
+                }
+                
+                results.innerHTML = html;
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Version test failed: ${error.message}</div>`;
+                document.getElementById('version-test').classList.add('fail');
+            }
+        }
+
+        // Test audio system
+        function testEnglishAudio() {
+            const results = document.getElementById('audio-results');
+            results.innerHTML = '<p>Testing English audio system...</p>';
+            
+            try {
+                const utterance = new SpeechSynthesisUtterance("Hello! This is Teacher Sam testing English audio for SamLang Niger!");
+                
+                // Get available voices
+                const voices = speechSynthesis.getVoices();
+                const englishVoices = voices.filter(v => v.lang.startsWith('en'));
+                
+                if (englishVoices.length === 0) {
+                    results.innerHTML = '<div class="status error">❌ No English voices found!</div>';
+                    document.getElementById('audio-test').classList.add('fail');
+                    return;
+                }
+                
+                // Use best English voice
+                utterance.voice = englishVoices[0];
+                utterance.rate = 0.8;
+                utterance.pitch = 1.0;
+                
+                utterance.onstart = () => {
+                    results.innerHTML = '<div class="status info">🔊 Playing English audio...</div>';
+                };
+                
+                utterance.onend = () => {
+                    results.innerHTML = `<div class="status success">
+                        ✅ English audio test successful!<br>
+                        <strong>Voice:</strong> ${utterance.voice.name}<br>
+                        <strong>Language:</strong> ${utterance.voice.lang}
+                    </div>`;
+                    document.getElementById('audio-test').classList.add('pass');
+                };
+                
+                utterance.onerror = (event) => {
+                    results.innerHTML = `<div class="status error">❌ Audio error: ${event.error}</div>`;
+                    document.getElementById('audio-test').classList.add('fail');
+                };
+                
+                speechSynthesis.speak(utterance);
+                
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Audio test failed: ${error.message}</div>`;
+                document.getElementById('audio-test').classList.add('fail');
+            }
+        }
+
+        function testGreetingAudio() {
+            testSpecificAudio("Hello! How are you today? I'm doing well, thank you!", "Module 2 Greeting");
+        }
+
+        function testAlphabetAudio() {
+            testSpecificAudio("A! Can you say A? A is for Apple!", "Module 1 Letter A");
+        }
+
+        function testSpecificAudio(text, label) {
+            const results = document.getElementById('audio-results');
+            
+            try {
+                const utterance = new SpeechSynthesisUtterance(text);
+                const voices = speechSynthesis.getVoices();
+                const englishVoices = voices.filter(v => v.lang.startsWith('en'));
+                
+                if (englishVoices.length > 0) {
+                    utterance.voice = englishVoices[0];
+                }
+                
+                utterance.rate = 0.8;
+                utterance.pitch = 1.0;
+                
+                utterance.onstart = () => {
+                    results.innerHTML = `<div class="status info">🔊 Playing ${label}...</div>`;
+                };
+                
+                utterance.onend = () => {
+                    results.innerHTML += `<div class="status success">✅ ${label} test successful!</div>`;
+                };
+                
+                speechSynthesis.speak(utterance);
+                
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ ${label} test failed: ${error.message}</div>`;
+            }
+        }
+
+        // Analyze voice system
+        function analyzeVoices() {
+            const results = document.getElementById('voice-results');
+            const voiceList = document.getElementById('voice-list');
+            
+            const voices = speechSynthesis.getVoices();
+            const englishVoices = voices.filter(v => v.lang.startsWith('en'));
+            const otherVoices = voices.filter(v => !v.lang.startsWith('en'));
+            
+            results.innerHTML = `
+                <div class="status info">
+                    <strong>Total Voices:</strong> ${voices.length}<br>
+                    <strong>English Voices:</strong> ${englishVoices.length}<br>
+                    <strong>Other Language Voices:</strong> ${otherVoices.length}
+                </div>
+            `;
+            
+            if (englishVoices.length > 0) {
+                results.innerHTML += '<div class="status success">✅ English voices available for offline use!</div>';
+                document.getElementById('voice-test').classList.add('pass');
+            } else {
+                results.innerHTML += '<div class="status error">❌ No English voices found!</div>';
+                document.getElementById('voice-test').classList.add('fail');
+            }
+            
+            // Show voice list
+            let voiceListHtml = '<h4>Available Voices:</h4>';
+            englishVoices.forEach(voice => {
+                voiceListHtml += `<div class="voice-item english">
+                    🇺🇸 ${voice.name} (${voice.lang}) ${voice.default ? '- Default' : ''}
+                </div>`;
+            });
+            
+            if (otherVoices.length > 0) {
+                voiceListHtml += '<h4>Other Language Voices (Should not be used):</h4>';
+                otherVoices.slice(0, 10).forEach(voice => {
+                    voiceListHtml += `<div class="voice-item other">
+                        ❌ ${voice.name} (${voice.lang})
+                    </div>`;
+                });
+                if (otherVoices.length > 10) {
+                    voiceListHtml += `<div class="voice-item other">... and ${otherVoices.length - 10} more</div>`;
+                }
+            }
+            
+            voiceList.innerHTML = voiceListHtml;
+            voiceList.style.display = 'block';
+        }
+
+        // Test offline capabilities
+        async function testOfflineCapabilities() {
+            const results = document.getElementById('offline-results');
+            results.innerHTML = '<p>Testing offline API access...</p>';
+            
+            const tests = [
+                { url: '/api/version', name: 'Version API' },
+                { url: '/api/modules/1', name: 'Module 1 API' },
+                { url: '/api/modules/2', name: 'Module 2 API' },
+                { url: '/api/modules/13', name: 'Module 13 API' }
+            ];
+            
+            let allPassed = true;
+            let testResults = '';
+            
+            for (const test of tests) {
+                try {
+                    const response = await fetch(test.url);
+                    if (response.ok) {
+                        testResults += `<div class="status success">✅ ${test.name}: OK</div>`;
+                    } else {
+                        testResults += `<div class="status error">❌ ${test.name}: ${response.status}</div>`;
+                        allPassed = false;
+                    }
+                } catch (error) {
+                    testResults += `<div class="status error">❌ ${test.name}: ${error.message}</div>`;
+                    allPassed = false;
+                }
+            }
+            
+            results.innerHTML = testResults;
+            document.getElementById('offline-test').classList.add(allPassed ? 'pass' : 'fail');
+        }
+
+        // Test all modules
+        async function testAllModules() {
+            const results = document.getElementById('module-results');
+            results.innerHTML = '<p>Testing all 15 modules...</p>';
+            
+            let moduleResults = '';
+            let allPassed = true;
+            
+            for (let i = 1; i <= 15; i++) {
+                try {
+                    const response = await fetch(`/api/modules/${i}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        moduleResults += `<div class="status success">✅ Module ${i}: ${data.title}</div>`;
+                    } else {
+                        moduleResults += `<div class="status error">❌ Module ${i}: Failed (${response.status})</div>`;
+                        allPassed = false;
+                    }
+                } catch (error) {
+                    moduleResults += `<div class="status error">❌ Module ${i}: ${error.message}</div>`;
+                    allPassed = false;
+                }
+            }
+            
+            results.innerHTML = moduleResults;
+            document.getElementById('module-test').classList.add(allPassed ? 'pass' : 'fail');
+        }
+
+        // Test cache system
+        async function testCacheSystem() {
+            const results = document.getElementById('cache-results');
+            results.innerHTML = '<p>Testing service worker cache...</p>';
+            
+            try {
+                if ('serviceWorker' in navigator) {
+                    const registration = await navigator.serviceWorker.ready;
+                    results.innerHTML = `<div class="status success">
+                        ✅ Service Worker registered<br>
+                        <strong>Scope:</strong> ${registration.scope}<br>
+                        <strong>State:</strong> ${registration.active?.state || 'Unknown'}
+                    </div>`;
+                    
+                    // Test cache storage
+                    const cacheNames = await caches.keys();
+                    const samLangCaches = cacheNames.filter(name => name.includes('samlang'));
+                    
+                    if (samLangCaches.length > 0) {
+                        results.innerHTML += `<div class="status success">
+                            ✅ SamLang cache found: ${samLangCaches[0]}
+                        </div>`;
+                        document.getElementById('cache-test').classList.add('pass');
+                    } else {
+                        results.innerHTML += '<div class="status error">❌ No SamLang cache found</div>';
+                        document.getElementById('cache-test').classList.add('fail');
+                    }
+                } else {
+                    results.innerHTML = '<div class="status error">❌ Service Worker not supported</div>';
+                    document.getElementById('cache-test').classList.add('fail');
+                }
+            } catch (error) {
+                results.innerHTML = `<div class="status error">❌ Cache test failed: ${error.message}</div>`;
+                document.getElementById('cache-test').classList.add('fail');
+            }
+        }
+
+        // Force update test
+        async function testForceUpdate() {
+            const results = document.getElementById('version-results');
+            
+            try {
+                // Clear local version to trigger update
+                localStorage.removeItem('samlang_version');
+                
+                results.innerHTML += '<div class="status info">🔄 Triggering force update check...</div>';
+                
+                // Reload force update script
+                const script = document.createElement('script');
+                script.src = '/force-update-distribution.js?t=' + Date.now();
+                document.head.appendChild(script);
+                
+                setTimeout(() => {
+                    results.innerHTML += '<div class="status success">✅ Force update system activated</div>';
+                }, 2000);
+                
+            } catch (error) {
+                results.innerHTML += `<div class="status error">❌ Force update test failed: ${error.message}</div>`;
+            }
+        }
+
+        // Auto-run basic tests on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                if (speechSynthesis.getVoices().length === 0) {
+                    // Wait for voices to load
+                    speechSynthesis.addEventListener('voiceschanged', () => {
+                        analyzeVoices();
+                    });
+                } else {
+                    analyzeVoices();
+                }
+                testVersion();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>

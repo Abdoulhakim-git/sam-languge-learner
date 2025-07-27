@@ -1,0 +1,87 @@
+[![stock.adobe.com/images/p...](https://images.openai.com/thumbnails/url/nNji93icu1mSUVJSUGylr5-al1xUWVCSmqJbkpRnoJdeXJJYkpmsl5yfq5-Zm5ieWmxfaAuUsXL0S7F0Tw5JMzF0Sk7PCcsujEoMSjbM9UkKzkitMEgxKy2IcLMoL7PMzywpNAqI9_X0Tk5OswwOrjQtCs7L9Hb0CFQrBgAsXypS)](https://stock.adobe.com/images/panoramic-landscape-view-to-sahel-and-oasis-dogondoutchi-niger/224488047)
+
+Voici **4 exemples d’images réelles** provenant du Sahel nigérien :
+
+1. **Plaines du Sahel avec acacias** – paysage semi-aride typique ([stock.adobe.com][1], [alamy.com][2])
+2. **Maisons en banco typiques des villages Hausa**&#x20;
+3. **Scène de cour d’école en plein air** – classes informelles sous les arbres&#x20;
+4. **Arbre isolé (acacia) sur fond de désert** ([crisisgroup.org][3])
+
+---
+
+## ✅ À partager avec l’AI App Builder : Instructions pour fonds d’écran
+
+Merci d’utiliser des **images réelles** authentiques du Niger et du Sahel, dans un style doux et peu envahissant, afin de respecter l’équilibre entre **esthétique** et **lisibilité**. Voici exactement auxquelles vous pouvez vous référer :
+
+### 🎨 Style général :
+
+* Couleurs naturelles, légèrement **pâlissées/fondues** : sable, bois, ciel clair.
+* Ton **calme**, **non-distrayant**, pour que le texte vocal et visuel reste lisible.
+* Utilisez un **floutage léger** ou un fondu style aquarelle si besoin, en arrière-plan.
+
+### 🗺️ Images à utiliser selon écran :
+
+1. **Accueil / Page d’accueil**
+
+   * Image : *Maisons en banco / village Hausa*
+   * Objectif : accueil chaleureux, familier et culturellement enraciné.
+
+2. **Module 1 – Alphabet**
+
+   * Image : *Cour d’école en plein air / classes sous un arbre*
+   * Objectif : éveil, apprentissage scolaire local.
+
+3. **Modules 2 à 4 (Salutations, Famille, Classe)**
+
+   * Image : *Scène de village Sahelien stable* ou *cour d’école*
+   * Objectif : vie quotidienne, lien social, cadre culturel.
+
+4. **Modules 5–7 (Routines, Animaux, Verbes)**
+
+   * Image : *Plaines du Sahel avec acacias et terrain ouvert*
+   * Objectif : actions, extérieur, respiration en plein air.
+
+5. **Modules 8–10 (Prépositions, Loisirs, Histoire)**
+
+   * Image : *Acacia isolé dans le désert* ou *cute cabane/hutte*
+   * Objectif : réflexion, concentration, atmosphère de calme et de pause.
+
+6. **Fin de module / écran de félicitations**
+
+   * Option : *Coucher de soleil sur le Sahel* (à créer ou sélectionner)
+   * Objectif : sensation d’accomplissement et de détente.
+
+---
+
+### 🔧 Directives techniques :
+
+* Format : **JPEG ou PNG haute résolution**, minimum 1920×1080 px.
+* Recadrage : centrage sur le cœur de l’image (ex. arbre ou maison), zones latérales floutées.
+* **Pas de texte sur l’image** : laisser la surface libre pour le texte/subtitles animé.
+* **Crédit image** : optionnel, à prévoir sous forme discrète (coin bas) pour usage interne.
+
+---
+
+### 📋 Résumé à transmettre directement :
+
+> Utilisez des images réelles du Sahel/Niger comme entrées de module :
+> – Village en banco (Accueil)
+> – Cour d’école sous un arbre (Alphabet)
+> – Scène de village (Salutations, Famille, Classe)
+> – Plaines avec acacia (Actions, Animaux, Verbes)
+> – Arbre isolé ou hutte (Prépositions, Histoire)
+> – Coucher de soleil Sahel (Écran final)
+>
+> Style : couleurs naturelles, flou ou aquarelle légère pour ne pas gêner la lisibilité.
+> Format : haute résolution (min 1920×1080), JPEG/PNG.
+> Texte dynamique doit rester lisible par-dessus.
+>
+> Merci de coordonner avec le designer pour livrer ces fichiers par module.
+
+---
+
+Avec ces instructions claires, l'AI App Builder pourra configurer facilement chaque écran avec **des fonds culturels adaptés**, créant une **ambiance authentique et engageante** pour les enfants une apprentissage joyeux.
+
+[1]: https://stock.adobe.com/images/panoramic-landscape-view-to-sahel-and-oasis-dogondoutchi-niger/224488047?utm_source=chatgpt.com "stock.adobe.com/images/p..."
+[2]: https://www.alamy.com/niger-barkewa-village-in-the-dry-season-semi-arid-sahel-west-africa-image155835255.html?utm_source=chatgpt.com "alamy.com/niger-barkewa-..."
+[3]: https://www.crisisgroup.org/africa/sahel/b154-le-sahel-central-theatre-des-nouvelles-guerres-climatiques?utm_source=chatgpt.com "crisisgroup.org/africa/s..."

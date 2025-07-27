@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SamLang Niger - Comprehensive App Verification</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f0f8ff; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        .test-section { background: white; padding: 20px; margin: 20px 0; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+        .warning { color: orange; font-weight: bold; }
+        .loading { color: blue; font-style: italic; }
+        .module-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin: 20px 0; }
+        .module-card { background: #f9f9f9; padding: 15px; border-radius: 8px; border: 2px solid #ddd; }
+        .module-card.success { border-color: green; background: #f0fff0; }
+        .module-card.error { border-color: red; background: #fff0f0; }
+        .module-card.warning { border-color: orange; background: #fffaf0; }
+        iframe { width: 100%; height: 500px; border: 1px solid #ccc; border-radius: 5px; margin: 10px 0; }
+        button { background: #2196f3; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background: #1976d2; }
+        .debug-info { background: #f5f5f5; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 12px; margin: 10px 0; }
+        .progress { background: #e0e0e0; border-radius: 10px; height: 20px; margin: 10px 0; }
+        .progress-bar { background: #4caf50; height: 100%; border-radius: 10px; transition: width 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 SamLang Niger - Comprehensive App Verification</h1>
+        <p>Complete testing of all 15 modules, API endpoints, and core functionality.</p>
+
+        <div class="test-section">
+            <h2>📊 Overall Progress</h2>
+            <div class="progress">
+                <div id="overall-progress" class="progress-bar" style="width: 0%"></div>
+            </div>
+            <p id="progress-text">Click "Start Complete Verification" to begin</p>
+            <button onclick="startCompleteVerification()">🚀 Start Complete Verification</button>
+            <button onclick="testAllAPIs()">📡 Test All APIs</button>
+            <button onclick="testAllModuleRouting()">🔄 Test All Module Routing</button>
+        </div>
+
+        <div class="test-section">
+            <h2>🏠 Core App Components</h2>
+            <div id="core-results">
+                <div class="module-card">
+                    <h4>Homepage</h4>
+                    <p id="homepage-status">Not tested</p>
+                </div>
+                <div class="module-card">
+                    <h4>Modules Page</h4>
+                    <p id="modules-page-status">Not tested</p>
+                </div>
+                <div class="module-card">
+                    <h4>Navigation</h4>
+                    <p id="navigation-status">Not tested</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>📚 Module Verification (1-15)</h2>
+            <div id="modules-results" class="module-grid">
+                <!-- Module cards will be populated here -->
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🔧 API Endpoints Status</h2>
+            <div id="api-results">
+                <p>Click "Test All APIs" to check endpoint functionality</p>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>⚠️ Critical Issues Found</h2>
+            <div id="critical-issues">
+                <p>No issues detected yet. Run verification to check.</p>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🧪 Detailed Testing</h2>
+            <div id="detailed-test-area">
+                <p>Select a specific module to test in detail:</p>
+                <div style="margin: 10px 0;">
+                    <select id="detailed-module-select">
+                        <option value="">Select Module</option>
+                    </select>
+                    <button onclick="testModuleDetailed()">Test Selected Module</button>
+                </div>
+                <iframe id="detailed-frame" src="about:blank"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let testResults = {
+            modules: {},
+            apis: {},
+            core: {},
+            issues: []
+        };
+
+        function updateProgress(current, total) {
+            const percentage = (current / total) * 100;
+            document.getElementById('overall-progress').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = `Testing: ${current}/${total} (${Math.round(percentage)}%)`;
+        }
+
+        function addCriticalIssue(issue) {
+            testResults.issues.push(issue);
+            updateCriticalIssues();
+        }
+
+        function updateCriticalIssues() {
+            const issuesDiv = document.getElementById('critical-issues');
+            if (testResults.issues.length === 0) {
+                issuesDiv.innerHTML = '<p class="success">✅ No critical issues found!</p>';
+            } else {
+                issuesDiv.innerHTML = '<h4>Issues to Fix:</h4>' + 
+                    testResults.issues.map(issue => `<div class="error">❌ ${issue}</div>`).join('');
+            }
+        }
+
+        async function startCompleteVerification() {
+            console.log('Starting comprehensive app verification...');
+            updateProgress(0, 20);
+            
+            // Test core components
+            await testCoreComponents();
+            updateProgress(3, 20);
+            
+            // Test all APIs
+            await testAllAPIs();
+            updateProgress(8, 20);
+            
+            // Test all modules
+            await testAllModules();
+            updateProgress(20, 20);
+            
+            console.log('Verification complete!');
+            generateSummaryReport();
+        }
+
+        async function testCoreComponents() {
+            const components = ['/', '/modules'];
+            
+            for (const path of components) {
+                try {
+                    const response = await fetch(path);
+                    const html = await response.text();
+                    
+                    if (html.includes('<!DOCTYPE html>') && html.includes('Teacher Sam')) {
+                        testResults.core[path] = 'success';
+                    } else {
+                        testResults.core[path] = 'error';
+                        addCriticalIssue(`Core component ${path} not loading properly`);
+                    }
+                } catch (error) {
+                    testResults.core[path] = 'error';
+                    addCriticalIssue(`Core component ${path} failed: ${error.message}`);
+                }
+            }
+            
+            // Update core results display
+            document.getElementById('homepage-status').textContent = testResults.core['/'] || 'Not tested';
+            document.getElementById('modules-page-status').textContent = testResults.core['/modules'] || 'Not tested';
+            document.getElementById('navigation-status').textContent = 'Tested with core components';
+        }
+
+        async function testAllAPIs() {
+            const apiDiv = document.getElementById('api-results');
+            apiDiv.innerHTML = '<p class="loading">🔄 Testing API endpoints...</p>';
+            
+            const results = [];
+            
+            for (let i = 1; i <= 15; i++) {
+                try {
+                    const response = await fetch(`/api/modules/${i}`);
+                    const data = await response.json();
+                    
+                    if (data.id === i && data.lessons && data.lessons.length > 0) {
+                        testResults.apis[`module${i}`] = 'success';
+                        results.push(`<div class="success">✅ Module ${i} API: Working (${data.lessons.length} lessons)</div>`);
+                    } else {
+                        testResults.apis[`module${i}`] = 'error';
+                        results.push(`<div class="error">❌ Module ${i} API: Invalid data structure</div>`);
+                        addCriticalIssue(`Module ${i} API returning invalid data`);
+                    }
+                } catch (error) {
+                    testResults.apis[`module${i}`] = 'error';
+                    results.push(`<div class="error">❌ Module ${i} API: ${error.message}</div>`);
+                    addCriticalIssue(`Module ${i} API failed: ${error.message}`);
+                }
+            }
+            
+            apiDiv.innerHTML = results.join('');
+        }
+
+        async function testAllModules() {
+            const modulesDiv = document.getElementById('modules-results');
+            const moduleSelect = document.getElementById('detailed-module-select');
+            
+            modulesDiv.innerHTML = '';
+            moduleSelect.innerHTML = '<option value="">Select Module</option>';
+            
+            for (let i = 1; i <= 15; i++) {
+                const moduleCard = document.createElement('div');
+                moduleCard.className = 'module-card';
+                moduleCard.innerHTML = `
+                    <h4>Module ${i}</h4>
+                    <p id="module${i}-status" class="loading">🔄 Testing...</p>
+                    <div id="module${i}-details" class="debug-info" style="display:none;"></div>
+                `;
+                modulesDiv.appendChild(moduleCard);
+                
+                // Add to select dropdown
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = `Module ${i}`;
+                moduleSelect.appendChild(option);
+                
+                // Test module
+                await testSingleModule(i, moduleCard);
+            }
+        }
+
+        async function testSingleModule(moduleNum, cardElement) {
+            const statusEl = document.getElementById(`module${moduleNum}-status`);
+            const detailsEl = document.getElementById(`module${moduleNum}-details`);
+            
+            try {
+                // Test module route
+                const response = await fetch(`/module/${moduleNum}`);
+                const html = await response.text();
+                
+                if (!html.includes('<!DOCTYPE html>')) {
+                    throw new Error('Invalid HTML response');
+                }
+                
+                // Test API data
+                const apiResponse = await fetch(`/api/modules/${moduleNum}`);
+                const apiData = await apiResponse.json();
+                
+                if (!apiData.lessons || apiData.lessons.length === 0) {
+                    throw new Error('No lesson data available');
+                }
+                
+                // Determine module status
+                let status = 'success';
+                let statusText = `✅ Working (${apiData.lessons.length} lessons)`;
+                
+                // Special checks for modules 13 and 14 (previously problematic)
+                if (moduleNum === 13 || moduleNum === 14) {
+                    const lesson2 = apiData.lessons[1];
+                    if (!lesson2 || !lesson2.content) {
+                        status = 'warning';
+                        statusText = '⚠️ Part 2 content may be incomplete';
+                        addCriticalIssue(`Module ${moduleNum} Part 2 content structure issue`);
+                    }
+                }
+                
+                testResults.modules[`module${moduleNum}`] = status;
+                statusEl.textContent = statusText;
+                cardElement.className = `module-card ${status}`;
+                
+                detailsEl.innerHTML = `
+                    <strong>API Data:</strong> ${JSON.stringify(apiData, null, 2).substring(0, 200)}...
+                    <br><strong>Route:</strong> /module/${moduleNum} ✅
+                    <br><strong>Lessons:</strong> ${apiData.lessons.length}
+                `;
+                
+            } catch (error) {
+                testResults.modules[`module${moduleNum}`] = 'error';
+                statusEl.textContent = `❌ Error: ${error.message}`;
+                cardElement.className = 'module-card error';
+                addCriticalIssue(`Module ${moduleNum} failed: ${error.message}`);
+                
+                detailsEl.innerHTML = `<strong>Error:</strong> ${error.message}`;
+                detailsEl.style.display = 'block';
+            }
+        }
+
+        async function testModuleDetailed() {
+            const moduleNum = document.getElementById('detailed-module-select').value;
+            if (!moduleNum) return;
+            
+            const frame = document.getElementById('detailed-frame');
+            frame.src = `/module/${moduleNum}`;
+        }
+
+        async function testAllModuleRouting() {
+            console.log('Testing all module routing...');
+            for (let i = 1; i <= 15; i++) {
+                try {
+                    const response = await fetch(`/module/${i}`);
+                    const html = await response.text();
+                    console.log(`Module ${i} route:`, html.includes('Teacher Sam') ? 'OK' : 'FAIL');
+                } catch (error) {
+                    console.error(`Module ${i} routing error:`, error);
+                }
+            }
+        }
+
+        function generateSummaryReport() {
+            const totalModules = 15;
+            const workingModules = Object.values(testResults.modules).filter(status => status === 'success').length;
+            const workingAPIs = Object.values(testResults.apis).filter(status => status === 'success').length;
+            
+            console.log('=== SAMLANG NIGER VERIFICATION SUMMARY ===');
+            console.log(`Modules: ${workingModules}/${totalModules} working`);
+            console.log(`APIs: ${workingAPIs}/${totalModules} working`);
+            console.log(`Critical Issues: ${testResults.issues.length}`);
+            console.log('===========================================');
+            
+            updateProgress(20, 20);
+            document.getElementById('progress-text').textContent = `Verification Complete: ${workingModules}/${totalModules} modules working`;
+        }
+
+        // Auto-start basic verification on page load
+        window.onload = function() {
+            setTimeout(() => {
+                testAllAPIs();
+            }, 1000);
+        };
+    </script>
+</body>
+</html>

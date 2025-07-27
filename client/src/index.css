@@ -1,0 +1,412 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Simple Global Background */
+body {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* Remove body overlay that was blocking clicks */
+
+/* Niger Cultural Background Patterns */
+.niger-cultural-bg {
+  background: linear-gradient(135deg, #FF7A00 0%, #FFFFFF 33%, #00B74F 66%, #FF7A00 100%);
+  background-size: 400% 400%;
+  animation: nigerFlag 15s ease infinite;
+}
+
+@keyframes nigerFlag {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Remove background images - use simple colors */
+.niger-village-bg {
+  background-color: #f8f9fa;
+}
+
+.school-courtyard-bg {
+  background-color: #f8f9fa;
+}
+
+.sahel-plains-bg {
+  background-color: #f8f9fa;
+}
+
+.acacia-reflection-bg {
+  background-color: #f8f9fa;
+}
+
+/* Remove traditional pattern backgrounds */
+.traditional-pattern {
+  background-color: #f8f9fa;
+}
+
+/* Cultural Color Variables */
+:root {
+  --niger-orange: #FF7A00;
+  --niger-white: #FFFFFF;
+  --niger-green: #00B74F;
+  --sahel-sand: #F4A460;
+  --sahel-clay: #D2691E;
+  --traditional-brown: #8B4513;
+}
+
+:root {
+  --background: 0 0% 100%;
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 60 4.8% 95.9%;
+  --secondary-foreground: 24 9.8% 10%;
+  --accent: 60 4.8% 95.9%;
+  --accent-foreground: 24 9.8% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 20 14.3% 4.1%;
+  --radius: 0.5rem;
+  
+  /* Custom colors for the app */
+  --american-blue: 212 100% 48%; /* #1E40AF */
+  --niger-gold: 45 93% 47%; /* #F59E0B */
+  --success-green: 142 71% 45%; /* #10B981 */
+  --sand-warm: 48 100% 88%; /* #FEF3C7 */
+  --sahel-amber: 45 93% 47%; /* #F59E0B */
+}
+
+.dark {
+  --background: 240 10% 3.9%;
+  --foreground: 0 0% 98%;
+  --muted: 240 3.7% 15.9%;
+  --muted-foreground: 240 5% 64.9%;
+  --popover: 240 10% 3.9%;
+  --popover-foreground: 0 0% 98%;
+  --card: 240 10% 3.9%;
+  --card-foreground: 0 0% 98%;
+  --border: 240 3.7% 15.9%;
+  --input: 240 3.7% 15.9%;
+  --primary: 207 90% 54%;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 240 3.7% 15.9%;
+  --secondary-foreground: 0 0% 98%;
+  --accent: 240 3.7% 15.9%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 0 0% 98%;
+  --ring: 240 4.9% 83.9%;
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer utilities {
+  .font-fredoka {
+    font-family: 'Fredoka One', cursive;
+  }
+  
+  .font-comic {
+    font-family: 'Comic Neue', cursive;
+  }
+  
+  .text-american-blue {
+    color: hsl(var(--american-blue));
+  }
+  
+  .bg-american-blue {
+    background-color: hsl(var(--american-blue));
+  }
+  
+  .text-niger-gold {
+    color: hsl(var(--niger-gold));
+  }
+  
+  .bg-niger-gold {
+    background-color: hsl(var(--niger-gold));
+  }
+  
+  .text-success-green {
+    color: hsl(var(--success-green));
+  }
+  
+  .bg-success-green {
+    background-color: hsl(var(--success-green));
+  }
+  
+  .bg-sand-warm {
+    background-color: hsl(var(--sand-warm));
+  }
+  
+  .text-sahel-amber {
+    color: hsl(var(--sahel-amber));
+  }
+  
+  .bg-sahel-amber {
+    background-color: hsl(var(--sahel-amber));
+  }
+  
+  .cultural-bg {
+    background: linear-gradient(135deg, hsl(var(--sand-warm)) 0%, hsl(var(--sahel-amber) / 0.3) 100%);
+  }
+}
+
+/* Custom animations */
+@keyframes wave {
+  0%, 100% { 
+    transform: rotate(0deg); 
+  }
+  25% { 
+    transform: rotate(15deg); 
+  }
+  75% { 
+    transform: rotate(-15deg); 
+  }
+}
+
+@keyframes bounce-gentle {
+  0%, 100% { 
+    transform: translateY(0px); 
+  }
+  50% { 
+    transform: translateY(-10px); 
+  }
+}
+
+.animate-wave {
+  animation: wave 2s ease-in-out infinite;
+}
+
+.animate-bounce-gentle {
+  animation: bounce-gentle 3s ease-in-out infinite;
+}
+
+/* Enhanced robot animations */
+.robot-container {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.robot-container:hover {
+  transform: scale(1.08) translateZ(0);
+  filter: brightness(1.1);
+}
+
+/* Audio wave animation */
+.audio-wave {
+  animation: pulse 0.8s ease-in-out infinite alternate;
+}
+
+/* Enhanced smooth scrolling and rendering */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Loading animations */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Enhanced smooth transitions */
+* {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Module hover effects with smooth transitions */
+.module-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateZ(0);
+}
+
+.module-card:hover {
+  transform: translateY(-12px) translateZ(0);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Smooth image rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  image-rendering: optimizeQuality;
+}
+
+/* Smooth background transitions for all Niger backgrounds */
+.niger-village-bg,
+.school-courtyard-bg,
+.sahel-plains-bg,
+.acacia-reflection-bg {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+.niger-village-bg:hover::before,
+.school-courtyard-bg:hover::before,
+.sahel-plains-bg:hover::before,
+.acacia-reflection-bg:hover::before {
+  opacity: 0.9;
+}
+
+/* Focus styles for accessibility */
+button:focus,
+a:focus {
+  outline: 2px solid hsl(var(--american-blue));
+  outline-offset: 2px;
+}
+
+/* Niger Village Background - Real Banco Houses Photo */
+.niger-village-bg {
+  background-image: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.niger-village-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, 
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 248, 220, 0.2) 30%,
+    rgba(244, 228, 188, 0.3) 70%,
+    rgba(200, 168, 130, 0.4) 100%);
+  backdrop-filter: blur(1px);
+  transition: opacity 0.5s ease;
+}
+
+/* School Courtyard Background - Real Outdoor Classroom Photo */
+.school-courtyard-bg {
+  background-image: url('https://images.unsplash.com/photo-1497486751825-1233686d5d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.school-courtyard-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, 
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(240, 230, 140, 0.2) 25%,
+    rgba(222, 184, 135, 0.3) 70%,
+    rgba(210, 180, 140, 0.4) 100%);
+  backdrop-filter: blur(1px);
+  transition: opacity 0.5s ease;
+}
+
+/* Sahel Plains Background - Real African Savanna Photo */
+.sahel-plains-bg {
+  background-image: url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.sahel-plains-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, 
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 248, 220, 0.15) 20%,
+    rgba(245, 222, 179, 0.25) 50%,
+    rgba(222, 184, 135, 0.35) 80%,
+    rgba(210, 180, 140, 0.4) 100%);
+  backdrop-filter: blur(0.5px);
+  transition: opacity 0.5s ease;
+}
+
+/* Acacia Reflection Background - Real Acacia Tree Photo */
+.acacia-reflection-bg {
+  background-image: url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.acacia-reflection-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, 
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(240, 248, 255, 0.1) 25%,
+    rgba(255, 248, 220, 0.2) 50%,
+    rgba(245, 222, 179, 0.3) 75%,
+    rgba(222, 184, 135, 0.4) 100%);
+  backdrop-filter: blur(1px);
+  transition: opacity 0.5s ease;
+}
+
+/* Responsive text sizes */
+@media (max-width: 640px) {
+  .text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+  
+  .text-5xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+}

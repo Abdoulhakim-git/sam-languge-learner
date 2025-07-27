@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Navigation Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .success { background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background-color: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .warning { background-color: #fff3cd; border: 1px solid #ffeaa7; color: #856404; }
+        iframe { width: 100%; height: 500px; border: 1px solid #ccc; margin: 10px 0; }
+        button { padding: 10px 20px; margin: 5px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Module Navigation Test - SamLang Niger</h1>
+    <p>Testing Module 13 and 14 navigation buttons visibility and functionality</p>
+
+    <div id="test-results"></div>
+
+    <h2>Module 13 Test</h2>
+    <button onclick="testModule(13)">Test Module 13</button>
+    <iframe id="module13-frame" src=""></iframe>
+
+    <h2>Module 14 Test</h2>
+    <button onclick="testModule(14)">Test Module 14</button>
+    <iframe id="module14-frame" src=""></iframe>
+
+    <script>
+        function logResult(message, type = 'info') {
+            const resultsDiv = document.getElementById('test-results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `test-result ${type}`;
+            resultDiv.innerHTML = `<strong>[${new Date().toLocaleTimeString()}]</strong> ${message}`;
+            resultsDiv.appendChild(resultDiv);
+            console.log(`[${type.toUpperCase()}]`, message);
+        }
+
+        async function testModule(moduleId) {
+            logResult(`Testing Module ${moduleId}...`, 'warning');
+            
+            try {
+                // Test API endpoint first
+                const apiResponse = await fetch(`/api/modules/${moduleId}`);
+                if (!apiResponse.ok) {
+                    logResult(`❌ API Error: Module ${moduleId} API returned ${apiResponse.status}`, 'error');
+                    return;
+                }
+                
+                const moduleData = await apiResponse.json();
+                logResult(`✅ API Success: Module ${moduleId} data loaded (${moduleData.lessons?.length || 0} lessons)`, 'success');
+                
+                // Load the module page in iframe
+                const iframe = document.getElementById(`module${moduleId}-frame`);
+                iframe.src = `/module/${moduleId}`;
+                
+                // Wait for iframe to load
+                iframe.onload = () => {
+                    logResult(`✅ Module ${moduleId} page loaded in iframe`, 'success');
+                    
+                    // Try to access iframe content (may fail due to CORS)
+                    try {
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        const partButtons = iframeDoc.querySelectorAll('button:contains("Part")');
+                        logResult(`🔍 Found ${partButtons.length} Part buttons in Module ${moduleId}`, partButtons.length > 0 ? 'success' : 'error');
+                        
+                        // Check for navigation specifically
+                        const navigation = iframeDoc.querySelector('[class*="justify-center"]');
+                        if (navigation) {
+                            logResult(`✅ Navigation section found in Module ${moduleId}`, 'success');
+                        } else {
+                            logResult(`❌ Navigation section NOT found in Module ${moduleId}`, 'error');
+                        }
+                        
+                    } catch (e) {
+                        logResult(`⚠️ Cannot access iframe content for Module ${moduleId} (CORS): ${e.message}`, 'warning');
+                    }
+                };
+                
+            } catch (error) {
+                logResult(`❌ Test failed for Module ${moduleId}: ${error.message}`, 'error');
+            }
+        }
+
+        // Auto-test both modules on page load
+        window.onload = () => {
+            logResult('🚀 Starting automatic module tests...', 'warning');
+            setTimeout(() => testModule(13), 1000);
+            setTimeout(() => testModule(14), 2000);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Modules 13 & 14</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 5px; }
+        .pass { background-color: #d4edda; color: #155724; }
+        .fail { background-color: #f8d7da; color: #721c24; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+        .api-data { background: #f8f9fa; padding: 10px; border-radius: 5px; font-family: monospace; max-height: 400px; overflow-y: auto; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Debug Modules 13 & 14 - Part 2 Issues</h1>
+    
+    <div id="test-results">
+        <!-- Results will appear here -->
+    </div>
+
+    <button onclick="testModule13API()">Test Module 13 API</button>
+    <button onclick="testModule14API()">Test Module 14 API</button>
+    <button onclick="openModule13()">Open Module 13 (Part 2)</button>
+    <button onclick="openModule14()">Open Module 14 (Part 2)</button>
+    <button onclick="clearResults()">Clear Results</button>
+
+    <script>
+        function addResult(message, type = 'info') {
+            const resultDiv = document.createElement('div');
+            resultDiv.className = `test-result ${type}`;
+            resultDiv.innerHTML = message;
+            document.getElementById('test-results').appendChild(resultDiv);
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        async function testModule13API() {
+            addResult('🔍 Testing Module 13 API data structure...');
+            try {
+                const response = await fetch('/api/modules/13');
+                const data = await response.json();
+                
+                addResult(`✅ Module 13 API responded (${response.status})`, 'pass');
+                addResult(`📊 Module 13 has ${data.lessons.length} lessons`, 'pass');
+                
+                // Check lesson 2 (index 1)
+                if (data.lessons[1]) {
+                    const lesson2 = data.lessons[1];
+                    addResult(`📝 Lesson 2 Title: "${lesson2.title}"`, 'pass');
+                    
+                    if (lesson2.content.storyFrameworks) {
+                        addResult(`✅ Lesson 2 has ${lesson2.content.storyFrameworks.length} story frameworks`, 'pass');
+                    } else {
+                        addResult(`❌ Lesson 2 missing storyFrameworks`, 'fail');
+                    }
+                    
+                    if (lesson2.content.practiceQuestions) {
+                        addResult(`✅ Lesson 2 has ${lesson2.content.practiceQuestions.length} practice questions`, 'pass');
+                    } else {
+                        addResult(`❌ Lesson 2 missing practiceQuestions`, 'fail');
+                    }
+                    
+                    // Show the actual data structure
+                    addResult('<div class="api-data">Module 13 Lesson 2 Content:\n' + JSON.stringify(lesson2.content, null, 2) + '</div>');
+                }
+            } catch (error) {
+                addResult(`❌ Module 13 API Error: ${error.message}`, 'fail');
+            }
+        }
+
+        async function testModule14API() {
+            addResult('🔍 Testing Module 14 API data structure...');
+            try {
+                const response = await fetch('/api/modules/14');
+                const data = await response.json();
+                
+                addResult(`✅ Module 14 API responded (${response.status})`, 'pass');
+                addResult(`📊 Module 14 has ${data.lessons.length} lessons`, 'pass');
+                
+                // Check lesson 2 (index 1)
+                if (data.lessons[1]) {
+                    const lesson2 = data.lessons[1];
+                    addResult(`📝 Lesson 2 Title: "${lesson2.title}"`, 'pass');
+                    
+                    if (lesson2.content.questionStructure) {
+                        addResult(`✅ Lesson 2 has questionStructure with ${lesson2.content.questionStructure.examples.length} examples`, 'pass');
+                    } else {
+                        addResult(`❌ Lesson 2 missing questionStructure`, 'fail');
+                    }
+                    
+                    if (lesson2.content.timeExpressions) {
+                        addResult(`✅ Lesson 2 has ${lesson2.content.timeExpressions.length} time expressions`, 'pass');
+                    } else {
+                        addResult(`❌ Lesson 2 missing timeExpressions`, 'fail');
+                    }
+                    
+                    // Show the actual data structure
+                    addResult('<div class="api-data">Module 14 Lesson 2 Content:\n' + JSON.stringify(lesson2.content, null, 2) + '</div>');
+                }
+            } catch (error) {
+                addResult(`❌ Module 14 API Error: ${error.message}`, 'fail');
+            }
+        }
+
+        function openModule13() {
+            addResult('🚀 Opening Module 13... Check browser console for React debug logs');
+            window.open('/module/13', '_blank');
+        }
+
+        function openModule14() {
+            addResult('🚀 Opening Module 14... Check browser console for React debug logs');
+            window.open('/module/14', '_blank');
+        }
+
+        function clearResults() {
+            document.getElementById('test-results').innerHTML = '';
+        }
+
+        // Auto-run on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            addResult('🧪 Debug tool ready! Click buttons to test modules.');
+            addResult('💡 Instructions: First test API data, then open modules and check Part 2 functionality.');
+        });
+    </script>
+</body>
+</html>

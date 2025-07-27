@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SamLang Niger - Complete Module Verification</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .module { background: white; padding: 15px; margin: 10px 0; border-radius: 8px; border-left: 4px solid #4caf50; }
+        .complete { border-left-color: #4caf50; }
+        .incomplete { border-left-color: #f44336; }
+        .checking { border-left-color: #ff9800; }
+        .status { font-weight: bold; padding: 5px 10px; border-radius: 4px; display: inline-block; margin: 5px 0; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        .warning { background: #fff3cd; color: #856404; }
+        button { background: #007bff; color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+        .results { max-height: 400px; overflow-y: auto; background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <h1>🔍 SamLang Niger - Complete Module Verification System</h1>
+    <p>Verifying all 15 learning modules are complete and functional for students.</p>
+    
+    <button onclick="verifyAllModules()">🔍 Verify All 15 Modules</button>
+    <button onclick="testAudioSystems()">🔊 Test Audio Systems</button>
+    <button onclick="checkRoutingConsistency()">🔀 Check Routing</button>
+    
+    <div id="results" class="results"></div>
+    
+    <div id="modules"></div>
+    
+    <script>
+        const modules = [
+            { id: 1, title: "Alphabet & Numbers", type: "html", expectedParts: 2 },
+            { id: 2, title: "Greetings & Introductions", type: "html", expectedParts: 2 },
+            { id: 3, title: "Family & Pronouns", type: "html", expectedParts: 2 },
+            { id: 4, title: "Colors & Shapes", type: "html", expectedParts: 2 },
+            { id: 5, title: "Animals & Nature", type: "html", expectedParts: 2 },
+            { id: 6, title: "Food & Animals", type: "html", expectedParts: 2 },
+            { id: 7, title: "Present Continuous", type: "html", expectedParts: 2 },
+            { id: 8, title: "Adjectives & Prepositions", type: "html", expectedParts: 2 },
+            { id: 9, title: "Time & Questions", type: "html", expectedParts: 2 },
+            { id: 10, title: "Hobbies & Past Tense", type: "html", expectedParts: 2 },
+            { id: 11, title: "The Weather & The Seasons", type: "api", expectedParts: 2 },
+            { id: 12, title: "Around Town & Giving Directions", type: "api", expectedParts: 2 },
+            { id: 13, title: "Telling Stories (Irregular Past Tense)", type: "api", expectedParts: 2 },
+            { id: 14, title: "Future Plans (Going To)", type: "api", expectedParts: 2 },
+            { id: 15, title: "Comparing & Feeling (Adjectives)", type: "api", expectedParts: 2 }
+        ];
+        
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `status ${type === 'success' ? 'success' : type === 'error' ? 'error' : 'warning'}`;
+            div.innerHTML = `${new Date().toLocaleTimeString()}: ${message}`;
+            results.appendChild(div);
+            results.scrollTop = results.scrollHeight;
+        }
+        
+        async function verifyAllModules() {
+            log('🔍 Starting complete verification of all 15 modules...', 'info');
+            const modulesContainer = document.getElementById('modules');
+            modulesContainer.innerHTML = '';
+            
+            let completeModules = 0;
+            let incompleteModules = 0;
+            
+            for (const module of modules) {
+                const moduleDiv = document.createElement('div');
+                moduleDiv.className = 'module checking';
+                moduleDiv.innerHTML = `<h3>Module ${module.id}: ${module.title}</h3><p>Checking...</p>`;
+                modulesContainer.appendChild(moduleDiv);
+                
+                try {
+                    let isComplete = false;
+                    let details = '';
+                    
+                    if (module.type === 'html') {
+                        // Check HTML modules for structure
+                        const response = await fetch(`/module/${module.id}`);
+                        if (response.ok) {
+                            const html = await response.text();
+                            const partMatches = html.match(/Part [0-9]/g);
+                            const partCount = partMatches ? partMatches.length : 0;
+                            const hasAudio = html.includes('onclick="playAudio');
+                            const hasPractice = html.includes('Practice') || html.includes('practice');
+                            
+                            isComplete = partCount >= module.expectedParts && hasAudio;
+                            details = `Parts: ${partCount}/${module.expectedParts}, Audio: ${hasAudio ? '✅' : '❌'}, Practice: ${hasPractice ? '✅' : '❌'}`;
+                        } else {
+                            details = `HTTP Error: ${response.status}`;
+                        }
+                    } else {
+                        // Check API modules for lessons
+                        const response = await fetch(`/api/modules/${module.id}`);
+                        if (response.ok) {
+                            const data = await response.json();
+                            const lessonCount = data.lessons ? data.lessons.length : 0;
+                            
+                            isComplete = lessonCount >= module.expectedParts;
+                            details = `Lessons: ${lessonCount}/${module.expectedParts}, API Response: ✅`;
+                        } else {
+                            details = `API Error: ${response.status}`;
+                        }
+                    }
+                    
+                    if (isComplete) {
+                        moduleDiv.className = 'module complete';
+                        moduleDiv.innerHTML = `<h3>Module ${module.id}: ${module.title} ✅</h3><p>${details}</p>`;
+                        completeModules++;
+                        log(`✅ Module ${module.id} complete: ${details}`, 'success');
+                    } else {
+                        moduleDiv.className = 'module incomplete';
+                        moduleDiv.innerHTML = `<h3>Module ${module.id}: ${module.title} ❌</h3><p>${details}</p>`;
+                        incompleteModules++;
+                        log(`❌ Module ${module.id} incomplete: ${details}`, 'error');
+                    }
+                    
+                } catch (error) {
+                    moduleDiv.className = 'module incomplete';
+                    moduleDiv.innerHTML = `<h3>Module ${module.id}: ${module.title} ❌</h3><p>Error: ${error.message}</p>`;
+                    incompleteModules++;
+                    log(`❌ Module ${module.id} error: ${error.message}`, 'error');
+                }
+            }
+            
+            log(`📊 Verification Complete: ${completeModules}/15 modules complete, ${incompleteModules} need fixes`, 
+                completeModules === 15 ? 'success' : 'warning');
+            
+            if (completeModules === 15) {
+                log('🎉 ALL MODULES COMPLETE! SamLang Niger is ready for students!', 'success');
+            }
+        }
+        
+        async function testAudioSystems() {
+            log('🔊 Testing audio systems...', 'info');
+            
+            if ('speechSynthesis' in window) {
+                const voices = speechSynthesis.getVoices();
+                const englishVoices = voices.filter(voice => voice.lang.startsWith('en'));
+                
+                log(`🔊 Speech synthesis available: ${voices.length} total voices, ${englishVoices.length} English voices`, 'success');
+                
+                if (englishVoices.length > 0) {
+                    const testUtterance = new SpeechSynthesisUtterance('Testing Teacher Sam audio system. If you hear this in English, the audio fix is working correctly!');
+                    testUtterance.lang = 'en-US';
+                    testUtterance.rate = 0.8;
+                    testUtterance.voice = englishVoices[0];
+                    
+                    speechSynthesis.speak(testUtterance);
+                    log(`✅ Audio test started with voice: ${englishVoices[0].name}`, 'success');
+                } else {
+                    log('❌ No English voices available for audio testing', 'error');
+                }
+            } else {
+                log('❌ Speech synthesis not supported in this browser', 'error');
+            }
+        }
+        
+        async function checkRoutingConsistency() {
+            log('🔀 Checking routing consistency...', 'info');
+            
+            // Check HTML routes (1-10)
+            let htmlRoutesWorking = 0;
+            for (let i = 1; i <= 10; i++) {
+                try {
+                    const response = await fetch(`/module/${i}`, { method: 'HEAD' });
+                    if (response.ok) htmlRoutesWorking++;
+                } catch (error) {
+                    log(`❌ HTML route /module/${i} error: ${error.message}`, 'error');
+                }
+            }
+            
+            // Check API routes (11-15)
+            let apiRoutesWorking = 0;
+            for (let i = 11; i <= 15; i++) {
+                try {
+                    const response = await fetch(`/api/modules/${i}`);
+                    if (response.ok) apiRoutesWorking++;
+                } catch (error) {
+                    log(`❌ API route /api/modules/${i} error: ${error.message}`, 'error');
+                }
+            }
+            
+            log(`📊 Routing Status: HTML Routes (1-10): ${htmlRoutesWorking}/10, API Routes (11-15): ${apiRoutesWorking}/5`, 
+                (htmlRoutesWorking === 10 && apiRoutesWorking === 5) ? 'success' : 'warning');
+            
+            if (htmlRoutesWorking === 10 && apiRoutesWorking === 5) {
+                log('✅ All routing working correctly!', 'success');
+            }
+        }
+        
+        // Auto-start verification on page load
+        window.addEventListener('load', verifyAllModules);
+    </script>
+</body>
+</html>

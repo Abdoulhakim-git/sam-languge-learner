@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Parts Fix Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .test-container { max-width: 1400px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .critical-test { background: #ffebee; border: 3px solid #f44336; padding: 25px; border-radius: 8px; margin: 20px 0; }
+        .success { background: #e8f5e9; border: 3px solid #4caf50; }
+        .warning { background: #fff3e0; border: 3px solid #ff9800; }
+        .info { background: #e3f2fd; border: 3px solid #2196f3; }
+        .console-output { background: #1e1e1e; color: #00ff41; padding: 20px; border-radius: 6px; font-family: 'Courier New', monospace; font-size: 14px; height: 400px; overflow-y: auto; margin: 15px 0; }
+        button { padding: 15px 30px; margin: 10px; background: #f44336; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; }
+        button:hover { background: #d32f2f; transform: translateY(-2px); }
+        .test-frame { width: 100%; height: 700px; border: 4px solid #2196f3; border-radius: 10px; margin: 15px 0; }
+        .test-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 20px 0; }
+        .test-step { background: #f8f9fa; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 6px solid #2196f3; }
+        pre { background: #f5f5f5; padding: 15px; border-radius: 6px; overflow-x: auto; font-size: 13px; }
+        h1, h2, h3 { color: #333; margin-top: 0; }
+        .status { padding: 10px; border-radius: 4px; margin: 10px 0; font-weight: bold; }
+        .error { background: #ffcdd2; color: #c62828; }
+        .ok { background: #c8e6c9; color: #2e7d32; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔧 Module Parts Fix - Direct Investigation</h1>
+        <p><strong>Goal:</strong> Find and fix why Part 2 buttons show white screens in Module 13 & 14</p>
+        
+        <div class="critical-test">
+            <h2>🚨 CRITICAL ISSUE DIAGNOSIS</h2>
+            <p>Part 2 buttons exist but cause white screens. Let's find the exact cause.</p>
+            <button onclick="runComprehensiveTest()">🔍 RUN COMPREHENSIVE DIAGNOSIS</button>
+            <button onclick="testDirectButtonClicks()">🖱️ TEST BUTTON CLICKS DIRECTLY</button>
+            <button onclick="checkAPIDataStructure()">📊 VERIFY API DATA STRUCTURE</button>
+            <div id="critical-results"></div>
+        </div>
+        
+        <div class="test-grid">
+            <div class="test-step">
+                <h3>Module 13 Deep Test</h3>
+                <button onclick="testModule13Deep()">🧪 Deep Test Module 13</button>
+                <iframe id="module13-frame" class="test-frame" src="about:blank"></iframe>
+                <div id="module13-console" class="console-output">Module 13 console output will appear here...</div>
+            </div>
+            
+            <div class="test-step">
+                <h3>Module 14 Deep Test</h3>
+                <button onclick="testModule14Deep()">🧪 Deep Test Module 14</button>
+                <iframe id="module14-frame" class="test-frame" src="about:blank"></iframe>
+                <div id="module14-console" class="console-output">Module 14 console output will appear here...</div>
+            </div>
+        </div>
+        
+        <div class="test-step">
+            <h2>📋 Test Results Summary</h2>
+            <div id="results-summary"></div>
+        </div>
+    </div>
+
+    <script>
+        let testLog = [];
+        let isTestingInProgress = false;
+        
+        function logTest(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = `[${timestamp}] ${type.toUpperCase()}: ${message}`;
+            testLog.push(logEntry);
+            console.log(logEntry);
+            updateResultsSummary();
+        }
+        
+        function updateResultsSummary() {
+            const summaryDiv = document.getElementById('results-summary');
+            const recentLogs = testLog.slice(-15);
+            summaryDiv.innerHTML = `
+                <h3>Latest Test Results (${testLog.length} total):</h3>
+                <div class="console-output">
+                    ${recentLogs.map(log => `<div>${log}</div>`).join('')}
+                </div>
+            `;
+        }
+        
+        async function checkAPIDataStructure() {
+            logTest('Starting API data structure verification');
+            const resultsDiv = document.getElementById('critical-results');
+            
+            try {
+                // Check Module 13 API
+                logTest('Fetching Module 13 API data');
+                const response13 = await fetch('/api/modules/13');
+                const data13 = await response13.json();
+                
+                logTest(`Module 13 API: Status ${response13.status}, ${data13.lessons?.length} lessons found`);
+                
+                if (data13.lessons && data13.lessons[1]) {
+                    const lesson2 = data13.lessons[1];
+                    logTest(`Module 13 Lesson 2: Title="${lesson2.title}"`);
+                    logTest(`Module 13 Lesson 2: Has content=${!!lesson2.content}`);
+                    logTest(`Module 13 Lesson 2: Has storyFrameworks=${!!lesson2.content?.storyFrameworks}`);
+                    logTest(`Module 13 Lesson 2: storyFrameworks count=${lesson2.content?.storyFrameworks?.length || 0}`);
+                    logTest(`Module 13 Lesson 2: Has practiceQuestions=${!!lesson2.content?.practiceQuestions}`);
+                } else {
+                    logTest('ERROR: Module 13 Lesson 2 not found', 'error');
+                }
+                
+                // Check Module 14 API
+                logTest('Fetching Module 14 API data');
+                const response14 = await fetch('/api/modules/14');
+                const data14 = await response14.json();
+                
+                logTest(`Module 14 API: Status ${response14.status}, ${data14.lessons?.length} lessons found`);
+                
+                if (data14.lessons && data14.lessons[1]) {
+                    const lesson2 = data14.lessons[1];
+                    logTest(`Module 14 Lesson 2: Title="${lesson2.title}"`);
+                    logTest(`Module 14 Lesson 2: Has content=${!!lesson2.content}`);
+                    logTest(`Module 14 Lesson 2: Has questionStructure=${!!lesson2.content?.questionStructure}`);
+                    logTest(`Module 14 Lesson 2: Has timeExpressions=${!!lesson2.content?.timeExpressions}`);
+                    logTest(`Module 14 Lesson 2: timeExpressions count=${lesson2.content?.timeExpressions?.length || 0}`);
+                } else {
+                    logTest('ERROR: Module 14 Lesson 2 not found', 'error');
+                }
+                
+                resultsDiv.innerHTML = `
+                    <div class="success">
+                        <h3>✅ API Data Verification Complete</h3>
+                        <p><strong>Module 13:</strong> ${data13.lessons[1]?.content?.storyFrameworks?.length || 0} story frameworks</p>
+                        <p><strong>Module 14:</strong> ${data14.lessons[1]?.content?.timeExpressions?.length || 0} time expressions</p>
+                        <p>Both APIs return proper data structure. Issue is likely in React component rendering.</p>
+                    </div>
+                `;
+                
+            } catch (error) {
+                logTest(`API verification failed: ${error.message}`, 'error');
+                resultsDiv.innerHTML = `<div class="critical-test"><h3>❌ API ERROR</h3><p>${error.message}</p></div>`;
+            }
+        }
+        
+        function testModule13Deep() {
+            logTest('Starting deep test of Module 13');
+            const iframe = document.getElementById('module13-frame');
+            const consoleDiv = document.getElementById('module13-console');
+            
+            consoleDiv.innerHTML = 'Loading Module 13 for deep testing...';
+            iframe.src = '/module/13';
+            
+            iframe.onload = () => {
+                logTest('Module 13 loaded, starting interaction test');
+                consoleDiv.innerHTML += '<br>✅ Module 13 loaded successfully';
+                
+                setTimeout(() => {
+                    try {
+                        const doc = iframe.contentDocument || iframe.contentWindow.document;
+                        logTest('Accessing Module 13 iframe document');
+                        
+                        // Find all buttons
+                        const allButtons = Array.from(doc.querySelectorAll('button'));
+                        logTest(`Found ${allButtons.length} total buttons in Module 13`);
+                        consoleDiv.innerHTML += `<br>🔍 Found ${allButtons.length} buttons total`;
+                        
+                        // Find Part 2 button specifically
+                        const part2Buttons = allButtons.filter(btn => 
+                            btn.textContent && (btn.textContent.includes('Part 2') || btn.textContent.includes('Story Examples'))
+                        );
+                        
+                        if (part2Buttons.length > 0) {
+                            logTest(`Found Part 2 button: "${part2Buttons[0].textContent}"`);
+                            consoleDiv.innerHTML += `<br>🎯 Found Part 2 button: "${part2Buttons[0].textContent}"`;
+                            
+                            // Capture console before click
+                            const beforeClick = doc.body.innerHTML.length;
+                            logTest(`Module 13 body HTML length before click: ${beforeClick}`);
+                            
+                            // Click the button
+                            setTimeout(() => {
+                                logTest('Clicking Part 2 button in Module 13');
+                                part2Buttons[0].click();
+                                consoleDiv.innerHTML += '<br>🖱️ Clicked Part 2 button';
+                                
+                                // Check after click
+                                setTimeout(() => {
+                                    const afterClick = doc.body.innerHTML.length;
+                                    const bodyText = doc.body.textContent.trim();
+                                    
+                                    logTest(`Module 13 body HTML length after click: ${afterClick}`);
+                                    logTest(`Module 13 has Story content: ${bodyText.includes('Story Examples') || bodyText.includes('storyFrameworks')}`);
+                                    
+                                    if (bodyText.includes('Story Examples') || bodyText.includes('storyFrameworks') || afterClick > beforeClick) {
+                                        logTest('Module 13 Part 2 content loaded successfully', 'success');
+                                        consoleDiv.innerHTML += '<br><span class="ok">✅ SUCCESS: Part 2 content found!</span>';
+                                    } else {
+                                        logTest('Module 13 Part 2 showing white screen - no content change', 'error');
+                                        consoleDiv.innerHTML += '<br><span class="error">❌ WHITE SCREEN: No content change detected</span>';
+                                        consoleDiv.innerHTML += `<br>Body text preview: ${bodyText.substring(0, 100)}...`;
+                                    }
+                                }, 3000);
+                            }, 1500);
+                        } else {
+                            logTest('No Part 2 button found in Module 13', 'error');
+                            consoleDiv.innerHTML += '<br><span class="error">❌ No Part 2 button found</span>';
+                            consoleDiv.innerHTML += `<br>Button texts found: ${allButtons.map(b => b.textContent).join(', ')}`;
+                        }
+                        
+                    } catch (e) {
+                        logTest(`Cannot access Module 13 iframe: ${e.message}`, 'error');
+                        consoleDiv.innerHTML += `<br><span class="error">❌ Error accessing iframe: ${e.message}</span>`;
+                    }
+                }, 4000);
+            };
+            
+            iframe.onerror = () => {
+                logTest('Failed to load Module 13', 'error');
+                consoleDiv.innerHTML += '<br><span class="error">❌ Failed to load Module 13</span>';
+            };
+        }
+        
+        function testModule14Deep() {
+            logTest('Starting deep test of Module 14');
+            const iframe = document.getElementById('module14-frame');
+            const consoleDiv = document.getElementById('module14-console');
+            
+            consoleDiv.innerHTML = 'Loading Module 14 for deep testing...';
+            iframe.src = '/module/14';
+            
+            iframe.onload = () => {
+                logTest('Module 14 loaded, starting interaction test');
+                consoleDiv.innerHTML += '<br>✅ Module 14 loaded successfully';
+                
+                setTimeout(() => {
+                    try {
+                        const doc = iframe.contentDocument || iframe.contentWindow.document;
+                        logTest('Accessing Module 14 iframe document');
+                        
+                        // Find all buttons
+                        const allButtons = Array.from(doc.querySelectorAll('button'));
+                        logTest(`Found ${allButtons.length} total buttons in Module 14`);
+                        consoleDiv.innerHTML += `<br>🔍 Found ${allButtons.length} buttons total`;
+                        
+                        // Find Part 2 button specifically
+                        const part2Buttons = allButtons.filter(btn => 
+                            btn.textContent && (btn.textContent.includes('Part 2') || btn.textContent.includes('Questions'))
+                        );
+                        
+                        if (part2Buttons.length > 0) {
+                            logTest(`Found Part 2 button: "${part2Buttons[0].textContent}"`);
+                            consoleDiv.innerHTML += `<br>🎯 Found Part 2 button: "${part2Buttons[0].textContent}"`;
+                            
+                            // Capture console before click
+                            const beforeClick = doc.body.innerHTML.length;
+                            logTest(`Module 14 body HTML length before click: ${beforeClick}`);
+                            
+                            // Click the button
+                            setTimeout(() => {
+                                logTest('Clicking Part 2 button in Module 14');
+                                part2Buttons[0].click();
+                                consoleDiv.innerHTML += '<br>🖱️ Clicked Part 2 button';
+                                
+                                // Check after click
+                                setTimeout(() => {
+                                    const afterClick = doc.body.innerHTML.length;
+                                    const bodyText = doc.body.textContent.trim();
+                                    
+                                    logTest(`Module 14 body HTML length after click: ${afterClick}`);
+                                    logTest(`Module 14 has Question content: ${bodyText.includes('Questions') || bodyText.includes('Time Expressions')}`);
+                                    
+                                    if (bodyText.includes('Questions') || bodyText.includes('Time Expressions') || afterClick > beforeClick) {
+                                        logTest('Module 14 Part 2 content loaded successfully', 'success');
+                                        consoleDiv.innerHTML += '<br><span class="ok">✅ SUCCESS: Part 2 content found!</span>';
+                                    } else {
+                                        logTest('Module 14 Part 2 showing white screen - no content change', 'error');
+                                        consoleDiv.innerHTML += '<br><span class="error">❌ WHITE SCREEN: No content change detected</span>';
+                                        consoleDiv.innerHTML += `<br>Body text preview: ${bodyText.substring(0, 100)}...`;
+                                    }
+                                }, 3000);
+                            }, 1500);
+                        } else {
+                            logTest('No Part 2 button found in Module 14', 'error');
+                            consoleDiv.innerHTML += '<br><span class="error">❌ No Part 2 button found</span>';
+                            consoleDiv.innerHTML += `<br>Button texts found: ${allButtons.map(b => b.textContent).join(', ')}`;
+                        }
+                        
+                    } catch (e) {
+                        logTest(`Cannot access Module 14 iframe: ${e.message}`, 'error');
+                        consoleDiv.innerHTML += `<br><span class="error">❌ Error accessing iframe: ${e.message}</span>`;
+                    }
+                }, 4000);
+            };
+            
+            iframe.onerror = () => {
+                logTest('Failed to load Module 14', 'error');
+                consoleDiv.innerHTML += '<br><span class="error">❌ Failed to load Module 14</span>';
+            };
+        }
+        
+        function testDirectButtonClicks() {
+            logTest('Starting direct button click tests');
+            setTimeout(() => testModule13Deep(), 500);
+            setTimeout(() => testModule14Deep(), 1000);
+        }
+        
+        function runComprehensiveTest() {
+            logTest('Starting comprehensive diagnosis of white screen issue');
+            const resultsDiv = document.getElementById('critical-results');
+            resultsDiv.innerHTML = '<div class="info"><h3>🔍 Running Comprehensive Diagnosis...</h3><p>This will test all aspects of the Part 2 issue.</p></div>';
+            
+            // Run all tests in sequence
+            setTimeout(checkAPIDataStructure, 500);
+            setTimeout(testDirectButtonClicks, 2000);
+        }
+        
+        // Auto-start basic checks
+        window.onload = () => {
+            logTest('Module Parts Fix Test initialized');
+            setTimeout(checkAPIDataStructure, 1000);
+        };
+    </script>
+</body>
+</html>

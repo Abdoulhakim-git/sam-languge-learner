@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Module 13 & 14 Fix Verification</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+        .test { margin: 20px 0; padding: 20px; border: 2px solid #ddd; }
+        iframe { width: 100%; height: 600px; border: 1px solid #ccc; margin: 10px 0; }
+        button { padding: 10px 20px; margin: 5px; background: #2196f3; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Module 13 & 14 Fix Verification</h1>
+    <p>Testing if the white screen issue is resolved after removing server module routes.</p>
+
+    <div class="test">
+        <h2>Module 13 Test</h2>
+        <button onclick="testModule13()">Test Module 13</button>
+        <div id="result13">Click button to test</div>
+        <iframe id="frame13" src="about:blank"></iframe>
+    </div>
+
+    <div class="test">
+        <h2>Module 14 Test</h2>
+        <button onclick="testModule14()">Test Module 14</button>
+        <div id="result14">Click button to test</div>
+        <iframe id="frame14" src="about:blank"></iframe>
+    </div>
+
+    <script>
+        function testModule13() {
+            const frame = document.getElementById('frame13');
+            const result = document.getElementById('result13');
+            
+            result.innerHTML = 'Loading Module 13...';
+            frame.src = '/module/13';
+            
+            frame.onload = function() {
+                setTimeout(() => {
+                    try {
+                        const doc = frame.contentDocument;
+                        
+                        if (!doc) {
+                            result.innerHTML = '<span class="error">❌ Cannot access frame content</span>';
+                            return;
+                        }
+                        
+                        const bodyText = doc.body.textContent;
+                        
+                        // Check for React content vs HTML content
+                        const hasReactContent = bodyText.includes('Module 13') || bodyText.includes('Irregular Past Tense');
+                        const hasServerHTML = bodyText.includes('SamLang Niger - Module') && !hasReactContent;
+                        const hasNavButtons = Array.from(doc.querySelectorAll('button')).some(btn => 
+                            btn.textContent && btn.textContent.includes('Part 2')
+                        );
+                        
+                        if (hasReactContent && hasNavButtons) {
+                            result.innerHTML = '<span class="success">✅ SUCCESS: Module 13 loaded with React and Part 2 button!</span>';
+                        } else if (hasServerHTML) {
+                            result.innerHTML = '<span class="error">❌ FAIL: Still loading old server HTML</span>';
+                        } else {
+                            result.innerHTML = '<span class="error">❌ FAIL: Content not loading properly</span>';
+                            result.innerHTML += '<br>Body text: ' + bodyText.substring(0, 100) + '...';
+                        }
+                        
+                    } catch (e) {
+                        result.innerHTML = '<span class="error">❌ Error checking content: ' + e.message + '</span>';
+                    }
+                }, 3000);
+            };
+        }
+        
+        function testModule14() {
+            const frame = document.getElementById('frame14');
+            const result = document.getElementById('result14');
+            
+            result.innerHTML = 'Loading Module 14...';
+            frame.src = '/module/14';
+            
+            frame.onload = function() {
+                setTimeout(() => {
+                    try {
+                        const doc = frame.contentDocument;
+                        
+                        if (!doc) {
+                            result.innerHTML = '<span class="error">❌ Cannot access frame content</span>';
+                            return;
+                        }
+                        
+                        const bodyText = doc.body.textContent;
+                        
+                        // Check for React content vs HTML content
+                        const hasReactContent = bodyText.includes('Module 14') || bodyText.includes('Future Plans');
+                        const hasServerHTML = bodyText.includes('SamLang Niger - Module') && !hasReactContent;
+                        const hasNavButtons = Array.from(doc.querySelectorAll('button')).some(btn => 
+                            btn.textContent && btn.textContent.includes('Part 2')
+                        );
+                        
+                        if (hasReactContent && hasNavButtons) {
+                            result.innerHTML = '<span class="success">✅ SUCCESS: Module 14 loaded with React and Part 2 button!</span>';
+                        } else if (hasServerHTML) {
+                            result.innerHTML = '<span class="error">❌ FAIL: Still loading old server HTML</span>';
+                        } else {
+                            result.innerHTML = '<span class="error">❌ FAIL: Content not loading properly</span>';
+                            result.innerHTML += '<br>Body text: ' + bodyText.substring(0, 100) + '...';
+                        }
+                        
+                    } catch (e) {
+                        result.innerHTML = '<span class="error">❌ Error checking content: ' + e.message + '</span>';
+                    }
+                }, 3000);
+            };
+        }
+    </script>
+</body>
+</html>

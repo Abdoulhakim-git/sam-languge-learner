@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SamLang Niger - 15 Modules Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        }
+        .header {
+            text-align: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .module-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .module-card:hover {
+            transform: translateY(-5px);
+        }
+        .module-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .module-description {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .test-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+            margin-bottom: 5px;
+        }
+        .test-button:hover {
+            opacity: 0.9;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.success {
+            background: #10b981;
+            color: white;
+        }
+        .status.error {
+            background: #ef4444;
+            color: white;
+        }
+        .status.loading {
+            background: #f59e0b;
+            color: white;
+        }
+        .summary {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .success-count {
+            color: #10b981;
+            font-weight: bold;
+        }
+        .error-count {
+            color: #ef4444;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🚀 SamLang Niger - 15 Modules Verification Test</h1>
+        <p>This page tests all 15 learning modules to ensure they're working correctly.</p>
+        <p><strong>Version: v3.0.0-EXPANDED</strong></p>
+    </div>
+
+    <div class="summary">
+        <h2>Test Summary</h2>
+        <p>API Tests: <span id="api-success" class="success-count">0</span> success, <span id="api-errors" class="error-count">0</span> errors</p>
+        <p>Page Tests: <span id="page-success" class="success-count">0</span> success, <span id="page-errors" class="error-count">0</span> errors</p>
+        <button onclick="runAllTests()" class="test-button">🔄 Run All Tests</button>
+    </div>
+
+    <div class="module-grid" id="modules"></div>
+
+    <script>
+        const modules = [
+            { id: 1, title: "Alphabet & Numbers", description: "Learn letters A-Z and numbers 1-20" },
+            { id: 2, title: "Greetings & Introductions", description: "Common greetings and self-introduction" },
+            { id: 3, title: "Family, Pronouns & Possessives", description: "Family members and pronouns" },
+            { id: 4, title: "Classroom, Colors & Shapes", description: "School objects, colors, and shapes" },
+            { id: 5, title: "Verbs & Daily Routines", description: "Action verbs and daily activities" },
+            { id: 6, title: "Food, Animals & Plurals", description: "Food items and animals" },
+            { id: 7, title: "Present Continuous & Abilities", description: "Actions happening now and abilities" },
+            { id: 8, title: "Adjectives & Prepositions", description: "Descriptive words and positions" },
+            { id: 9, title: "Time & Questions", description: "Clock reading and question words" },
+            { id: 10, title: "Hobbies & Past Tense", description: "Leisure activities and past tense" },
+            { id: 11, title: "Weather & Seasons", description: "Weather conditions and seasons" },
+            { id: 12, title: "Around Town & Directions", description: "City places and navigation" },
+            { id: 13, title: "Irregular Past Tense", description: "Special verb forms for storytelling" },
+            { id: 14, title: "Future Plans (Going To)", description: "Future intentions and plans" },
+            { id: 15, title: "Comparing & Feelings", description: "Comparative adjectives and emotions" }
+        ];
+
+        let apiSuccessCount = 0;
+        let apiErrorCount = 0;
+        let pageSuccessCount = 0;
+        let pageErrorCount = 0;
+
+        function updateCounters() {
+            document.getElementById('api-success').textContent = apiSuccessCount;
+            document.getElementById('api-errors').textContent = apiErrorCount;
+            document.getElementById('page-success').textContent = pageSuccessCount;
+            document.getElementById('page-errors').textContent = pageErrorCount;
+        }
+
+        function createModuleCard(module) {
+            return `
+                <div class="module-card">
+                    <div class="module-title">Module ${module.id}: ${module.title}</div>
+                    <div class="module-description">${module.description}</div>
+                    <button onclick="testAPI(${module.id})" class="test-button">Test API</button>
+                    <span id="api-status-${module.id}" class="status loading">Not tested</span>
+                    <br>
+                    <button onclick="testPage(${module.id})" class="test-button">Test Page</button>
+                    <span id="page-status-${module.id}" class="status loading">Not tested</span>
+                </div>
+            `;
+        }
+
+        function renderModules() {
+            const container = document.getElementById('modules');
+            container.innerHTML = modules.map(createModuleCard).join('');
+        }
+
+        async function testAPI(moduleId) {
+            const statusElement = document.getElementById(`api-status-${moduleId}`);
+            statusElement.textContent = 'Testing...';
+            statusElement.className = 'status loading';
+
+            try {
+                const response = await fetch(`/api/modules/${moduleId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    statusElement.textContent = `✓ API OK (${data.title})`;
+                    statusElement.className = 'status success';
+                    apiSuccessCount++;
+                } else {
+                    statusElement.textContent = `✗ API Error (${response.status})`;
+                    statusElement.className = 'status error';
+                    apiErrorCount++;
+                }
+            } catch (error) {
+                statusElement.textContent = `✗ API Failed (${error.message})`;
+                statusElement.className = 'status error';
+                apiErrorCount++;
+            }
+            updateCounters();
+        }
+
+        async function testPage(moduleId) {
+            const statusElement = document.getElementById(`page-status-${moduleId}`);
+            statusElement.textContent = 'Testing...';
+            statusElement.className = 'status loading';
+
+            try {
+                const response = await fetch(`/module/${moduleId}`);
+                if (response.ok) {
+                    const html = await response.text();
+                    if (html.includes('<!DOCTYPE html>')) {
+                        statusElement.textContent = '✓ Page OK';
+                        statusElement.className = 'status success';
+                        pageSuccessCount++;
+                    } else {
+                        statusElement.textContent = '✗ Page Invalid';
+                        statusElement.className = 'status error';
+                        pageErrorCount++;
+                    }
+                } else {
+                    statusElement.textContent = `✗ Page Error (${response.status})`;
+                    statusElement.className = 'status error';
+                    pageErrorCount++;
+                }
+            } catch (error) {
+                statusElement.textContent = `✗ Page Failed (${error.message})`;
+                statusElement.className = 'status error';
+                pageErrorCount++;
+            }
+            updateCounters();
+        }
+
+        async function runAllTests() {
+            // Reset counters
+            apiSuccessCount = 0;
+            apiErrorCount = 0;
+            pageSuccessCount = 0;
+            pageErrorCount = 0;
+            updateCounters();
+
+            // Test all modules
+            for (const module of modules) {
+                await testAPI(module.id);
+                await testPage(module.id);
+                // Small delay to avoid overwhelming the server
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
+
+            console.log('All tests completed!');
+            console.log(`API: ${apiSuccessCount} success, ${apiErrorCount} errors`);
+            console.log(`Pages: ${pageSuccessCount} success, ${pageErrorCount} errors`);
+        }
+
+        // Initialize the page
+        renderModules();
+        updateCounters();
+
+        // Auto-run tests on page load
+        setTimeout(runAllTests, 1000);
+    </script>
+</body>
+</html>

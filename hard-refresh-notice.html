@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SamLang Niger - Hard Refresh Required</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        .steps {
+            text-align: left;
+            margin: 20px 0;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .step {
+            margin: 15px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: background 0.3s;
+        }
+        .button:hover {
+            background: #5a6fd8;
+        }
+        .version {
+            background: #10b981;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        .warning {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 SamLang Niger Update</h1>
+        
+        <div class="version">v3.0.0-EXPANDED - Now with 15 Learning Modules!</div>
+        
+        <p>We've added 5 new exciting learning modules to SamLang Niger:</p>
+        
+        <div class="steps">
+            <div class="step">
+                <strong>Module 11:</strong> Weather & Seasons ☀️🌧️
+            </div>
+            <div class="step">
+                <strong>Module 12:</strong> Around Town & Directions 🏢🗺️
+            </div>
+            <div class="step">
+                <strong>Module 13:</strong> Irregular Past Tense 📖
+            </div>
+            <div class="step">
+                <strong>Module 14:</strong> Future Plans (Going To) 🎯
+            </div>
+            <div class="step">
+                <strong>Module 15:</strong> Comparing & Feelings 😊
+            </div>
+        </div>
+        
+        <div class="warning">
+            <strong>⚠️ Important:</strong> If you still see only 10 modules, please perform a hard refresh to clear your browser cache.
+        </div>
+        
+        <h3>How to Hard Refresh:</h3>
+        <div class="steps">
+            <div class="step">
+                <strong>Windows/Linux:</strong> Press Ctrl + F5 or Ctrl + Shift + R
+            </div>
+            <div class="step">
+                <strong>Mac:</strong> Press Cmd + Shift + R
+            </div>
+            <div class="step">
+                <strong>Mobile:</strong> Pull down to refresh the page
+            </div>
+        </div>
+        
+        <button class="button" onclick="window.location.href='/'">
+            🏠 Go to Homepage
+        </button>
+        
+        <button class="button" onclick="window.location.href='/modules'">
+            📚 View All 15 Modules
+        </button>
+        
+        <button class="button" onclick="clearCacheAndReload()">
+            🔄 Clear Cache & Reload
+        </button>
+    </div>
+    
+    <script>
+        function clearCacheAndReload() {
+            // Clear localStorage
+            localStorage.clear();
+            
+            // Clear sessionStorage
+            sessionStorage.clear();
+            
+            // Clear service worker caches
+            if ('caches' in window) {
+                caches.keys().then(cacheNames => {
+                    cacheNames.forEach(cacheName => {
+                        caches.delete(cacheName);
+                    });
+                });
+            }
+            
+            // Force hard reload
+            window.location.reload(true);
+        }
+        
+        // Auto-test modules after 3 seconds
+        setTimeout(() => {
+            console.log('Testing modules availability...');
+            fetch('/api/modules/11')
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Module 11 available:', data.title);
+                    document.body.style.borderTop = '5px solid #10b981';
+                })
+                .catch(error => {
+                    console.error('Module 11 not available:', error);
+                    document.body.style.borderTop = '5px solid #ef4444';
+                });
+        }, 3000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SamLang Niger - Force Version Check</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f0f8ff; }
+        .status { padding: 15px; margin: 10px 0; border-radius: 8px; }
+        .success { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .error { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .info { background: #e2e3e5; border: 1px solid #d6d8db; color: #383d41; }
+        button { background: #007bff; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+        .version-display { font-size: 24px; font-weight: bold; color: #28a745; }
+    </style>
+</head>
+<body>
+    <h1>🔄 SamLang Niger - Force Version Check</h1>
+    <p>This page checks if users are receiving the latest version with offline English audio fixes.</p>
+    
+    <div id="results"></div>
+    
+    <button onclick="checkVersion()">🔍 Check Current Version</button>
+    <button onclick="forceUpdate()">⚡ Force Update Now</button>
+    <button onclick="clearCache()">🧹 Clear All Caches</button>
+    <button onclick="testAudio()">🔊 Test English Audio</button>
+    
+    <script>
+        const EXPECTED_VERSION = '3.0.1-OFFLINE-FIXED';
+        
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `status ${type}`;
+            div.innerHTML = `${new Date().toLocaleTimeString()}: ${message}`;
+            results.appendChild(div);
+            results.scrollTop = results.scrollHeight;
+        }
+        
+        async function checkVersion() {
+            log('🔍 Checking current version...', 'info');
+            try {
+                const response = await fetch('/api/version?' + Date.now(), {
+                    cache: 'no-cache',
+                    headers: {
+                        'Cache-Control': 'no-cache, no-store, must-revalidate',
+                        'Pragma': 'no-cache'
+                    }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    const currentVersion = data.version;
+                    
+                    if (currentVersion === EXPECTED_VERSION) {
+                        log(`✅ SUCCESS: Version ${currentVersion} - Latest version confirmed!`, 'success');
+                        log(`📋 Features: ${data.features?.slice(0, 3).join(', ')}`, 'info');
+                    } else {
+                        log(`❌ VERSION MISMATCH: Current: ${currentVersion}, Expected: ${EXPECTED_VERSION}`, 'error');
+                        log('🔄 Users need to be updated to latest version', 'error');
+                    }
+                } else {
+                    log(`❌ Version check failed: ${response.status}`, 'error');
+                }
+            } catch (error) {
+                log(`❌ Error checking version: ${error.message}`, 'error');
+            }
+        }
+        
+        async function forceUpdate() {
+            log('⚡ Triggering force update...', 'info');
+            
+            // Clear all caches first
+            await clearCache();
+            
+            // Update localStorage
+            localStorage.setItem('samlang_version', EXPECTED_VERSION);
+            localStorage.setItem('samlang_force_update', Date.now().toString());
+            
+            log('✅ Force update triggered - reloading page...', 'success');
+            setTimeout(() => {
+                window.location.reload(true);
+            }, 2000);
+        }
+        
+        async function clearCache() {
+            log('🧹 Clearing all caches...', 'info');
+            try {
+                if ('caches' in window) {
+                    const cacheNames = await caches.keys();
+                    await Promise.all(
+                        cacheNames.map(cacheName => {
+                            log(`🗑️ Deleting cache: ${cacheName}`, 'info');
+                            return caches.delete(cacheName);
+                        })
+                    );
+                }
+                
+                // Clear localStorage
+                Object.keys(localStorage).forEach(key => {
+                    if (key.startsWith('samlang') && key !== 'samlang_version') {
+                        localStorage.removeItem(key);
+                    }
+                });
+                
+                sessionStorage.clear();
+                log('✅ All caches cleared successfully', 'success');
+            } catch (error) {
+                log(`❌ Error clearing caches: ${error.message}`, 'error');
+            }
+        }
+        
+        function testAudio() {
+            log('🔊 Testing English audio system...', 'info');
+            
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance('Hello! This is Teacher Sam testing English audio. If you hear this in English, the audio fix is working correctly!');
+                utterance.lang = 'en-US';
+                utterance.rate = 0.8;
+                utterance.pitch = 1.1;
+                
+                const voices = speechSynthesis.getVoices();
+                const englishVoice = voices.find(voice => voice.lang.startsWith('en'));
+                if (englishVoice) {
+                    utterance.voice = englishVoice;
+                    log(`✅ Using English voice: ${englishVoice.name}`, 'success');
+                } else {
+                    log('⚠️ No English voices found', 'error');
+                }
+                
+                speechSynthesis.speak(utterance);
+                log('🔊 Audio test started - listen for English voice', 'info');
+            } else {
+                log('❌ Speech synthesis not supported', 'error');
+            }
+        }
+        
+        // Auto-check version on page load
+        window.addEventListener('load', checkVersion);
+        
+        // Check every 10 seconds
+        setInterval(checkVersion, 10000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Module Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test { background: #f0f0f0; padding: 20px; margin: 20px 0; border-radius: 10px; }
+        .working { background: #d4edda; border: 2px solid #28a745; }
+        .broken { background: #f8d7da; border: 2px solid #dc3545; }
+        button { padding: 10px 20px; margin: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Simple Module Test</h1>
+    <p>Testing if modules can be accessed at all.</p>
+    
+    <button onclick="testModule(4)">Test Module 4</button>
+    <button onclick="testModule(5)">Test Module 5</button>
+    <button onclick="testAllBasic()">Test All Basic</button>
+    
+    <div id="results"></div>
+    
+    <script>
+        async function testModule(num) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML += `<div class="test">Testing Module ${num}...</div>`;
+            
+            try {
+                const response = await fetch(`/module/${num}`);
+                const html = await response.text();
+                
+                const hasContent = html.includes('TEST BASIC MODULE') || html.includes(`Module ${num}`);
+                const hasRoot = html.includes('<div id="root">');
+                const hasScript = html.includes('main.tsx');
+                
+                const status = hasContent ? 'working' : 'broken';
+                const statusText = hasContent ? 'WORKING' : 'BROKEN';
+                
+                resultsDiv.innerHTML += `
+                    <div class="test ${status}">
+                        <h3>Module ${num}: ${statusText}</h3>
+                        <p>HTTP Status: ${response.status}</p>
+                        <p>Has Content: ${hasContent ? 'YES' : 'NO'}</p>
+                        <p>Has React Root: ${hasRoot ? 'YES' : 'NO'}</p>
+                        <p>Has Script: ${hasScript ? 'YES' : 'NO'}</p>
+                        <p>Content Length: ${html.length} characters</p>
+                    </div>
+                `;
+            } catch (error) {
+                resultsDiv.innerHTML += `
+                    <div class="test broken">
+                        <h3>Module ${num}: ERROR</h3>
+                        <p>Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        async function testAllBasic() {
+            document.getElementById('results').innerHTML = '<h2>Testing All Modules...</h2>';
+            for (let i = 1; i <= 5; i++) {
+                await testModule(i);
+            }
+        }
+        
+        // Auto-test on load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                testModule(4);
+                setTimeout(() => testModule(5), 1000);
+            }, 500);
+        });
+    </script>
+</body>
+</html>

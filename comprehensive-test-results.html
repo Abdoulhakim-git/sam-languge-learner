@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Direct Module Test - Module 13 & 14</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { border: 2px solid #ccc; margin: 20px 0; padding: 20px; }
+        .error { border-color: #f44336; background: #ffebee; }
+        .success { border-color: #4caf50; background: #e8f5e9; }
+        .warning { border-color: #ff9800; background: #fff3e0; }
+        button { padding: 10px 20px; margin: 10px; background: #2196f3; color: white; border: none; cursor: pointer; }
+        iframe { width: 100%; height: 500px; border: 1px solid #ddd; }
+        pre { background: #f5f5f5; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>Direct Module Test - Debugging Part 2 White Screen</h1>
+    
+    <div class="test-section">
+        <h2>Test API Responses</h2>
+        <button onclick="testAPIs()">Test Module APIs</button>
+        <div id="api-results"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Module 13 Live</h2>
+        <button onclick="loadModule13()">Load Module 13</button>
+        <button onclick="clickPart2Module13()">Click Part 2</button>
+        <iframe id="module13" src="about:blank"></iframe>
+        <div id="module13-log"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Module 14 Live</h2>
+        <button onclick="loadModule14()">Load Module 14</button>
+        <button onclick="clickPart2Module14()">Click Part 2</button>
+        <iframe id="module14" src="about:blank"></iframe>
+        <div id="module14-log"></div>
+    </div>
+
+    <script>
+        async function testAPIs() {
+            const resultsDiv = document.getElementById('api-results');
+            resultsDiv.innerHTML = 'Testing APIs...';
+            
+            try {
+                // Test Module 13
+                const res13 = await fetch('/api/modules/13');
+                const data13 = await res13.json();
+                
+                // Test Module 14
+                const res14 = await fetch('/api/modules/14');
+                const data14 = await res14.json();
+                
+                resultsDiv.innerHTML = `
+                    <h3>API Results:</h3>
+                    <h4>Module 13:</h4>
+                    <p>Status: ${res13.status}</p>
+                    <p>Lessons: ${data13.lessons?.length}</p>
+                    <p>Lesson 2 exists: ${!!data13.lessons[1]}</p>
+                    <p>Lesson 2 content: ${!!data13.lessons[1]?.content}</p>
+                    <pre>${JSON.stringify(data13.lessons[1]?.content, null, 2)}</pre>
+                    
+                    <h4>Module 14:</h4>
+                    <p>Status: ${res14.status}</p>
+                    <p>Lessons: ${data14.lessons?.length}</p>
+                    <p>Lesson 2 exists: ${!!data14.lessons[1]}</p>
+                    <p>Lesson 2 content: ${!!data14.lessons[1]?.content}</p>
+                    <pre>${JSON.stringify(data14.lessons[1]?.content, null, 2)}</pre>
+                `;
+                resultsDiv.className = 'test-section success';
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+                resultsDiv.className = 'test-section error';
+            }
+        }
+        
+        function loadModule13() {
+            const iframe = document.getElementById('module13');
+            const log = document.getElementById('module13-log');
+            log.innerHTML = 'Loading Module 13...';
+            iframe.src = '/module/13';
+            
+            iframe.onload = () => {
+                log.innerHTML += '<br>Module 13 loaded successfully';
+            };
+        }
+        
+        function clickPart2Module13() {
+            const iframe = document.getElementById('module13');
+            const log = document.getElementById('module13-log');
+            
+            try {
+                const doc = iframe.contentDocument;
+                const buttons = Array.from(doc.querySelectorAll('button'));
+                const part2Button = buttons.find(btn => btn.textContent.includes('Part 2'));
+                
+                if (part2Button) {
+                    log.innerHTML += '<br>Found Part 2 button, clicking...';
+                    part2Button.click();
+                    
+                    setTimeout(() => {
+                        const bodyContent = doc.body.textContent;
+                        const hasContent = bodyContent.includes('Story Examples') || bodyContent.includes('Part 2');
+                        log.innerHTML += `<br>After click - Has content: ${hasContent}`;
+                        log.innerHTML += `<br>Body length: ${bodyContent.length}`;
+                        
+                        if (!hasContent) {
+                            log.innerHTML += '<br>WHITE SCREEN DETECTED';
+                            log.className = 'test-section error';
+                        }
+                    }, 2000);
+                } else {
+                    log.innerHTML += '<br>Part 2 button not found';
+                }
+            } catch (e) {
+                log.innerHTML += `<br>Error: ${e.message}`;
+            }
+        }
+        
+        function loadModule14() {
+            const iframe = document.getElementById('module14');
+            const log = document.getElementById('module14-log');
+            log.innerHTML = 'Loading Module 14...';
+            iframe.src = '/module/14';
+            
+            iframe.onload = () => {
+                log.innerHTML += '<br>Module 14 loaded successfully';
+            };
+        }
+        
+        function clickPart2Module14() {
+            const iframe = document.getElementById('module14');
+            const log = document.getElementById('module14-log');
+            
+            try {
+                const doc = iframe.contentDocument;
+                const buttons = Array.from(doc.querySelectorAll('button'));
+                const part2Button = buttons.find(btn => btn.textContent.includes('Part 2'));
+                
+                if (part2Button) {
+                    log.innerHTML += '<br>Found Part 2 button, clicking...';
+                    part2Button.click();
+                    
+                    setTimeout(() => {
+                        const bodyContent = doc.body.textContent;
+                        const hasContent = bodyContent.includes('Time Expressions') || bodyContent.includes('Part 2');
+                        log.innerHTML += `<br>After click - Has content: ${hasContent}`;
+                        log.innerHTML += `<br>Body length: ${bodyContent.length}`;
+                        
+                        if (!hasContent) {
+                            log.innerHTML += '<br>WHITE SCREEN DETECTED';
+                            log.className = 'test-section error';
+                        }
+                    }, 2000);
+                } else {
+                    log.innerHTML += '<br>Part 2 button not found';
+                }
+            } catch (e) {
+                log.innerHTML += `<br>Error: ${e.message}`;
+            }
+        }
+        
+        // Auto-test on load
+        window.onload = () => {
+            testAPIs();
+        };
+    </script>
+</body>
+</html>

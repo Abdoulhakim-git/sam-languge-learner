@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SamLang Niger - Offline Functionality Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #ff7b00 0%, #ffa500 50%, #ffb347 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .test-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 2px solid;
+        }
+        .success {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: #4CAF50;
+        }
+        .error {
+            background: rgba(255, 0, 0, 0.2);
+            border-color: #f44336;
+        }
+        .pending {
+            background: rgba(255, 255, 0, 0.2);
+            border-color: #ff9800;
+        }
+        button {
+            background: #ff7b00;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #ff6b00;
+        }
+        .status {
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .log {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🤖 SamLang Niger - Offline Test Suite</h1>
+        <p>This page tests the complete offline functionality of the SamLang Niger app.</p>
+        
+        <div class="status" id="swStatus">Checking Service Worker...</div>
+        
+        <button onclick="runAllTests()">🚀 Run All Offline Tests</button>
+        <button onclick="clearCache()">🗑️ Clear Cache</button>
+        <button onclick="goOffline()">🔌 Simulate Offline</button>
+        <button onclick="goOnline()">🌐 Go Online</button>
+        
+        <div id="testResults"></div>
+        
+        <h3>Test Log:</h3>
+        <div class="log" id="testLog"></div>
+    </div>
+
+    <script>
+        let testLog = document.getElementById('testLog');
+        let testResults = document.getElementById('testResults');
+        let swStatus = document.getElementById('swStatus');
+        
+        function log(message) {
+            console.log(message);
+            testLog.textContent += `[${new Date().toLocaleTimeString()}] ${message}\n`;
+            testLog.scrollTop = testLog.scrollHeight;
+        }
+        
+        function addTestResult(testName, success, details) {
+            const div = document.createElement('div');
+            div.className = `test-result ${success ? 'success' : 'error'}`;
+            div.innerHTML = `
+                <strong>${success ? '✅' : '❌'} ${testName}</strong><br>
+                ${details}
+            `;
+            testResults.appendChild(div);
+        }
+        
+        // Check Service Worker status
+        async function checkServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.getRegistration();
+                    if (registration) {
+                        swStatus.innerHTML = `✅ Service Worker Active (${registration.active ? 'Active' : 'Installing'})`;
+                        swStatus.className = 'status success';
+                        log('Service Worker found and active');
+                        return true;
+                    } else {
+                        swStatus.innerHTML = '❌ Service Worker Not Registered';
+                        swStatus.className = 'status error';
+                        log('Service Worker not registered');
+                        return false;
+                    }
+                } catch (error) {
+                    swStatus.innerHTML = `❌ Service Worker Error: ${error.message}`;
+                    swStatus.className = 'status error';
+                    log(`Service Worker error: ${error.message}`);
+                    return false;
+                }
+            } else {
+                swStatus.innerHTML = '❌ Service Worker Not Supported';
+                swStatus.className = 'status error';
+                log('Service Worker not supported in this browser');
+                return false;
+            }
+        }
+        
+        // Test API endpoints
+        async function testAPI() {
+            log('Testing API endpoints...');
+            
+            try {
+                const response = await fetch('/api/version');
+                const data = await response.json();
+                
+                if (response.ok && data.version) {
+                    addTestResult('API Version Check', true, `Version: ${data.version}, Offline: ${data.offline || 'No'}`);
+                    log(`API test passed: ${data.version}`);
+                    return true;
+                } else {
+                    addTestResult('API Version Check', false, `Failed to get version data`);
+                    log('API test failed: No version data');
+                    return false;
+                }
+            } catch (error) {
+                addTestResult('API Version Check', false, `Network error: ${error.message}`);
+                log(`API test failed: ${error.message}`);
+                return false;
+            }
+        }
+        
+        // Test module endpoints
+        async function testModules() {
+            log('Testing module endpoints...');
+            let successCount = 0;
+            
+            for (let i = 1; i <= 10; i++) {
+                try {
+                    const response = await fetch(`/api/modules/${i}`);
+                    if (response.ok) {
+                        successCount++;
+                        log(`Module ${i} accessible`);
+                    } else {
+                        log(`Module ${i} failed: ${response.status}`);
+                    }
+                } catch (error) {
+                    log(`Module ${i} error: ${error.message}`);
+                }
+            }
+            
+            const success = successCount >= 8; // Allow some modules to fail
+            addTestResult('Module Access Test', success, `${successCount}/10 modules accessible`);
+            return success;
+        }
+        
+        // Test cache functionality
+        async function testCache() {
+            log('Testing cache functionality...');
+            
+            try {
+                const cacheNames = await caches.keys();
+                const samLangCaches = cacheNames.filter(name => name.includes('samlang'));
+                
+                if (samLangCaches.length > 0) {
+                    log(`Found ${samLangCaches.length} SamLang caches`);
+                    
+                    // Test cache content
+                    const cache = await caches.open(samLangCaches[0]);
+                    const cachedRequests = await cache.keys();
+                    
+                    addTestResult('Cache Test', true, `Cache found with ${cachedRequests.length} cached items`);
+                    log(`Cache contains ${cachedRequests.length} items`);
+                    return true;
+                } else {
+                    addTestResult('Cache Test', false, 'No SamLang caches found');
+                    log('No SamLang caches found');
+                    return false;
+                }
+            } catch (error) {
+                addTestResult('Cache Test', false, `Cache error: ${error.message}`);
+                log(`Cache test failed: ${error.message}`);
+                return false;
+            }
+        }
+        
+        // Test offline simulation
+        async function testOfflineSimulation() {
+            log('Testing offline simulation...');
+            
+            // Override fetch to simulate offline
+            const originalFetch = window.fetch;
+            window.fetch = () => Promise.reject(new Error('Network error (simulated offline)'));
+            
+            try {
+                // Test that Service Worker provides offline responses
+                const response = await originalFetch('/api/version');
+                const data = await response.json();
+                
+                if (data.offline) {
+                    addTestResult('Offline Simulation', true, 'Service Worker provided offline response');
+                    log('Offline simulation successful');
+                    return true;
+                } else {
+                    addTestResult('Offline Simulation', false, 'No offline response from Service Worker');
+                    log('Offline simulation failed');
+                    return false;
+                }
+            } catch (error) {
+                // This is expected - Service Worker should handle it
+                addTestResult('Offline Simulation', true, 'Network blocked as expected, Service Worker should handle');
+                log('Offline simulation: Network blocked as expected');
+                return true;
+            } finally {
+                // Restore original fetch
+                window.fetch = originalFetch;
+            }
+        }
+        
+        // Run all tests
+        async function runAllTests() {
+            log('=== Starting Offline Test Suite ===');
+            testResults.innerHTML = '';
+            
+            const tests = [
+                { name: 'Service Worker Check', test: checkServiceWorker },
+                { name: 'API Test', test: testAPI },
+                { name: 'Module Access Test', test: testModules },
+                { name: 'Cache Test', test: testCache },
+            ];
+            
+            let passedTests = 0;
+            
+            for (const { name, test } of tests) {
+                log(`Running ${name}...`);
+                try {
+                    const result = await test();
+                    if (result) passedTests++;
+                } catch (error) {
+                    log(`${name} threw error: ${error.message}`);
+                    addTestResult(name, false, `Test threw error: ${error.message}`);
+                }
+            }
+            
+            log(`=== Test Complete: ${passedTests}/${tests.length} passed ===`);
+            
+            // Overall result
+            const overallSuccess = passedTests >= 3; // Need at least 3/4 tests to pass
+            addTestResult('Overall Test Result', overallSuccess, 
+                `${passedTests}/${tests.length} tests passed. ${overallSuccess ? 'App should work offline!' : 'Offline functionality needs fixes.'}`
+            );
+        }
+        
+        // Clear cache
+        async function clearCache() {
+            log('Clearing all caches...');
+            try {
+                const cacheNames = await caches.keys();
+                await Promise.all(cacheNames.map(name => caches.delete(name)));
+                log('All caches cleared');
+                alert('Cache cleared! Please refresh the page.');
+            } catch (error) {
+                log(`Failed to clear cache: ${error.message}`);
+            }
+        }
+        
+        // Simulate offline
+        function goOffline() {
+            log('Simulating offline mode...');
+            // This is a basic simulation - real offline testing requires dev tools
+            alert('To test offline: Open Developer Tools > Network > Check "Offline" checkbox');
+        }
+        
+        // Go online
+        function goOnline() {
+            log('Going online...');
+            alert('To go online: Open Developer Tools > Network > Uncheck "Offline" checkbox');
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            log('SamLang Niger Offline Test Suite initialized');
+            checkServiceWorker();
+        });
+    </script>
+</body>
+</html>

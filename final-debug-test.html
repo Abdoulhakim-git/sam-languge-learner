@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Final Debug - Direct Module 13 & 14 Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test { border: 2px solid #ddd; margin: 20px 0; padding: 20px; }
+        .success { border-color: green; background: #e8f5e9; }
+        .error { border-color: red; background: #ffebee; }
+        iframe { width: 100%; height: 600px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; background: #2196f3; color: white; border: none; margin: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Final Debug Test - Module 13 & 14</h1>
+    
+    <div class="test">
+        <h2>Test Module 13</h2>
+        <button onclick="loadModule13()">Load Module 13</button>
+        <button onclick="clickPart2Module13()">Click Part 2</button>
+        <iframe id="iframe13" src="about:blank"></iframe>
+        <div id="result13">Click buttons above to test</div>
+    </div>
+    
+    <div class="test">
+        <h2>Test Module 14</h2>
+        <button onclick="loadModule14()">Load Module 14</button>
+        <button onclick="clickPart2Module14()">Click Part 2</button>
+        <iframe id="iframe14" src="about:blank"></iframe>
+        <div id="result14">Click buttons above to test</div>
+    </div>
+
+    <script>
+        function loadModule13() {
+            const iframe = document.getElementById('iframe13');
+            const result = document.getElementById('result13');
+            result.innerHTML = 'Loading Module 13...';
+            iframe.src = '/module/13';
+            
+            iframe.onload = () => {
+                result.innerHTML = 'Module 13 loaded. Check if Part 2 button is visible.';
+                
+                setTimeout(() => {
+                    try {
+                        const doc = iframe.contentDocument;
+                        const buttons = Array.from(doc.querySelectorAll('button'));
+                        const part2Button = buttons.find(btn => btn.textContent && btn.textContent.includes('Part 2'));
+                        
+                        if (part2Button) {
+                            result.innerHTML += '<br>✅ Part 2 button found!';
+                        } else {
+                            result.innerHTML += '<br>❌ Part 2 button NOT found';
+                            result.innerHTML += '<br>Available buttons: ' + buttons.map(b => `"${b.textContent}"`).join(', ');
+                        }
+                    } catch (e) {
+                        result.innerHTML += '<br>Error checking buttons: ' + e.message;
+                    }
+                }, 2000);
+            };
+        }
+        
+        function clickPart2Module13() {
+            const iframe = document.getElementById('iframe13');
+            const result = document.getElementById('result13');
+            
+            try {
+                const doc = iframe.contentDocument;
+                const buttons = Array.from(doc.querySelectorAll('button'));
+                const part2Button = buttons.find(btn => btn.textContent && btn.textContent.includes('Part 2'));
+                
+                if (part2Button) {
+                    result.innerHTML += '<br>🖱️ Clicking Part 2 button...';
+                    part2Button.click();
+                    
+                    setTimeout(() => {
+                        const bodyText = doc.body.textContent;
+                        const hasStoryContent = bodyText.includes('Story Examples') || 
+                                               bodyText.includes('Yesterday at School') ||
+                                               bodyText.includes('storyFrameworks');
+                        
+                        if (hasStoryContent) {
+                            result.innerHTML += '<br>✅ SUCCESS: Story content found!';
+                            result.className = 'test success';
+                        } else {
+                            result.innerHTML += '<br>❌ FAILED: No story content found';
+                            result.innerHTML += '<br>Body text sample: ' + bodyText.substring(0, 200) + '...';
+                            result.className = 'test error';
+                        }
+                    }, 3000);
+                } else {
+                    result.innerHTML += '<br>❌ Part 2 button not found to click';
+                }
+            } catch (e) {
+                result.innerHTML += '<br>Error clicking: ' + e.message;
+            }
+        }
+        
+        function loadModule14() {
+            const iframe = document.getElementById('iframe14');
+            const result = document.getElementById('result14');
+            result.innerHTML = 'Loading Module 14...';
+            iframe.src = '/module/14';
+            
+            iframe.onload = () => {
+                result.innerHTML = 'Module 14 loaded. Check if Part 2 button is visible.';
+                
+                setTimeout(() => {
+                    try {
+                        const doc = iframe.contentDocument;
+                        const buttons = Array.from(doc.querySelectorAll('button'));
+                        const part2Button = buttons.find(btn => btn.textContent && btn.textContent.includes('Part 2'));
+                        
+                        if (part2Button) {
+                            result.innerHTML += '<br>✅ Part 2 button found!';
+                        } else {
+                            result.innerHTML += '<br>❌ Part 2 button NOT found';
+                            result.innerHTML += '<br>Available buttons: ' + buttons.map(b => `"${b.textContent}"`).join(', ');
+                        }
+                    } catch (e) {
+                        result.innerHTML += '<br>Error checking buttons: ' + e.message;
+                    }
+                }, 2000);
+            };
+        }
+        
+        function clickPart2Module14() {
+            const iframe = document.getElementById('iframe14');
+            const result = document.getElementById('result14');
+            
+            try {
+                const doc = iframe.contentDocument;
+                const buttons = Array.from(doc.querySelectorAll('button'));
+                const part2Button = buttons.find(btn => btn.textContent && btn.textContent.includes('Part 2'));
+                
+                if (part2Button) {
+                    result.innerHTML += '<br>🖱️ Clicking Part 2 button...';
+                    part2Button.click();
+                    
+                    setTimeout(() => {
+                        const bodyText = doc.body.textContent;
+                        const hasTimeContent = bodyText.includes('Time Expressions') || 
+                                              bodyText.includes('Tomorrow') ||
+                                              bodyText.includes('timeExpressions');
+                        
+                        if (hasTimeContent) {
+                            result.innerHTML += '<br>✅ SUCCESS: Time expressions found!';
+                            result.className = 'test success';
+                        } else {
+                            result.innerHTML += '<br>❌ FAILED: No time expressions found';
+                            result.innerHTML += '<br>Body text sample: ' + bodyText.substring(0, 200) + '...';
+                            result.className = 'test error';
+                        }
+                    }, 3000);
+                } else {
+                    result.innerHTML += '<br>❌ Part 2 button not found to click';
+                }
+            } catch (e) {
+                result.innerHTML += '<br>Error clicking: ' + e.message;
+            }
+        }
+    </script>
+</body>
+</html>

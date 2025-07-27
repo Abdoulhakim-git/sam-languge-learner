@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SamLang Niger - Module Debug Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f0f8ff; }
+        .test-container { max-width: 1200px; margin: 0 auto; }
+        .module-test { background: white; padding: 20px; margin: 20px 0; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .success { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+        .loading { color: blue; font-style: italic; }
+        iframe { width: 100%; height: 700px; border: 2px solid #ddd; border-radius: 8px; margin: 10px 0; }
+        button { background: #2196f3; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 16px; margin: 5px; }
+        button:hover { background: #1976d2; }
+        .debug-info { background: #f5f5f5; padding: 15px; border-radius: 8px; margin: 10px 0; font-family: monospace; font-size: 12px; }
+        .results { margin: 15px 0; padding: 15px; background: #f9f9f9; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🔧 SamLang Niger - Final Module Debug Test</h1>
+        <p>This will test Module 13 and Module 14 to identify the exact white screen issue.</p>
+
+        <div class="module-test">
+            <h2>🧪 Module 13 Test</h2>
+            <button onclick="testModule13()">🚀 Test Module 13 Complete</button>
+            <button onclick="testModule13Part2()">🎯 Test Module 13 Part 2 Only</button>
+            <div id="result13" class="results">Click button to start test</div>
+            <iframe id="frame13" src="about:blank"></iframe>
+        </div>
+
+        <div class="module-test">
+            <h2>🧪 Module 14 Test</h2>
+            <button onclick="testModule14()">🚀 Test Module 14 Complete</button>
+            <button onclick="testModule14Part2()">🎯 Test Module 14 Part 2 Only</button>
+            <div id="result14" class="results">Click button to start test</div>
+            <iframe id="frame14" src="about:blank"></iframe>
+        </div>
+
+        <div class="module-test">
+            <h2>🔍 API Data Test</h2>
+            <button onclick="testAPIData()">📡 Test API Endpoints</button>
+            <div id="api-results" class="results">Click to test API data</div>
+            <div id="api-debug" class="debug-info">API debugging info will appear here</div>
+        </div>
+
+        <div class="module-test">
+            <h2>📊 Working Modules Comparison</h2>
+            <button onclick="testWorkingModules()">✅ Test Working Modules (11, 12, 15)</button>
+            <div id="working-results" class="results">Click to test working modules</div>
+        </div>
+    </div>
+
+    <script>
+        function testModule13() {
+            const frame = document.getElementById('frame13');
+            const result = document.getElementById('result13');
+            
+            result.innerHTML = '<span class="loading">🔄 Loading Module 13...</span>';
+            frame.src = '/module/13';
+            
+            frame.onload = function() {
+                setTimeout(() => {
+                    analyzeModuleContent(frame, result, 13, 'storyFrameworks');
+                }, 4000); // Wait 4 seconds for React to load
+            };
+        }
+
+        function testModule13Part2() {
+            testModule13();
+            setTimeout(() => {
+                const frame = document.getElementById('frame13');
+                try {
+                    const doc = frame.contentDocument;
+                    const part2Buttons = Array.from(doc.querySelectorAll('button')).filter(btn => 
+                        btn.textContent && btn.textContent.includes('Part 2')
+                    );
+                    if (part2Buttons.length > 0) {
+                        part2Buttons[0].click();
+                        setTimeout(() => {
+                            analyzeModuleContent(frame, document.getElementById('result13'), 13, 'storyFrameworks', true);
+                        }, 2000);
+                    }
+                } catch (e) {
+                    console.log('Could not click Part 2:', e);
+                }
+            }, 5000);
+        }
+
+        function testModule14() {
+            const frame = document.getElementById('frame14');
+            const result = document.getElementById('result14');
+            
+            result.innerHTML = '<span class="loading">🔄 Loading Module 14...</span>';
+            frame.src = '/module/14';
+            
+            frame.onload = function() {
+                setTimeout(() => {
+                    analyzeModuleContent(frame, result, 14, 'timeExpressions');
+                }, 4000);
+            };
+        }
+
+        function testModule14Part2() {
+            testModule14();
+            setTimeout(() => {
+                const frame = document.getElementById('frame14');
+                try {
+                    const doc = frame.contentDocument;
+                    const part2Buttons = Array.from(doc.querySelectorAll('button')).filter(btn => 
+                        btn.textContent && btn.textContent.includes('Part 2')
+                    );
+                    if (part2Buttons.length > 0) {
+                        part2Buttons[0].click();
+                        setTimeout(() => {
+                            analyzeModuleContent(frame, document.getElementById('result14'), 14, 'timeExpressions', true);
+                        }, 2000);
+                    }
+                } catch (e) {
+                    console.log('Could not click Part 2:', e);
+                }
+            }, 5000);
+        }
+
+        function analyzeModuleContent(frame, resultDiv, moduleNum, expectedContent, isPart2 = false) {
+            try {
+                const doc = frame.contentDocument;
+                if (!doc) {
+                    resultDiv.innerHTML = '<span class="error">❌ Cannot access frame content (CORS/Security)</span>';
+                    return;
+                }
+
+                const bodyText = doc.body.textContent || '';
+                const bodyHTML = doc.body.innerHTML || '';
+                
+                // Check for various states
+                const hasReactContent = bodyText.includes(`Module ${moduleNum}`) || bodyText.includes('Teacher Sam');
+                const hasLoadingScreen = bodyText.includes('Loading') || bodyText.includes('Loading...');
+                const hasWhiteScreen = bodyText.trim().length < 50;
+                const hasJSErrors = bodyHTML.includes('error') || bodyHTML.includes('Error');
+                const hasPart2Content = bodyText.includes('Part 2') || doc.querySelector('[data-lesson="1"]');
+                const hasExpectedContent = bodyText.includes(expectedContent) || 
+                    (moduleNum === 13 && bodyText.includes('story')) ||
+                    (moduleNum === 14 && bodyText.includes('future'));
+                
+                // Navigation buttons
+                const navButtons = Array.from(doc.querySelectorAll('button')).filter(btn => 
+                    btn.textContent && (btn.textContent.includes('Part') || btn.textContent.includes('Next'))
+                );
+                
+                let status = '';
+                let cssClass = '';
+                
+                if (hasWhiteScreen) {
+                    status = `❌ WHITE SCREEN DETECTED - Module ${moduleNum}`;
+                    cssClass = 'error';
+                } else if (hasLoadingScreen) {
+                    status = `🔄 Still Loading - Module ${moduleNum}`;
+                    cssClass = 'loading';
+                } else if (hasReactContent && hasExpectedContent && navButtons.length > 0) {
+                    status = `✅ SUCCESS - Module ${moduleNum} loaded correctly with ${isPart2 ? 'Part 2' : 'all'} content!`;
+                    cssClass = 'success';
+                } else if (hasReactContent && navButtons.length > 0) {
+                    status = `⚠️ PARTIAL - Module ${moduleNum} loaded but missing expected content`;
+                    cssClass = 'loading';
+                } else if (hasReactContent) {
+                    status = `⚠️ PARTIAL - Module ${moduleNum} content loaded but no navigation buttons`;
+                    cssClass = 'loading';
+                } else {
+                    status = `❌ FAIL - Module ${moduleNum} not loading React content properly`;
+                    cssClass = 'error';
+                }
+                
+                resultDiv.innerHTML = `
+                    <span class="${cssClass}">${status}</span>
+                    <div style="margin-top: 10px; font-size: 14px;">
+                        <strong>Content Analysis:</strong><br>
+                        • React Content: ${hasReactContent ? '✅' : '❌'}<br>
+                        • Expected Content (${expectedContent}): ${hasExpectedContent ? '✅' : '❌'}<br>
+                        • Navigation Buttons: ${navButtons.length} found<br>
+                        • Part 2 Content: ${hasPart2Content ? '✅' : '❌'}<br>
+                        • Body Text Length: ${bodyText.length} characters<br>
+                        • JS Errors: ${hasJSErrors ? '❌ Detected' : '✅ None detected'}<br>
+                        ${isPart2 ? `• Part 2 Mode: ✅ Testing Part 2 specifically<br>` : ''}
+                    </div>
+                    <div style="margin-top: 10px; font-size: 12px; color: #666;">
+                        <strong>Body Text Sample:</strong><br>
+                        <code>${bodyText.substring(0, 200)}...</code>
+                    </div>
+                `;
+                
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">❌ Error analyzing content: ${error.message}</span>`;
+            }
+        }
+
+        async function testAPIData() {
+            const resultDiv = document.getElementById('api-results');
+            const debugDiv = document.getElementById('api-debug');
+            
+            resultDiv.innerHTML = '<span class="loading">🔄 Testing API endpoints...</span>';
+            
+            try {
+                // Test Module 13 API
+                const response13 = await fetch('/api/modules/13');
+                const data13 = await response13.json();
+                
+                // Test Module 14 API
+                const response14 = await fetch('/api/modules/14');
+                const data14 = await response14.json();
+                
+                // Analyze data
+                const module13Part2 = data13.lessons[1]?.content?.storyFrameworks;
+                const module14Part2 = data14.lessons[1]?.content?.timeExpressions;
+                
+                let status = '';
+                if (module13Part2 && module14Part2) {
+                    status = '✅ SUCCESS: API endpoints working, Part 2 data exists for both modules';
+                } else {
+                    status = '❌ FAIL: API data missing or incomplete';
+                }
+                
+                resultDiv.innerHTML = `
+                    <span class="${module13Part2 && module14Part2 ? 'success' : 'error'}">${status}</span>
+                    <div style="margin-top: 10px;">
+                        • Module 13 lessons: ${data13.lessons?.length || 0}<br>
+                        • Module 13 Part 2 storyFrameworks: ${module13Part2?.length || 0} items<br>
+                        • Module 14 lessons: ${data14.lessons?.length || 0}<br>
+                        • Module 14 Part 2 timeExpressions: ${module14Part2?.length || 0} items<br>
+                    </div>
+                `;
+                
+                debugDiv.innerHTML = `
+                    <strong>Module 13 Part 2 Data:</strong><br>
+                    ${JSON.stringify(module13Part2, null, 2)}<br><br>
+                    <strong>Module 14 Part 2 Data:</strong><br>
+                    ${JSON.stringify(module14Part2, null, 2)}
+                `;
+                
+            } catch (error) {
+                resultDiv.innerHTML = `<span class="error">❌ API Test Failed: ${error.message}</span>`;
+                debugDiv.innerHTML = `Error details: ${error.stack}`;
+            }
+        }
+
+        async function testWorkingModules() {
+            const resultDiv = document.getElementById('working-results');
+            resultDiv.innerHTML = '<span class="loading">🔄 Testing working modules 11, 12, 15...</span>';
+            
+            const testResults = [];
+            
+            for (const moduleNum of [11, 12, 15]) {
+                try {
+                    const response = await fetch(`/api/modules/${moduleNum}`);
+                    const data = await response.json();
+                    testResults.push({
+                        module: moduleNum,
+                        success: true,
+                        lessons: data.lessons?.length || 0,
+                        title: data.title
+                    });
+                } catch (error) {
+                    testResults.push({
+                        module: moduleNum,
+                        success: false,
+                        error: error.message
+                    });
+                }
+            }
+            
+            const successCount = testResults.filter(r => r.success).length;
+            resultDiv.innerHTML = `
+                <span class="${successCount === 3 ? 'success' : 'error'}">
+                    ${successCount === 3 ? '✅ SUCCESS' : '❌ PARTIAL'}: ${successCount}/3 working modules tested
+                </span>
+                <div style="margin-top: 10px;">
+                    ${testResults.map(r => 
+                        `• Module ${r.module}: ${r.success ? 
+                            `✅ ${r.title} (${r.lessons} lessons)` : 
+                            `❌ ${r.error}`
+                        }`
+                    ).join('<br>')}
+                </div>
+            `;
+        }
+
+        // Auto-run basic tests on page load
+        window.onload = function() {
+            setTimeout(testAPIData, 1000);
+        };
+    </script>
+</body>
+</html>

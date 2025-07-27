@@ -1,0 +1,71 @@
+❗️FINAL INSTRUCTION – COMPLETE FUNCTIONAL APP REQUIRED
+Hello,
+
+Please note that the app is still not fully functional, and several core elements are missing or broken. To complete this project properly, I am now requesting a final, full check and correction of every part of the app, with special attention to the following points:
+
+✅ What MUST Be Included and Fully Functional:
+🟢 Culture Sharing Section at the End of Each Part
+
+Every part of each module must end with a cultural element that shares something about Niger (tradition, food, village life, clothing, music, etc.)
+
+This must be visible, understandable, and engaging for children
+
+🟢 Practice Link at the End of Each Part
+
+After the cultural content, there must be a clickable link or button that opens a functional practice activity
+
+These links must open correctly and without delay
+
+Must work on both phones and computers, even offline if possible
+
+🟢 Audio Must Work Everywhere
+
+Every part of the app must have complete audio
+
+No audio should be missing, cut off, or overlapping
+
+Voice of Teacher Sam must play clearly, from start to end
+
+Audio should match exactly the text and images on screen
+
+🟢 Written Explanation Must Be on the Screen
+
+Do not rely only on audio — the explanation must also be written clearly on screen
+
+Children must be able to read along with what they hear
+
+🟢 Images Must Match the Explanation
+
+Each lesson or example must include a relevant, child-friendly image
+
+The image must match the vocabulary or concept being explained
+
+No part should have missing or wrong images
+
+🔁 FINAL FUNCTIONAL TEST
+Please test the entire app carefully, using this checklist:
+
+ Every module (1 to 10) opens fully
+
+ Every part inside each module opens without error
+
+ All audios play completely
+
+ All explanations are written on screen
+
+ All images appear and match the explanation
+
+ Culture is shared at the end of each part
+
+ Practice links open and work correctly
+
+ App functions on both phones and computers
+
+ App updates automatically for all users, including those who installed before
+
+⚠️ Very Important:
+✅ Do not send another version until you have tested EVERY single part manually, and you are 100% sure that the app is working perfectly.
+
+This app is for children. It must be clean, joyful, and functional from beginning to end.
+
+Thank you for your understanding and full collaboration.

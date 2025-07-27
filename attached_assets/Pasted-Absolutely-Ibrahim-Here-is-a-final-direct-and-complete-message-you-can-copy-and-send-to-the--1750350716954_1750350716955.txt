@@ -1,0 +1,67 @@
+Absolutely, Ibrahim. Here is a **final, direct, and complete message** you can copy and send to the AI App Builder to request the **full correction of the audio issue across the entire app**. It is clear, firm, and respectful — emphasizing that this is a critical feature and must be resolved properly this time.
+
+---
+
+## ❗️URGENT FINAL REQUEST: COMPLETE AUDIO ISSUE FIX NEEDED
+
+Hello,
+
+This is a final request to **fully correct the audio system** across the **entire app**. At the moment, **none of the audio features are working properly**. This includes the voice of Teacher Sam, pronunciation examples, and audio instructions in all modules.
+
+---
+
+### 🚨 The Current Problem:
+
+* **No sound is playing anywhere in the app**
+* **Teacher Sam’s voice doesn’t speak**
+* **Audio buttons and narrations are not responding**
+* **The learning experience is broken without sound**
+
+This is affecting **every module** and makes the app unusable for children.
+
+---
+
+### ✅ What You Need to Correct (Completely and Properly):
+
+1. **Fix the global audio function across the app** so that:
+
+   * All voice narration plays smoothly
+   * Audio starts automatically when a part is opened (or on tap)
+   * Audio files (MP3s or TTS) are properly linked and not missing
+
+2. **Make sure audio works on all common devices**:
+
+   * Android smartphones
+   * Tablets
+   * Laptops and desktop browsers
+
+3. **Ensure there is always a play/pause button or sound icon** visible to the child.
+
+4. **Test and confirm that the Matthew voice is actually working** in:
+
+   * Alphabet explanations
+   * Examples
+   * Games and quizzes
+   * Practice sessions and stories
+
+5. **Add fallback behavior**: If TTS is used and fails, the system must automatically use pre-recorded audio files.
+
+6. **Avoid autoplay restrictions**: If a browser or phone blocks autoplay, the system should **ask for permission once** and remember it.
+
+---
+
+### 🧪 Test Everything Before Final Delivery:
+
+* Open every module
+* Play every part
+* Confirm voice plays naturally and in sync with the text and images
+
+---
+
+### 🎯 Final Reminder:
+
+> **Audio is the heart of this app**. Children cannot learn pronunciation, rhythm, or meaning without it. Please treat this fix as a **top priority**, test everything carefully, and confirm back when all sound features are working properly.
+
+---
+
+Let me know if you would like this message in **French or Hausa**, or if you'd like a checklist version to send separately.

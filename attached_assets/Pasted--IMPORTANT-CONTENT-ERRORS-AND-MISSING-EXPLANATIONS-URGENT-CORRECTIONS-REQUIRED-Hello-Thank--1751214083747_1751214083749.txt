@@ -1,0 +1,59 @@
+❗️IMPORTANT: CONTENT ERRORS AND MISSING EXPLANATIONS – URGENT CORRECTIONS REQUIRED
+Hello,
+
+Thank you for your recent update. I have reviewed the latest version of the app, and while I appreciate the new addition of the culture share section at the end of each part (which is a great improvement), there are still serious errors in the app that must be corrected immediately.
+
+⚠️ Current Problems Observed:
+Incorrect Translation Display
+
+Example: When it says “A is for Apple”, the app shows “A est pour pomme” — but this is wrong.
+
+The child sees “A” in English but the object in French only, instead of showing:
+
+A is for Apple
+A est pour Apple (or Pomme if subtitle is set to French)
+A na nufin Tuffa (if subtitle is Hausa)
+
+✅ The app must display the object name based on the subtitle language selected, not just change the phrase to French.
+
+Missing Explanations in Many Parts
+
+Some parts of modules have no explanation at all — only audio is heard when clicked.
+
+Example: In alphabet or verb parts, only the pronunciation audio works, but there’s no text or explanation shown on screen.
+
+✅ Every part must include:
+
+A short, clear written explanation
+
+Matching audio and image
+
+Proper subtitle display (French or Hausa, based on selection)
+
+Good Progress Noted – Keep This Feature
+
+The culture share section at the end of each part is excellent. Please keep this!
+
+It is well placed and adds value for children to learn more about Nigerien culture.
+
+✅ What Needs to Be Corrected Now:
+Fix all translation display errors (English should stay in English, not switch key words into French unless subtitles are set to French)
+
+Restore or add written explanations to all parts that are missing them
+
+Ensure that audio, image, and explanation match in every part
+
+Keep the culture sharing at the end of each part
+
+Make sure all of this works on both PC and phone
+
+🔁 Reminder:
+Before the next delivery, please test the app completely and part by part, and confirm that:
+
+All content is correct and aligned with the subtitles
+
+No part is missing audio or explanation
+
+The learner experience is smooth and error-free
+
+Thank you again for your effort — let’s now finalize everything properly for the children.

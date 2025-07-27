@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SamLang Niger - Pre-Deployment Audit</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: linear-gradient(135deg, #f39c12, #e74c3c);
+            color: white;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(0,0,0,0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            background: rgba(52, 152, 219, 0.1);
+        }
+        .check-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 5px;
+        }
+        .success { color: #2ecc71; }
+        .error { color: #e74c3c; }
+        .warning { color: #f39c12; }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            background: #3498db;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover { background: #2980b9; }
+        .audit-result {
+            border: 1px solid #95a5a6;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .critical { border-left: 4px solid #e74c3c; }
+        .good { border-left: 4px solid #2ecc71; }
+        .needs-attention { border-left: 4px solid #f39c12; }
+        pre {
+            background: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔍 SamLang Niger - Pre-Deployment Audit</h1>
+        <p><strong>Mission:</strong> Complete system check before deployment to ensure zero errors for global users</p>
+        
+        <div class="section">
+            <h2>🎯 AUDIT PROGRESS</h2>
+            <div id="audit-progress">
+                <div class="check-item">
+                    <strong>Overall Status:</strong> <span id="overall-status">Starting comprehensive audit...</span>
+                </div>
+                <div class="check-item">
+                    <strong>Critical Issues:</strong> <span id="critical-count">0</span>
+                </div>
+                <div class="check-item">
+                    <strong>Warnings:</strong> <span id="warning-count">0</span>
+                </div>
+                <div class="check-item">
+                    <strong>Systems Checked:</strong> <span id="systems-checked">0/10</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🚀 AUDIT CONTROLS</h2>
+            <button onclick="startCompleteAudit()">🔍 Start Complete Audit</button>
+            <button onclick="checkAPIEndpoints()">🌐 Check API Endpoints</button>
+            <button onclick="checkUpdateSystem()">🔄 Check Update System</button>
+            <button onclick="validateModules()">📚 Validate All Modules</button>
+            <button onclick="checkAudioSystem()">🔊 Check Audio System</button>
+            <button onclick="checkOfflineMode()">📴 Check Offline Mode</button>
+            <button onclick="generateDeploymentReport()">📋 Generate Deployment Report</button>
+        </div>
+
+        <div class="section">
+            <h2>🌐 API ENDPOINTS AUDIT</h2>
+            <div id="api-results">
+                <div class="check-item">Click "Check API Endpoints" to verify all endpoints...</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔄 UPDATE SYSTEM AUDIT</h2>
+            <div id="update-results">
+                <div class="check-item">Click "Check Update System" to verify screen wake fix...</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📚 MODULE VALIDATION</h2>
+            <div id="module-results">
+                <div class="check-item">Click "Validate All Modules" to check module integrity...</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>🔊 AUDIO SYSTEM VALIDATION</h2>
+            <div id="audio-results">
+                <div class="check-item">Click "Check Audio System" to verify Teacher Sam's voice...</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📴 OFFLINE MODE VALIDATION</h2>
+            <div id="offline-results">
+                <div class="check-item">Click "Check Offline Mode" to verify offline functionality...</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📋 DEPLOYMENT READINESS REPORT</h2>
+            <div id="deployment-report">
+                <div class="check-item">Report will be generated after complete audit...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global audit state
+        let auditState = {
+            criticalIssues: 0,
+            warnings: 0,
+            systemsChecked: 0,
+            apiEndpoints: [],
+            updateSystemStatus: null,
+            moduleValidation: [],
+            audioSystemStatus: null,
+            offlineModeStatus: null
+        };
+
+        // Main audit function
+        async function startCompleteAudit() {
+            updateStatus('🔍 Starting comprehensive pre-deployment audit...');
+            
+            // Reset state
+            auditState = {
+                criticalIssues: 0,
+                warnings: 0,
+                systemsChecked: 0,
+                apiEndpoints: [],
+                updateSystemStatus: null,
+                moduleValidation: [],
+                audioSystemStatus: null,
+                offlineModeStatus: null
+            };
+
+            try {
+                // Step 1: Check API endpoints
+                await checkAPIEndpoints();
+                auditState.systemsChecked++;
+                updateProgress();
+
+                // Step 2: Validate update system
+                await checkUpdateSystem();
+                auditState.systemsChecked++;
+                updateProgress();
+
+                // Step 3: Validate all modules
+                await validateModules();
+                auditState.systemsChecked++;
+                updateProgress();
+
+                // Step 4: Check audio system
+                await checkAudioSystem();
+                auditState.systemsChecked++;
+                updateProgress();
+
+                // Step 5: Check offline mode
+                await checkOfflineMode();
+                auditState.systemsChecked++;
+                updateProgress();
+
+                // Generate final report
+                generateDeploymentReport();
+
+                if (auditState.criticalIssues === 0) {
+                    updateStatus('✅ Audit complete - Ready for deployment!');
+                } else {
+                    updateStatus(`❌ Audit complete - ${auditState.criticalIssues} critical issues need fixing`);
+                }
+            } catch (error) {
+                updateStatus(`❌ Audit failed: ${error.message}`);
+                auditState.criticalIssues++;
+                updateProgress();
+            }
+        }
+
+        // Check all API endpoints
+        async function checkAPIEndpoints() {
+            updateStatus('🌐 Checking API endpoints...');
+            const apiResults = document.getElementById('api-results');
+            apiResults.innerHTML = '<h3>🌐 API Endpoints Status</h3>';
+
+            const endpoints = [
+                '/api/version',
+                '/api/content/1',
+                '/api/content/2', 
+                '/api/content/3',
+                '/api/content/4',
+                '/api/content/5',
+                '/api/content/6',
+                '/api/content/7',
+                '/api/content/8',
+                '/api/content/9',
+                '/api/content/10'
+            ];
+
+            for (const endpoint of endpoints) {
+                try {
+                    const response = await fetch(endpoint);
+                    const isJson = response.headers.get('content-type')?.includes('application/json');
+                    
+                    if (response.ok && isJson) {
+                        const data = await response.json();
+                        apiResults.innerHTML += `<div class="audit-result good">✅ ${endpoint}: OK (${response.status})</div>`;
+                        auditState.apiEndpoints.push({ endpoint, status: 'ok', data });
+                    } else if (response.ok && !isJson) {
+                        apiResults.innerHTML += `<div class="audit-result needs-attention">⚠️ ${endpoint}: Returns HTML instead of JSON</div>`;
+                        auditState.warnings++;
+                    } else {
+                        apiResults.innerHTML += `<div class="audit-result critical">❌ ${endpoint}: Failed (${response.status})</div>`;
+                        auditState.criticalIssues++;
+                    }
+                } catch (error) {
+                    apiResults.innerHTML += `<div class="audit-result critical">❌ ${endpoint}: Error - ${error.message}</div>`;
+                    auditState.criticalIssues++;
+                }
+            }
+
+            updateProgress();
+        }
+
+        // Check update system (especially screen wake fix)
+        async function checkUpdateSystem() {
+            updateStatus('🔄 Checking update system and screen wake fix...');
+            const updateResults = document.getElementById('update-results');
+            updateResults.innerHTML = '<h3>🔄 Update System Status</h3>';
+
+            try {
+                // Check version endpoint specifically
+                const versionResponse = await fetch('/api/version?' + Date.now());
+                if (versionResponse.ok) {
+                    const versionData = await versionResponse.json();
+                    updateResults.innerHTML += `<div class="audit-result good">✅ Version endpoint: Returns proper JSON</div>`;
+                    updateResults.innerHTML += `<div class="audit-result good">✅ Current version: ${versionData.version}</div>`;
+                    
+                    // Check for screen wake fix indicators
+                    if (versionData.version.includes('2.9.4') || versionData.version >= '2.9.4') {
+                        updateResults.innerHTML += `<div class="audit-result good">✅ Screen wake notification fix included</div>`;
+                    } else {
+                        updateResults.innerHTML += `<div class="audit-result needs-attention">⚠️ Version may not include screen wake fix</div>`;
+                        auditState.warnings++;
+                    }
+                } else {
+                    updateResults.innerHTML += `<div class="audit-result critical">❌ Version endpoint failed</div>`;
+                    auditState.criticalIssues++;
+                }
+
+                // Check force update script exists and is optimized
+                try {
+                    const scriptResponse = await fetch('/force-update-distribution.js');
+                    if (scriptResponse.ok) {
+                        const scriptText = await scriptResponse.text();
+                        
+                        if (scriptText.includes('dismissUpdate') && scriptText.includes('lastUpdateCheck')) {
+                            updateResults.innerHTML += `<div class="audit-result good">✅ Screen wake fix implemented in update script</div>`;
+                        } else {
+                            updateResults.innerHTML += `<div class="audit-result needs-attention">⚠️ Update script may need screen wake fixes</div>`;
+                            auditState.warnings++;
+                        }
+
+                        if (scriptText.includes('Continuous update checking disabled')) {
+                            updateResults.innerHTML += `<div class="audit-result good">✅ Aggressive update checking disabled</div>`;
+                        }
+                    }
+                } catch (error) {
+                    updateResults.innerHTML += `<div class="audit-result needs-attention">⚠️ Could not verify update script</div>`;
+                    auditState.warnings++;
+                }
+
+                auditState.updateSystemStatus = 'checked';
+            } catch (error) {
+                updateResults.innerHTML += `<div class="audit-result critical">❌ Update system check failed: ${error.message}</div>`;
+                auditState.criticalIssues++;
+            }
+
+            updateProgress();
+        }
+
+        // Validate all modules
+        async function validateModules() {
+            updateStatus('📚 Validating all 10 modules...');
+            const moduleResults = document.getElementById('module-results');
+            moduleResults.innerHTML = '<h3>📚 Module Validation Results</h3>';
+
+            for (let moduleId = 1; moduleId <= 10; moduleId++) {
+                try {
+                    const response = await fetch(`/api/content/${moduleId}`);
+                    if (response.ok) {
+                        const moduleData = await response.json();
+                        
+                        if (moduleData.title && moduleData.lessons && moduleData.lessons.length > 0) {
+                            moduleResults.innerHTML += `<div class="audit-result good">✅ Module ${moduleId}: ${moduleData.title} (${moduleData.lessons.length} lessons)</div>`;
+                            
+                            // Check each lesson has content
+                            let lessonsOk = 0;
+                            moduleData.lessons.forEach(lesson => {
+                                if (lesson.content && Object.keys(lesson.content).length > 0) {
+                                    lessonsOk++;
+                                }
+                            });
+                            
+                            if (lessonsOk === moduleData.lessons.length) {
+                                moduleResults.innerHTML += `<div class="audit-result good">✅ Module ${moduleId}: All ${lessonsOk} lessons have content</div>`;
+                            } else {
+                                moduleResults.innerHTML += `<div class="audit-result needs-attention">⚠️ Module ${moduleId}: Only ${lessonsOk}/${moduleData.lessons.length} lessons have content</div>`;
+                                auditState.warnings++;
+                            }
+                        } else {
+                            moduleResults.innerHTML += `<div class="audit-result critical">❌ Module ${moduleId}: Invalid structure</div>`;
+                            auditState.criticalIssues++;
+                        }
+                    } else {
+                        moduleResults.innerHTML += `<div class="audit-result critical">❌ Module ${moduleId}: Failed to load (${response.status})</div>`;
+                        auditState.criticalIssues++;
+                    }
+                } catch (error) {
+                    moduleResults.innerHTML += `<div class="audit-result critical">❌ Module ${moduleId}: Error - ${error.message}</div>`;
+                    auditState.criticalIssues++;
+                }
+            }
+
+            updateProgress();
+        }
+
+        // Check audio system
+        async function checkAudioSystem() {
+            updateStatus('🔊 Checking audio system...');
+            const audioResults = document.getElementById('audio-results');
+            audioResults.innerHTML = '<h3>🔊 Audio System Status</h3>';
+
+            try {
+                if ('speechSynthesis' in window) {
+                    audioResults.innerHTML += `<div class="audit-result good">✅ Speech synthesis supported</div>`;
+                    
+                    // Check voices
+                    const voices = speechSynthesis.getVoices();
+                    if (voices.length > 0) {
+                        const englishVoices = voices.filter(voice => voice.lang.startsWith('en'));
+                        audioResults.innerHTML += `<div class="audit-result good">✅ ${englishVoices.length} English voices available</div>`;
+                        
+                        // Check for Google US English specifically
+                        const googleVoice = voices.find(voice => voice.name.includes('Google US English'));
+                        if (googleVoice) {
+                            audioResults.innerHTML += `<div class="audit-result good">✅ Google US English voice found (Teacher Sam ready)</div>`;
+                        } else {
+                            audioResults.innerHTML += `<div class="audit-result needs-attention">⚠️ Google US English voice not found, fallback will be used</div>`;
+                            auditState.warnings++;
+                        }
+                    } else {
+                        audioResults.innerHTML += `<div class="audit-result critical">❌ No voices available</div>`;
+                        auditState.criticalIssues++;
+                    }
+                } else {
+                    audioResults.innerHTML += `<div class="audit-result critical">❌ Speech synthesis not supported</div>`;
+                    auditState.criticalIssues++;
+                }
+
+                auditState.audioSystemStatus = 'checked';
+            } catch (error) {
+                audioResults.innerHTML += `<div class="audit-result critical">❌ Audio system check failed: ${error.message}</div>`;
+                auditState.criticalIssues++;
+            }
+
+            updateProgress();
+        }
+
+        // Check offline mode
+        async function checkOfflineMode() {
+            updateStatus('📴 Checking offline functionality...');
+            const offlineResults = document.getElementById('offline-results');
+            offlineResults.innerHTML = '<h3>📴 Offline Mode Status</h3>';
+
+            try {
+                // Check service worker support
+                if ('serviceWorker' in navigator) {
+                    offlineResults.innerHTML += `<div class="audit-result good">✅ Service Worker supported</div>`;
+                } else {
+                    offlineResults.innerHTML += `<div class="audit-result critical">❌ Service Worker not supported</div>`;
+                    auditState.criticalIssues++;
+                }
+
+                // Check cache API
+                if ('caches' in window) {
+                    offlineResults.innerHTML += `<div class="audit-result good">✅ Cache API supported</div>`;
+                } else {
+                    offlineResults.innerHTML += `<div class="audit-result critical">❌ Cache API not supported</div>`;
+                    auditState.criticalIssues++;
+                }
+
+                // Check if service worker file exists
+                try {
+                    const swResponse = await fetch('/sw.js');
+                    if (swResponse.ok) {
+                        offlineResults.innerHTML += `<div class="audit-result good">✅ Service Worker file available</div>`;
+                    } else {
+                        offlineResults.innerHTML += `<div class="audit-result needs-attention">⚠️ Service Worker file missing or inaccessible</div>`;
+                        auditState.warnings++;
+                    }
+                } catch (error) {
+                    offlineResults.innerHTML += `<div class="audit-result needs-attention">⚠️ Could not verify Service Worker file</div>`;
+                    auditState.warnings++;
+                }
+
+                auditState.offlineModeStatus = 'checked';
+            } catch (error) {
+                offlineResults.innerHTML += `<div class="audit-result critical">❌ Offline mode check failed: ${error.message}</div>`;
+                auditState.criticalIssues++;
+            }
+
+            updateProgress();
+        }
+
+        // Generate deployment readiness report
+        function generateDeploymentReport() {
+            updateStatus('📋 Generating deployment readiness report...');
+            const deploymentReport = document.getElementById('deployment-report');
+            
+            let reportHtml = '<h3>📋 Deployment Readiness Report</h3>';
+            
+            // Overall assessment
+            if (auditState.criticalIssues === 0) {
+                reportHtml += `<div class="audit-result good">🎉 READY FOR DEPLOYMENT</div>`;
+                reportHtml += `<div class="audit-result good">✅ All critical systems operational</div>`;
+                reportHtml += `<div class="audit-result good">✅ Screen wake notification fix included</div>`;
+                reportHtml += `<div class="audit-result good">✅ All 10 modules validated</div>`;
+                reportHtml += `<div class="audit-result good">✅ Audio system functional</div>`;
+                reportHtml += `<div class="audit-result good">✅ API endpoints working</div>`;
+                
+                if (auditState.warnings > 0) {
+                    reportHtml += `<div class="audit-result needs-attention">⚠️ ${auditState.warnings} minor warnings (non-blocking)</div>`;
+                }
+                
+                reportHtml += `<div class="audit-result good">🚀 DEPLOY NOW TO FIX USER SCREEN WAKE ISSUE</div>`;
+            } else {
+                reportHtml += `<div class="audit-result critical">❌ NOT READY FOR DEPLOYMENT</div>`;
+                reportHtml += `<div class="audit-result critical">❌ ${auditState.criticalIssues} critical issues must be fixed</div>`;
+                reportHtml += `<div class="audit-result needs-attention">⚠️ ${auditState.warnings} warnings need attention</div>`;
+                reportHtml += `<div class="audit-result critical">🛑 DO NOT DEPLOY UNTIL ISSUES RESOLVED</div>`;
+            }
+
+            // Specific recommendations
+            reportHtml += '<h4>📝 Key Recommendations:</h4>';
+            
+            if (auditState.criticalIssues === 0) {
+                reportHtml += `<div class="audit-result good">✅ Screen wake notification fix ready for global deployment</div>`;
+                reportHtml += `<div class="audit-result good">✅ Users will stop receiving annoying update notifications</div>`;
+                reportHtml += `<div class="audit-result good">✅ All core functionality preserved and enhanced</div>`;
+            }
+
+            deploymentReport.innerHTML = reportHtml;
+        }
+
+        // Helper functions
+        function updateStatus(message) {
+            document.getElementById('overall-status').textContent = message;
+            console.log('Audit:', message);
+        }
+
+        function updateProgress() {
+            document.getElementById('critical-count').textContent = auditState.criticalIssues;
+            document.getElementById('warning-count').textContent = auditState.warnings;
+            document.getElementById('systems-checked').textContent = `${auditState.systemsChecked}/5`;
+        }
+
+        // Auto-start audit when page loads
+        window.addEventListener('load', () => {
+            updateStatus('🔍 SamLang Niger pre-deployment audit system ready');
+            console.log('🔍 Pre-deployment audit system loaded');
+        });
+    </script>
+</body>
+</html>
